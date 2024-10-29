@@ -1,0 +1,54 @@
+# Ignore Maven target directory (build artifacts)
+target/
+
+# Ignore Eclipse files
+.classpath
+.project
+.settings/
+
+# Ignore IntelliJ IDEA files
+.idea/
+*.iml
+*.iws
+out/
+
+# Ignore NetBeans files
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+*.class
+*.jar
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Windows system files
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Ignore Linux system files
+*.swp
+*~
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.pid
+*.seed
+hs_err_pid*
+
+# Ignore environment variables and config files
+.env
+*.env
+
+# Ignore build-related files
+mvnw
+mvnw.cmd
+
+# Ignore Maven wrapper files
+.mvn/wrapper/maven-wrapper.jar
+
