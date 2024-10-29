@@ -14,7 +14,7 @@ public class EventList {
 
     // Method to initialize event data
     private void initializeEvents() {
-        events.add(new Event("Event Tree", "C:\\Users\\MaHir0\\Pictures\\New folder\\1.jfif"));
+        events.add(new Event("Event Tree", "src/main/java/Resorces/Images/1.jpg"));
         events.add(new Event("Event Sea", "C:\\Users\\MaHir0\\Pictures\\New folder\\2.jfif"));
         events.add(new Event("Event Evening", "C:\\Users\\MaHir0\\Pictures\\New folder\\3.jfif"));
         events.add(new Event("Event Animal", "C:\\Users\\MaHir0\\Pictures\\New folder\\4.jfif"));
