@@ -11,6 +11,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class HeaderButtons {
+
     private JButton profileLogoButton;
     private JButton homeButton;
 
@@ -21,7 +22,7 @@ public class HeaderButtons {
 
     private void createProfileLogoButton() {
         try {
-            BufferedImage originalImage = ImageIO.read(new File("C:\\Users\\MaHir0\\Documents\\NetBeansProjects\\EventManagement\\src\\main\\java\\Resorces\\Images\\1.jpg"));
+            BufferedImage originalImage = ImageIO.read(new File("src\\main\\java\\Resorces\\Images\\p.jpg"));
             BufferedImage croppedImage = originalImage.getSubimage(1000, 1000, 2000, 2000);
             Image scaledImage = croppedImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
             ImageIcon profileIcon = new ImageIcon(scaledImage);
@@ -69,37 +70,36 @@ public class HeaderButtons {
     }
 
     private void createHomeButton() {
-    try {
-        BufferedImage originalImage = ImageIO.read(new File("C:\\Users\\MaHir0\\Documents\\NetBeansProjects\\EventManagement\\src\\main\\java\\Resorces\\Images\\1.jpg"));
-        
-        // Crop or resize image if needed;
-        BufferedImage croppedImage = originalImage.getSubimage(1000, 1000, 2000, 2000);
-        Image scaledImage = croppedImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        ImageIcon homeIcon = new ImageIcon(scaledImage);
+        try {
+            BufferedImage originalImage = ImageIO.read(new File("src\\main\\java\\Resorces\\Images\\p.jpg"));
 
-        homeButton = new JButton(homeIcon) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                if (getIcon() != null) {
-                    Graphics2D g2 = (Graphics2D) g.create();
-                    g2.setClip(new Ellipse2D.Float(0, 0, getWidth(), getHeight()));
-                    super.paintComponent(g2);
-                    g2.dispose();
-                } else {
-                    super.paintComponent(g);
+            // Crop or resize image if needed;
+            BufferedImage croppedImage = originalImage.getSubimage(1000, 1000, 2000, 2000);
+            Image scaledImage = croppedImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+            ImageIcon homeIcon = new ImageIcon(scaledImage);
+
+            homeButton = new JButton(homeIcon) {
+                @Override
+                protected void paintComponent(Graphics g) {
+                    if (getIcon() != null) {
+                        Graphics2D g2 = (Graphics2D) g.create();
+                        g2.setClip(new Ellipse2D.Float(0, 0, getWidth(), getHeight()));
+                        super.paintComponent(g2);
+                        g2.dispose();
+                    } else {
+                        super.paintComponent(g);
+                    }
                 }
-            }
-        };
-    } catch (IOException e) {
-        homeButton = new JButton("Home"); // Fallback text if image fails to load
+            };
+        } catch (IOException e) {
+            homeButton = new JButton("Home"); // Fallback text if image fails to load
+        }
+
+        homeButton.setPreferredSize(new Dimension(50, 50)); // Set button size to match image
+        homeButton.setBorderPainted(false);
+        homeButton.setContentAreaFilled(false);
+        homeButton.setFocusPainted(false);
     }
-
-    homeButton.setPreferredSize(new Dimension(50, 50)); // Set button size to match image
-    homeButton.setBorderPainted(false);
-    homeButton.setContentAreaFilled(false);
-    homeButton.setFocusPainted(false);
-}
-
 
     public JButton getProfileLogoButton() {
         return profileLogoButton;

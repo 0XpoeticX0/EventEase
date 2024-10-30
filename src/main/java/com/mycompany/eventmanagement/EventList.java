@@ -10,17 +10,24 @@ public class EventList {
     public EventList() {
         events = new ArrayList<>();
         initializeEvents(); // Populate the events list
-    }
+    }    
 
     // Method to initialize event data
     private void initializeEvents() {
         events.add(new Event("Event Tree", "src/main/java/Resorces/Images/1.jpg"));
-        events.add(new Event("Event Sea", "C:\\Users\\MaHir0\\Pictures\\New folder\\2.jfif"));
-        events.add(new Event("Event Evening", "C:\\Users\\MaHir0\\Pictures\\New folder\\3.jfif"));
-        events.add(new Event("Event Animal", "C:\\Users\\MaHir0\\Pictures\\New folder\\4.jfif"));
-        events.add(new Event("Event Tree2", "C:\\Users\\MaHir0\\Pictures\\New folder\\5.jfif"));
-        events.add(new Event("Event Tree6", "C:\\Users\\MaHir0\\Pictures\\New folder\\6.jfif"));
-        events.add(new Event("Event Tree10", "C:\\Users\\MaHir0\\Pictures\\New folder\\1.jfif")); // Additional event
+        events.add(new Event("Event Sea", "src/main/java/Resorces/Images/2.jpg"));
+        events.add(new Event("Event Evening", "src/main/java/Resorces/Images/3.jpg"));
+        events.add(new Event("Event Animal", "src/main/java/Resorces/Images/4.jpg"));
+        events.add(new Event("Event Tree2", "src/main/java/Resorces/Images/5.jpg"));
+        events.add(new Event("Event Tree6", "src/main/java/Resorces/Images/6.jpg"));
+        events.add(new Event("Event Tree10", "src/main/java/Resorces/Images/4.jpg")); 
+        events.add(new Event("Event Tree", "src/main/java/Resorces/Images/1.jpg"));
+        events.add(new Event("Event Sea", "src/main/java/Resorces/Images/2.jpg"));
+        events.add(new Event("Event Evening", "src/main/java/Resorces/Images/3.jpg"));
+        events.add(new Event("Event Animal", "src/main/java/Resorces/Images/4.jpg"));
+        events.add(new Event("Event Tree2", "src/main/java/Resorces/Images/5.jpg"));
+        events.add(new Event("Event Tree6", "src/main/java/Resorces/Images/6.jpg"));
+        events.add(new Event("Event Tree10", "src/main/java/Resorces/Images/4.jpg"));// Additional event
         // Add more events as needed
     }
 
