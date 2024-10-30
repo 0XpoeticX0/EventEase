@@ -22,7 +22,7 @@ public class HeaderButtons {
 
     private void createProfileLogoButton() {
         try {
-            BufferedImage originalImage = ImageIO.read(new File("src\\main\\java\\Resorces\\Images\\p.jpg"));
+            BufferedImage originalImage = ImageIO.read(new File("src/main/java/Resorces/Images/p.jpg"));
             BufferedImage croppedImage = originalImage.getSubimage(1000, 1000, 2000, 2000);
             Image scaledImage = croppedImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
             ImageIcon profileIcon = new ImageIcon(scaledImage);
@@ -71,7 +71,7 @@ public class HeaderButtons {
 
     private void createHomeButton() {
         try {
-            BufferedImage originalImage = ImageIO.read(new File("src\\main\\java\\Resorces\\Images\\p.jpg"));
+            BufferedImage originalImage = ImageIO.read(new File("src/main/java/Resorces/Images/p.jpg"));
 
             // Crop or resize image if needed;
             BufferedImage croppedImage = originalImage.getSubimage(1000, 1000, 2000, 2000);

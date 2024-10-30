@@ -2,6 +2,7 @@ package com.mycompany.eventmanagement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class EventCardPanel extends JPanel {
 
@@ -16,7 +17,8 @@ public class EventCardPanel extends JPanel {
         int imageHeight = 100; // Desired height
 
         // Create ImageIcon and scale it to the fixed size
-        ImageIcon originalIcon = new ImageIcon(event.getImagePath());
+        File file = new File(event.getImagePath());
+        ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
         Image scaledImage = originalIcon.getImage().getScaledInstance(width, imageHeight, Image.SCALE_SMOOTH);
         JLabel eventImageLabel = new JLabel(new ImageIcon(scaledImage), SwingConstants.CENTER); // Show scaled image
         eventImageLabel.setPreferredSize(new Dimension(width, imageHeight)); // Set preferred size for the image

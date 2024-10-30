@@ -9,6 +9,7 @@ public class EventPage extends JFrame {
 
     private final EventList eventList;
     private final JPanel eventPanel; // Panel to display event cards
+    private final JPanel contentPanel; // Panel to wrap eventPanel and other content
 
     public EventPage() {
         eventList = new EventList(); // Initialize EventList
@@ -20,9 +21,8 @@ public class EventPage extends JFrame {
         JPanel mainPanel = new JPanel(new GridBagLayout());
         setContentPane(mainPanel);
 
-        // Create central content panel
-        JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new BorderLayout());
+        // Central content panel
+        contentPanel = new JPanel(new BorderLayout());
         contentPanel.setPreferredSize(new Dimension(900, 700)); // Fixed size for main content
 
         // Header panel with centered alignment
@@ -51,16 +51,15 @@ public class EventPage extends JFrame {
         contentPanel.add(headerPanel, BorderLayout.NORTH);
 
         // Event panel with GridLayout to show multiple event cards
-        eventPanel = new JPanel();
-        eventPanel.setLayout(new GridLayout(0, 3, 10, 10)); // 3 columns, unlimited rows, with 10px gaps
+        eventPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns, unlimited rows, with 10px gaps
 
         // Wrap eventPanel in a JScrollPane
         JScrollPane eventScrollPane = new JScrollPane(eventPanel);
         eventScrollPane.setPreferredSize(new Dimension(700, 400)); // Fixed size for scroll pane
         contentPanel.add(eventScrollPane, BorderLayout.CENTER);
 
-        // Load initial events
-        loadEventCards(eventList.getEvents(9)); // Load the first 6 events
+        // Load initial events into content panel
+        loadEventCards(eventList.getEvents(9)); // Load the first 9 events
 
         // Add content panel to the main panel
         GridBagConstraints gbc = new GridBagConstraints();
@@ -78,7 +77,7 @@ public class EventPage extends JFrame {
             if (!query.isEmpty()) {
                 searchEvents(query);
             } else {
-                loadEventCards(eventList.getEvents(9)); // Reload the initial 6 events if search is empty
+                loadEventCards(eventList.getEvents(9)); // Reload the initial events if search is empty
             }
         });
 
@@ -87,7 +86,7 @@ public class EventPage extends JFrame {
         setContentPane(fullScrollPane);
     }
 
-    // Method to load event cards into the event panel
+    // Method to load event cards into the event panel within contentPanel
     private void loadEventCards(List<Event> events) {
         eventPanel.removeAll(); // Clear existing event cards
         for (Event event : events) {

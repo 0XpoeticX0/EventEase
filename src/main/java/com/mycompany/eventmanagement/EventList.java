@@ -14,20 +14,19 @@ public class EventList {
 
     // Method to initialize event data
     private void initializeEvents() {
-        events.add(new Event("Event Tree", "src/main/java/Resorces/Images/1.jpg"));
-        events.add(new Event("Event Sea", "src/main/java/Resorces/Images/2.jpg"));
-        events.add(new Event("Event Evening", "src/main/java/Resorces/Images/3.jpg"));
-        events.add(new Event("Event Animal", "src/main/java/Resorces/Images/4.jpg"));
-        events.add(new Event("Event Tree2", "src/main/java/Resorces/Images/5.jpg"));
-        events.add(new Event("Event Tree6", "src/main/java/Resorces/Images/6.jpg"));
-        events.add(new Event("Event Tree10", "src/main/java/Resorces/Images/4.jpg")); 
-        events.add(new Event("Event Tree", "src/main/java/Resorces/Images/1.jpg"));
-        events.add(new Event("Event Sea", "src/main/java/Resorces/Images/2.jpg"));
-        events.add(new Event("Event Evening", "src/main/java/Resorces/Images/3.jpg"));
-        events.add(new Event("Event Animal", "src/main/java/Resorces/Images/4.jpg"));
-        events.add(new Event("Event Tree2", "src/main/java/Resorces/Images/5.jpg"));
-        events.add(new Event("Event Tree6", "src/main/java/Resorces/Images/6.jpg"));
-        events.add(new Event("Event Tree10", "src/main/java/Resorces/Images/4.jpg"));// Additional event
+        events.add(new Event("Event Tree", "src/main/java/Resorces/Images/1.jfif"));
+        events.add(new Event("Event Sea", "src/main/java/Resorces/Images/2.jfif"));
+        events.add(new Event("Event Evening", "src/main/java/Resorces/Images/3.jfif"));
+        events.add(new Event("Event Animal", "src/main/java/Resorces/Images/4.jfif"));
+        events.add(new Event("Event Tree2", "src/main/java/Resorces/Images/5.jfif"));
+        events.add(new Event("Event Tree6", "src/main/java/Resorces/Images/6.jfif"));
+        events.add(new Event("Event Tree", "src/main/java/Resorces/Images/1.jfif"));
+        events.add(new Event("Event Sea", "src/main/java/Resorces/Images/2.jfif"));
+        events.add(new Event("Event Evening", "src/main/java/Resorces/Images/3.jfif"));
+        events.add(new Event("Event Animal", "src/main/java/Resorces/Images/4.jfif"));
+        events.add(new Event("Event Tree2", "src/main/java/Resorces/Images/5.jfif"));
+        events.add(new Event("Event Tree6", "src/main/java/Resorces/Images/6.jfif"));
+        events.add(new Event("Event Tree10", "src/main/java/Resorces/Images/4.jfif"));// Additional event
         // Add more events as needed
     }
 
