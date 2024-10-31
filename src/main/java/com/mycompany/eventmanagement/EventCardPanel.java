@@ -41,6 +41,7 @@ public class EventCardPanel extends JPanel {
         eventImageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         eventNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         viewDetailsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        viewDetailsButton.addActionListener(e -> showEventDetails(event)); // Add action listener to the button
 
         // Add components to the event card
         eventCard.add(eventNameLabel);
@@ -48,11 +49,14 @@ public class EventCardPanel extends JPanel {
         eventCard.add(viewDetailsButton);
         eventCard.add(Box.createRigidArea(new Dimension(0, 10))); // Add a bit more space below the button
 
+
+   
+
         return eventCard;
     }
 
     // Show details of the event in a dialog
-    private void showEventDetails(Event event) {
-        JOptionPane.showMessageDialog(this, "Event Name: " + event.getName(), "Event Details", JOptionPane.INFORMATION_MESSAGE);
+    private static void showEventDetails(Event event) {
+        JOptionPane.showMessageDialog( null,"Event Name: " + event.getName(), "Event Details", JOptionPane.INFORMATION_MESSAGE);
     }
 }
