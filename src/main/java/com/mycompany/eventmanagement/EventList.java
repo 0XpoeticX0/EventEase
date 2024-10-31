@@ -40,13 +40,16 @@ public class EventList {
             }
     
             // Retrieve event data from the database
-            String query = "SELECT name, image FROM events";
+            String query = "SELECT * FROM events";
             ResultSet resultSet = statement.executeQuery(query);
     
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
+                String description = resultSet.getString("description");
+                String location = resultSet.getString("location");
+                int price = resultSet.getInt("price");
                 String imagePath = resultSet.getString("image");
-                events.add(new Event(name, imagePath));
+                events.add(new Event(name, imagePath, description, location,price));
             }
     
         } catch (SQLException e) {

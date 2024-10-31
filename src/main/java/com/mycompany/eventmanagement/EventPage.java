@@ -99,7 +99,7 @@ public class EventPage extends JFrame {
     // Method to search events
     private void searchEvents(String query) {
         List<Event> matchedEvents = eventList.getAllEvents().stream()
-                .filter(event -> event.getName().toLowerCase().contains(query.toLowerCase()))
+                .filter(event -> event.name.toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
         loadEventCards(matchedEvents); // Load the matching events into the event panel
     }

@@ -17,7 +17,7 @@ public class Search {
     public List<Event> searchEvents(String searchTerm) {
     List<Event> matchedEvents = new ArrayList<>();
     for (Event event : events) {
-        if (event.getName().toLowerCase().contains(searchTerm.toLowerCase())) {
+        if (event.name.toLowerCase().contains(searchTerm.toLowerCase())) {
             matchedEvents.add(event);
         }
     }
