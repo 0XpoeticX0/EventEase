@@ -99,18 +99,10 @@ public class EventPage extends JFrame {
     // Method to search events
     private void searchEvents(String query) {
         List<Event> matchedEvents = eventList.getAllEvents().stream()
-                .filter(event -> event.getName().toLowerCase().contains(query.toLowerCase()))
+                .filter(event -> event.name.toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
         loadEventCards(matchedEvents); // Load the matching events into the event panel
     }
 
-    // Method to show event details (popup or new window)
-    private void showEventDetails(Event event) {
-        JOptionPane.showMessageDialog(this, "Event Name: " + event.getName(), "Event Details", JOptionPane.INFORMATION_MESSAGE);
-        // Add more details as needed
-    }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new EventPage().setVisible(true));
-    }
 }
