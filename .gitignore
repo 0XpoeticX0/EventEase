@@ -5,6 +5,7 @@ target/
 .classpath
 .project
 .settings/
+.vscode
 
 # Ignore IntelliJ IDEA files
 .idea/
