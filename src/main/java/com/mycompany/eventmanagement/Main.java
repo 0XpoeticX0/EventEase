@@ -1,4 +1,6 @@
 package com.mycompany.eventmanagement;
+import Events.EventPage;
+import DataBase.DatabaseConnect;
 import javax.swing.JOptionPane;
 import java.sql.SQLException;
 import javax.swing.SwingUtilities;

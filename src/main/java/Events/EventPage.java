@@ -1,9 +1,15 @@
-package com.mycompany.eventmanagement;
+package Events;
 
+import Events.EventCardPanel;
+import Events.EventList;
+import Events.Event;
+import Buttons.EventSearch;
+import Buttons.HeaderButtons;
+import Buttons.AboutUsPanel;
+import Buttons.ContactUsPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class EventPage extends JFrame {
 
@@ -35,16 +41,25 @@ public class EventPage extends JFrame {
 
         // Initialize HeaderButtons for reusable buttons
         HeaderButtons headerButtons = new HeaderButtons();
-
+        
         // Add components in the desired order to the header panel
         headerPanel.add(headerButtons.getHomeButton()); // Home button
         headerPanel.add(Box.createHorizontalStrut(180)); // Adjusted spacing
 
         JButton eventsButton = new JButton("All Events"); // Events button
         headerPanel.add(eventsButton);
+        // Action listener for the "Events" button to show all events
+        eventsButton.addActionListener(e -> loadEventCards(eventList.getAllEvents()));
 
-        headerPanel.add(new JButton("About Us")); // About Us button
-        headerPanel.add(new JButton("Contact Us")); // Contact Us button
+        JButton aboutUsButton = new JButton("About Us"); // About Us button
+        headerPanel.add(aboutUsButton);
+        // Action listener for the "About Us" button to show about us details
+        aboutUsButton.addActionListener(e -> AboutUsPanel.showAboutUs());
+
+        JButton contactUsButton = new JButton("Contact Us"); // Contact Us button
+        headerPanel.add(contactUsButton);
+        // Action listener for the "Contact Us" button to show contact details
+        contactUsButton.addActionListener(e -> ContactUsPanel.showContactUs());
 
         // Search field and button
         JTextField searchField = new JTextField(20);
@@ -64,7 +79,7 @@ public class EventPage extends JFrame {
         // Wrap eventPanel in a JScrollPane
         JScrollPane eventScrollPane = new JScrollPane(eventPanel);
         eventScrollPane.setPreferredSize(new Dimension(SCROLL_WIDTH, SCROLL_HEIGHT)); // Fixed size for scroll pane
-        contentPanel.add(eventScrollPane);
+        contentPanel.add(eventScrollPane, BorderLayout.CENTER);
 
         // Load initial events into content panel
         loadEventCards(eventList.getEvents(9)); // Load the first 9 events
@@ -75,14 +90,16 @@ public class EventPage extends JFrame {
         searchButton.addActionListener(e -> {
             String query = searchField.getText();
             if (!query.isEmpty()) {
-                searchEvents(query);
+                List<Event> matchedEvents = EventSearch.searchEvents(eventList.getAllEvents(), query);
+                if (matchedEvents.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "No events found for your search.");
+                } else {
+                    loadEventCards(matchedEvents); // Load the matching events into the event panel
+                }
             } else {
                 loadEventCards(eventList.getEvents(9)); // Reload the initial events if search is empty
             }
         });
-
-        // Action listener for the "Events" button to show all events
-        eventsButton.addActionListener(e -> loadEventCards(eventList.getAllEvents()));
     }
 
     // Method to load event cards into the event panel within contentPanel
@@ -107,18 +124,5 @@ public class EventPage extends JFrame {
 
         eventPanel.revalidate(); // Refresh layout once after all components are added
         eventPanel.repaint(); // Redraw panel
-    }
-
-    // Method to search events
-    private void searchEvents(String query) {
-        List<Event> matchedEvents = eventList.getAllEvents().stream()
-                .filter(event -> event.name.toLowerCase().contains(query.toLowerCase()))
-                .collect(Collectors.toList());
-
-        if (matchedEvents.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No events found for your search.");
-        } else {
-            loadEventCards(matchedEvents); // Load the matching events into the event panel
-        }
     }
 }

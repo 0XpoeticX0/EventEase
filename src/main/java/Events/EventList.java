@@ -1,5 +1,7 @@
-package com.mycompany.eventmanagement;
+package Events;
 
+import Events.Event;
+import DataBase.DatabaseConnect;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
