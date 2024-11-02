@@ -89,11 +89,26 @@ public class EventPage extends JFrame {
     // Method to load event cards into the event panel within contentPanel
     private void loadEventCards(List<Event> events) {
         eventPanel.removeAll(); // Clear existing event cards
-        for (Event event : events) {
-            eventPanel.add(EventCardPanel.showevent(event)); // Add card to eventPanel
+        eventPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10); // Padding around each card
+        gbc.anchor = GridBagConstraints.NORTHWEST; // Align top left
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
+
+        int columns = 3; // Number of columns (events per row)
+        for (int i = 0; i < events.size(); i++) {
+            Event event = events.get(i);
+            JPanel eventCard = EventCardPanel.showevent(event);
+
+            gbc.gridx = i % columns; // Set the column
+            gbc.gridy = i / columns; // Set the row
+
+            eventPanel.add(eventCard, gbc); // Add card to eventPanel
         }
-        eventPanel.revalidate(); // Refresh the layout
-        eventPanel.repaint(); // Redraw the panel
+
+        eventPanel.revalidate(); // Refresh layout
+        eventPanel.repaint(); // Redraw panel
     }
 
     // Method to search events
@@ -103,6 +118,5 @@ public class EventPage extends JFrame {
                 .collect(Collectors.toList());
         loadEventCards(matchedEvents); // Load the matching events into the event panel
     }
-
 
 }
