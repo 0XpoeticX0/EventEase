@@ -1,4 +1,4 @@
-package com.mycompany.eventmanagement;
+package Events;
 
 // Class to represent an event
 public class Event {

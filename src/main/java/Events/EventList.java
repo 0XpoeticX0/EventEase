@@ -1,5 +1,7 @@
-package com.mycompany.eventmanagement;
+package Events;
 
+import Events.Event;
+import DataBase.DatabaseConnect;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,7 +36,14 @@ public class EventList {
                     "('Art Exhibition', 'A showcase of contemporary art by local artists.', 'Los Angeles', 30, 'src/main/java/Resorces/Images/2.jfif')," +
                     "('Tech Conference', 'A gathering of tech enthusiasts and professionals.', 'San Francisco', 100, 'src/main/java/Resorces/Images/3.jfif')," +
                     "('Food Festival', 'A variety of local and international cuisines.', 'Chicago', 20, 'src/main/java/Resorces/Images/4.jfif')," +
-                    "('Book Fair', 'A collection of books from different genres and authors.', 'Seattle', 10, 'src/main/java/Resorces/Images/5.jfif');";
+                    "('Book Fair', 'A collection of books from different genres and authors.', 'Seattle', 10, 'src/main/java/Resorces/Images/5.jfif')," +
+                    "('Theater Play', 'A dramatic performance showcasing talent on stage.', 'Boston', 25, 'src/main/java/Resorces/Images/6.jfif')," +
+                    "('Film Screening', 'An evening of classic and contemporary films.', 'Austin', 15, 'src/main/java/Resorces/Images/7.jfif')," +
+                    "('Charity Gala', 'A fundraising event for local charities.', 'Miami', 200, 'src/main/java/Resorces/Images/8.jfif')," +
+                    "('Dance Workshop', 'Learn different dance styles from professional instructors.', 'Las Vegas', 40, 'src/main/java/Resorces/Images/9.jfif')," +
+                    "('Sports Day', 'A fun-filled day of various sports and activities.', 'Denver', 5, 'src/main/java/Resorces/Images/10.jfif')," +
+                    "('Fashion Show', 'An exhibition of the latest fashion trends.', 'New Orleans', 75, 'src/main/java/Resorces/Images/11.jfif');";
+
     
                 statement.executeUpdate(insertQuery);
             }

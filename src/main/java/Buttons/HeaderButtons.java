@@ -1,4 +1,4 @@
-package com.mycompany.eventmanagement;
+package Buttons;
 
 import javax.swing.*;
 import java.awt.*;

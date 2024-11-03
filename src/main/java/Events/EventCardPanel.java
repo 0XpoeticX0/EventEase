@@ -1,5 +1,6 @@
-package com.mycompany.eventmanagement;
+package Events;
 
+import Events.Event;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
