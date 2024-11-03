@@ -109,7 +109,6 @@ public class EventPage extends JFrame {
         gbc.insets = CARD_INSETS; // Use defined insets
         gbc.anchor = GridBagConstraints.NORTH; // Align components to the top
         gbc.fill = GridBagConstraints.HORIZONTAL; // Make cards expand horizontally within their cell
-        gbc.weightx = 1.0; // Horizontal expansion
 
         int columns = 3; // Number of columns (events per row)
 
