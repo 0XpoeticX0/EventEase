@@ -41,7 +41,7 @@ public class EventPage extends JFrame {
 
         // Initialize HeaderButtons for reusable buttons
         HeaderButtons headerButtons = new HeaderButtons();
-        
+
         // Add components in the desired order to the header panel
         headerPanel.add(headerButtons.getHomeButton()); // Home button
         headerPanel.add(Box.createHorizontalStrut(180)); // Adjusted spacing
@@ -82,7 +82,7 @@ public class EventPage extends JFrame {
         contentPanel.add(eventScrollPane, BorderLayout.CENTER);
 
         // Load initial events into content panel
-        loadEventCards(eventList.getEvents(9)); // Load the first 9 events
+        loadEventCards(eventList.getEvents(6)); // Load the first 9 events
 
         mainPanel.add(contentPanel);
 
@@ -97,7 +97,7 @@ public class EventPage extends JFrame {
                     loadEventCards(matchedEvents); // Load the matching events into the event panel
                 }
             } else {
-                loadEventCards(eventList.getEvents(9)); // Reload the initial events if search is empty
+                loadEventCards(eventList.getEvents(6)); // Reload the initial events if search is empty
             }
         });
     }
@@ -107,8 +107,9 @@ public class EventPage extends JFrame {
         eventPanel.removeAll(); // Clear existing event cards
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = CARD_INSETS; // Use defined insets
-        gbc.anchor = GridBagConstraints.NORTHWEST; // Align to top left
-        gbc.weighty = 1; // Keep vertical space consistent
+        gbc.anchor = GridBagConstraints.NORTH; // Align components to the top
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Make cards expand horizontally within their cell
+        gbc.weightx = 1.0; // Horizontal expansion
 
         int columns = 3; // Number of columns (events per row)
 
@@ -122,7 +123,14 @@ public class EventPage extends JFrame {
             eventPanel.add(eventCard, gbc); // Add card to eventPanel
         }
 
+        // Add an empty "filler" component at the end to push items upwards
+        gbc.gridx = 0;
+        gbc.gridy = events.size() / columns + 1;
+        gbc.weighty = 1.0; // Ensures remaining space stays at the bottom
+        eventPanel.add(new JPanel(), gbc); // Empty panel as filler
+
         eventPanel.revalidate(); // Refresh layout once after all components are added
         eventPanel.repaint(); // Redraw panel
     }
+
 }
