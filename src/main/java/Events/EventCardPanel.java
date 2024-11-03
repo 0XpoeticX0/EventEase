@@ -14,8 +14,8 @@ public class EventCardPanel extends JPanel {
         eventCard.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add some padding around the event card
 
         // Define fixed dimensions for the image
-        int width = 250;  // Desired width
-        int imageHeight = 100; // Desired height
+        int width = 200;  // Desired width
+        int imageHeight = 150; // Desired height
 
         // Create ImageIcon and scale it to the fixed size
         File file = new File(event.imagePath);

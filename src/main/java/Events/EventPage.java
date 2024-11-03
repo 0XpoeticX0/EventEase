@@ -44,7 +44,7 @@ public class EventPage extends JFrame {
 
         // Add components in the desired order to the header panel
         headerPanel.add(headerButtons.getHomeButton()); // Home button
-        headerPanel.add(Box.createHorizontalStrut(180)); // Adjusted spacing
+        headerPanel.add(Box.createHorizontalStrut(110)); // Adjusted spacing
 
         JButton eventsButton = new JButton("All Events"); // Events button
         headerPanel.add(eventsButton);
@@ -79,6 +79,7 @@ public class EventPage extends JFrame {
         // Wrap eventPanel in a JScrollPane
         JScrollPane eventScrollPane = new JScrollPane(eventPanel);
         eventScrollPane.setPreferredSize(new Dimension(SCROLL_WIDTH, SCROLL_HEIGHT)); // Fixed size for scroll pane
+        eventScrollPane.setBorder(null); // Remove the border around eventPanel
         contentPanel.add(eventScrollPane, BorderLayout.CENTER);
 
         // Load initial events into content panel
