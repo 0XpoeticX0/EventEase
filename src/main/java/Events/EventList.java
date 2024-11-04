@@ -68,6 +68,6 @@ public class EventList {
     
     // Method to get a subset of events (limited to a specified count)
     public List<Event> getEvents(int count) {
-        return events.subList(0, Math.min(count, events.size()));
+        return events.subList(0, count);
     }
 }
