@@ -1,5 +1,5 @@
 package DataBase;
-import DataBase.DatabaseConfig;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,11 +10,8 @@ public class DatabaseConnect {
         System.out.println(DatabaseConfig.getDatabaseUrl());
 
         return DriverManager.getConnection(
-            DatabaseConfig.getDatabaseUrl(),
-            DatabaseConfig.getUsername(),
-            DatabaseConfig.getPassword()
-        );
+                DatabaseConfig.getDatabaseUrl(),
+                DatabaseConfig.getUsername(),
+                DatabaseConfig.getPassword());
     }
 }
-
-
