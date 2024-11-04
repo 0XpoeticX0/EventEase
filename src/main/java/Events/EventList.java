@@ -11,7 +11,7 @@ import java.util.List;
 
 // Class to manage the list of events
 public class EventList {
-    private final List<Event> events;
+    public final List<Event> events;
 
     public EventList() {
         events = new ArrayList<>();
@@ -69,10 +69,5 @@ public class EventList {
     // Method to get a subset of events (limited to a specified count)
     public List<Event> getEvents(int count) {
         return events.subList(0, Math.min(count, events.size()));
-    }
-
-    // Method to get all events
-    public List<Event> getAllEvents() {
-        return events;
     }
 }

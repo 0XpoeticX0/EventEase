@@ -38,7 +38,7 @@ public class EventPage extends JFrame {
 
         JButton eventsButton = new JButton("All Events");
         headerPanel.add(eventsButton);
-        eventsButton.addActionListener(e -> loadEventCards(eventList.getAllEvents()));
+        eventsButton.addActionListener(e -> loadEventCards(eventList.getEvents(eventList.events.size())));
 
         JButton aboutUsButton = new JButton("About Us");
         headerPanel.add(aboutUsButton);
@@ -74,7 +74,7 @@ public class EventPage extends JFrame {
         searchButton.addActionListener(e -> {
             String query = searchField.getText();
             if (!query.isEmpty()) {
-                List<Event> matchedEvents = EventSearch.searchEvents(eventList.getAllEvents(), query);
+                List<Event> matchedEvents = EventSearch.searchEvents(eventList.getEvents(eventList.events.size()), query);
                 if (matchedEvents.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "No events found for your search.");
                 } else {
@@ -91,7 +91,7 @@ public class EventPage extends JFrame {
 
     // Method to load event cards into the event panel within contentPanel
     private void loadEventCards(List<Event> events) {
-        eventPanel.removeAll();
+        eventPanel.removeAll(); // Clear existing event cards
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = CARD_INSETS;
         gbc.anchor = GridBagConstraints.NORTH;
@@ -104,14 +104,14 @@ public class EventPage extends JFrame {
             JPanel eventCard = EventCardPanel.showevent(event);
 
             gbc.gridx = i % columns;
-            gbc.gridy = i / columns;
+            gbc.gridy = (i / columns) + 1; // Start adding cards after the spacer
             eventPanel.add(eventCard, gbc);
         }
 
         gbc.gridx = 0;
-        gbc.gridy = events.size() / columns + 1;
+        gbc.gridy = events.size() / columns + 1; // Adjust for the new row
         gbc.weighty = 1.0; // Ensures remaining space stays at the bottom
-        eventPanel.add(new JPanel(), gbc);
+        eventPanel.add(new JPanel(), gbc); // Placeholder for remaining space
 
         eventPanel.revalidate();
         eventPanel.repaint();
