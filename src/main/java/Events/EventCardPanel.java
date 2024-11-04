@@ -1,6 +1,5 @@
 package Events;
 
-import Events.Event;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -14,8 +13,8 @@ public class EventCardPanel extends JPanel {
         eventCard.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add some padding around the event card
 
         // Define fixed dimensions for the image
-        int width = 250;  // Desired width
-        int imageHeight = 100; // Desired height
+        int width = 200; // Desired width
+        int imageHeight = 150; // Desired height
 
         // Create ImageIcon and scale it to the fixed size
         File file = new File(event.imagePath);
@@ -33,7 +32,8 @@ public class EventCardPanel extends JPanel {
 
         // Create view details button
         JButton viewDetailsButton = new JButton("View Details");
-        viewDetailsButton.setPreferredSize(new Dimension(width, 30)); // Set width to match image, height is customizable
+        viewDetailsButton.setPreferredSize(new Dimension(width, 30)); // Set width to match image, height is
+                                                                      // customizable
         viewDetailsButton.setMinimumSize(new Dimension(width, 30)); // Set minimum size
         viewDetailsButton.setMaximumSize(new Dimension(width, 30)); // Set maximum size
         viewDetailsButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button in the box
@@ -50,19 +50,16 @@ public class EventCardPanel extends JPanel {
         eventCard.add(viewDetailsButton);
         eventCard.add(Box.createRigidArea(new Dimension(0, 10))); // Add a bit more space below the button
 
-
-   
-
         return eventCard;
     }
 
     // Show details of the event in a dialog
     private static void showEventDetails(Event event) {
         String message = "Event Name: " + event.name + "\n" +
-                         "Description: " + event.description + "\n" +
-                         "Location: " + event.location + "\n" +
-                         "Booking Price: " + event.price;
+                "Description: " + event.description + "\n" +
+                "Location: " + event.location + "\n" +
+                "Booking Price: " + event.price;
         JOptionPane.showMessageDialog(null, message, "Event Details", JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
 }

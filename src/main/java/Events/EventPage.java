@@ -1,8 +1,5 @@
 package Events;
 
-import Events.EventCardPanel;
-import Events.EventList;
-import Events.Event;
 import Buttons.EventSearch;
 import Buttons.HeaderButtons;
 import Buttons.AboutUsPanel;
@@ -16,120 +13,107 @@ public class EventPage extends JFrame {
     private final EventList eventList;
     private final JPanel eventPanel; // Panel to display event cards
     private final JPanel contentPanel; // Panel to wrap eventPanel and other content
-    private static final int PANEL_WIDTH = 900;
-    private static final int PANEL_HEIGHT = 700;
-    private static final int SCROLL_WIDTH = 700;
-    private static final int SCROLL_HEIGHT = 400;
     private static final Insets CARD_INSETS = new Insets(5, 5, 5, 5); // Padding for event cards
 
     public EventPage() {
         eventList = new EventList(); // Initialize EventList
         setTitle("Event Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 800);
 
-        // Main panel with GridBagLayout for central alignment
-        JPanel mainPanel = new JPanel(new GridBagLayout());
+        // Main panel with BorderLayout for flexible resizing
+        JPanel mainPanel = new JPanel(new BorderLayout());
         setContentPane(mainPanel);
 
-        // Central content panel
+        // Central content panel, now resizable with BorderLayout
         contentPanel = new JPanel(new BorderLayout());
-        contentPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT)); // Fixed size for main content
+        mainPanel.add(contentPanel, BorderLayout.CENTER);
 
-        // Header panel with centered alignment
-        JPanel headerPanel = new JPanel(); // Center alignment with spacing
-
-        // Initialize HeaderButtons for reusable buttons
+        // Header panel
+        JPanel headerPanel = new JPanel();
         HeaderButtons headerButtons = new HeaderButtons();
 
-        // Add components in the desired order to the header panel
-        headerPanel.add(headerButtons.getHomeButton()); // Home button
-        headerPanel.add(Box.createHorizontalStrut(180)); // Adjusted spacing
+        // Header buttons
+        headerPanel.add(headerButtons.getHomeButton());
+        headerPanel.add(Box.createHorizontalStrut(80));
 
-        JButton eventsButton = new JButton("All Events"); // Events button
+        JButton eventsButton = new JButton("All Events");
         headerPanel.add(eventsButton);
-        // Action listener for the "Events" button to show all events
-        eventsButton.addActionListener(e -> loadEventCards(eventList.getAllEvents()));
+        eventsButton.addActionListener(e -> loadEventCards(eventList.getEvents(eventList.events.size())));
 
-        JButton aboutUsButton = new JButton("About Us"); // About Us button
+        JButton aboutUsButton = new JButton("About Us");
         headerPanel.add(aboutUsButton);
-        // Action listener for the "About Us" button to show about us details
         aboutUsButton.addActionListener(e -> AboutUsPanel.showAboutUs());
 
-        JButton contactUsButton = new JButton("Contact Us"); // Contact Us button
+        JButton contactUsButton = new JButton("Contact Us");
         headerPanel.add(contactUsButton);
-        // Action listener for the "Contact Us" button to show contact details
         contactUsButton.addActionListener(e -> ContactUsPanel.showContactUs());
 
-        // Search field and button
         JTextField searchField = new JTextField(20);
         headerPanel.add(searchField);
         JButton searchButton = new JButton("Search");
         headerPanel.add(searchButton);
 
-        // Profile logo button
-        headerPanel.add(headerButtons.getProfileLogoButton()); // Profile logo
-
-        // Add header panel to the top of the content panel
+        headerPanel.add(headerButtons.getProfileLogoButton());
         contentPanel.add(headerPanel, BorderLayout.NORTH);
 
-        // Event panel with GridBagLayout to show multiple event cards
-        eventPanel = new JPanel(new GridBagLayout()); // Use GridBagLayout for flexible positioning
+        // Event panel with GridBagLayout for flexible event card positioning
+        eventPanel = new JPanel(new GridBagLayout());
+        eventPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Wrap eventPanel in a JScrollPane
-        JScrollPane eventScrollPane = new JScrollPane(eventPanel);
-        eventScrollPane.setPreferredSize(new Dimension(SCROLL_WIDTH, SCROLL_HEIGHT)); // Fixed size for scroll pane
+        // Wrap eventPanel in a JScrollPane, allowing it to resize
+        JScrollPane eventScrollPane = new JScrollPane(eventPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        eventScrollPane.getViewport().setPreferredSize(null); // Enables dynamic resizing of content
+        eventScrollPane.setBorder(null); // Remove the border around eventPanel
+        eventScrollPane.getVerticalScrollBar().setUnitIncrement(15); // Adjust this value for faster or slower scrolling
+        eventScrollPane.getVerticalScrollBar().setBlockIncrement(100); // Adjust this for scroll track clicks
         contentPanel.add(eventScrollPane, BorderLayout.CENTER);
 
-        // Load initial events into content panel
-        loadEventCards(eventList.getEvents(6)); // Load the first 9 events
+        loadEventCards(eventList.getEvents(6)); // Load the first 6 events
 
-        mainPanel.add(contentPanel);
-
-        // Action listener for search functionality
+        // Search functionality
         searchButton.addActionListener(e -> {
             String query = searchField.getText();
             if (!query.isEmpty()) {
-                List<Event> matchedEvents = EventSearch.searchEvents(eventList.getAllEvents(), query);
+                List<Event> matchedEvents = EventSearch.searchEvents(eventList.getEvents(eventList.events.size()), query);
                 if (matchedEvents.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "No events found for your search.");
                 } else {
-                    loadEventCards(matchedEvents); // Load the matching events into the event panel
+                    loadEventCards(matchedEvents);
                 }
             } else {
-                loadEventCards(eventList.getEvents(6)); // Reload the initial events if search is empty
+                loadEventCards(eventList.getEvents(6));
             }
         });
+
+        pack();
+        setLocationRelativeTo(null);
     }
 
     // Method to load event cards into the event panel within contentPanel
     private void loadEventCards(List<Event> events) {
         eventPanel.removeAll(); // Clear existing event cards
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = CARD_INSETS; // Use defined insets
-        gbc.anchor = GridBagConstraints.NORTH; // Align components to the top
-        gbc.fill = GridBagConstraints.HORIZONTAL; // Make cards expand horizontally within their cell
+        gbc.insets = CARD_INSETS;
+        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         int columns = 3; // Number of columns (events per row)
 
-        // Iterate over events and add them to the panel
         for (int i = 0; i < events.size(); i++) {
             Event event = events.get(i);
             JPanel eventCard = EventCardPanel.showevent(event);
 
-            gbc.gridx = i % columns; // Set the column
-            gbc.gridy = i / columns; // Set the row
-            eventPanel.add(eventCard, gbc); // Add card to eventPanel
+            gbc.gridx = i % columns;
+            gbc.gridy = (i / columns) + 1; // Start adding cards after the spacer
+            eventPanel.add(eventCard, gbc);
         }
 
-        // Add an empty "filler" component at the end to push items upwards
         gbc.gridx = 0;
-        gbc.gridy = events.size() / columns + 1;
+        gbc.gridy = events.size() / columns + 1; // Adjust for the new row
         gbc.weighty = 1.0; // Ensures remaining space stays at the bottom
-        eventPanel.add(new JPanel(), gbc); // Empty panel as filler
+        eventPanel.add(new JPanel(), gbc); // Placeholder for remaining space
 
-        eventPanel.revalidate(); // Refresh layout once after all components are added
-        eventPanel.repaint(); // Redraw panel
+        eventPanel.revalidate();
+        eventPanel.repaint();
     }
-
 }
