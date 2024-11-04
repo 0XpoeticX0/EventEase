@@ -38,7 +38,7 @@ public class EventPage extends JFrame {
 
         JButton eventsButton = new JButton("All Events");
         headerPanel.add(eventsButton);
-        eventsButton.addActionListener(e -> loadEventCards(eventList.getEvents(eventList.events.size())));
+        eventsButton.addActionListener(e -> loadEventCards(eventList.getEvents()));
 
         JButton aboutUsButton = new JButton("About Us");
         headerPanel.add(aboutUsButton);
@@ -61,7 +61,8 @@ public class EventPage extends JFrame {
         eventPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Wrap eventPanel in a JScrollPane, allowing it to resize
-        JScrollPane eventScrollPane = new JScrollPane(eventPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane eventScrollPane = new JScrollPane(eventPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         eventScrollPane.getViewport().setPreferredSize(null); // Enables dynamic resizing of content
         eventScrollPane.setBorder(null); // Remove the border around eventPanel
         eventScrollPane.getVerticalScrollBar().setUnitIncrement(15); // Adjust this value for faster or slower scrolling
@@ -74,7 +75,8 @@ public class EventPage extends JFrame {
         searchButton.addActionListener(e -> {
             String query = searchField.getText();
             if (!query.isEmpty()) {
-                List<Event> matchedEvents = EventSearch.searchEvents(eventList.getEvents(eventList.events.size()), query);
+                List<Event> matchedEvents = EventSearch.searchEvents(eventList.getEvents(),
+                        query);
                 if (matchedEvents.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "No events found for your search.");
                 } else {
