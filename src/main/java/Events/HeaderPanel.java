@@ -1,12 +1,11 @@
 package Events;
 
-import Buttons.EventSearch;
 import Buttons.HeaderButtons;
+import Buttons.Search; // Import the Search class
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import javax.swing.border.EmptyBorder;
-
 
 public class HeaderPanel extends JPanel {
 
@@ -16,8 +15,9 @@ public class HeaderPanel extends JPanel {
     private final JButton contactUsButton;
     private final JTextField searchField;
     private final JButton searchButton;
+    private final Search search; // Instance of Search class
 
-    public HeaderPanel(EventList eventList, Runnable loadEventCardsCallback, Runnable showAboutUsCallback, Runnable showContactUsCallback) {
+    public HeaderPanel(EventList eventList, java.util.function.Consumer<List<Event>> loadEventCardsCallback, Runnable showAboutUsCallback, Runnable showContactUsCallback) {
         // Set background color and layout
         setBackground(Color.decode("#343a40"));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -27,12 +27,12 @@ public class HeaderPanel extends JPanel {
         headerButtons = new HeaderButtons();
 
         // Add EventEase logo
-        add(HeaderButtons.createEventEaseLogo());
+        add(headerButtons.getEventEaseLogo());
         add(Box.createHorizontalStrut(50)); // Horizontal spacing
 
         // Initialize buttons with styling
         eventsButton = createStyledButton(new JButton("All Events"), "#ffffff", "#343a40");
-        eventsButton.addActionListener(e -> loadEventCardsCallback.run());
+        eventsButton.addActionListener(e -> loadEventCardsCallback.accept(eventList.getEvents())); // Load all events
         add(eventsButton);
 
         aboutUsButton = createStyledButton(new JButton("About Us"), "#ffffff", "#343a40");
@@ -55,17 +55,22 @@ public class HeaderPanel extends JPanel {
         searchButton = createStyledButton(new JButton("Search"), "#ffffff", "#007bff");
         searchButton.setMaximumSize(new Dimension(80, 30)); // Match height to search field
         add(searchButton);
+
+        // Initialize Search with the events from eventList
+        search = new Search(eventList.getEvents());
+
+        // Add action listener for search button
         searchButton.addActionListener(e -> {
             String query = searchField.getText();
             if (!query.isEmpty()) {
-                List<Event> matchedEvents = EventSearch.searchEvents(eventList.getEvents(), query);
+                List<Event> matchedEvents = search.searchEvents(query);
                 if (matchedEvents.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "No events found for your search.");
                 } else {
-                    loadEventCardsCallback.run(); // Call the callback to refresh events
+                    loadEventCardsCallback.accept(matchedEvents); // Load matched events
                 }
             } else {
-                loadEventCardsCallback.run(); // Load all events if search field is empty
+                loadEventCardsCallback.accept(eventList.getEvents().stream().limit(6).toList()); // Load first 6 events if search is empty
             }
         });
 

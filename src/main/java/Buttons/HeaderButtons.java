@@ -14,10 +14,11 @@ public class HeaderButtons {
 
     private JButton profileLogoButton;
     private JButton homeButton;
+    private JLabel eventEaseLogo; // Store the logo here
 
     public HeaderButtons() {
         createProfileLogoButton();
-        createEventEaseLogo();
+        eventEaseLogo = createEventEaseLogo(); // Create and store the logo
     }
 
     private void createProfileLogoButton() {
@@ -69,41 +70,12 @@ public class HeaderButtons {
         });
     }
 
-    public static JLabel createEventEaseLogo() {
-        JLabel eventEaseLogo = new JLabel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g.create();
-
-                // Enable anti-aliasing for smooth text
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                // Set gradient color for text
-                GradientPaint gradientPaint = new GradientPaint(
-                        0, 0, new Color(58, 123, 213), // Start color (blue)
-                        getWidth(), getHeight(), new Color(58, 213, 151) // End color (green)
-                );
-                g2d.setPaint(gradientPaint);
-
-                // Set font style and size
-                g2d.setFont(new Font("SansSerif", Font.BOLD, 22));
-
-                // Draw the text centered
-                FontMetrics fm = g2d.getFontMetrics();
-                int x = (getWidth() - fm.stringWidth("EventEase")) / 2;
-                int y = (getHeight() + fm.getAscent() - fm.getDescent()) / 2;
-                g2d.drawString("EventEase", x, y);
-
-                g2d.dispose();
-            }
-        };
-
-        eventEaseLogo.setHorizontalAlignment(SwingConstants.CENTER);
-        eventEaseLogo.setVerticalAlignment(SwingConstants.CENTER);
+    public JLabel createEventEaseLogo() {
+        JLabel eventEaseLogo = new JLabel("EventEase", SwingConstants.CENTER);
+        eventEaseLogo.setFont(new Font("SansSerif", Font.BOLD, 22));
         eventEaseLogo.setPreferredSize(new Dimension(150, 50)); // Set preferred size for layout purposes
+        eventEaseLogo.setForeground(new Color(58, 123, 213)); // Set a visible text color
         eventEaseLogo.setOpaque(false); // Transparent background
-
         return eventEaseLogo;
     }
 
@@ -111,7 +83,7 @@ public class HeaderButtons {
         return profileLogoButton;
     }
 
-    public JButton getHomeButton() {
-        return homeButton;
+    public JLabel getEventEaseLogo() {
+        return eventEaseLogo; // Provide a getter for the logo
     }
 }

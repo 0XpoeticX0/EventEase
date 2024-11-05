@@ -1,4 +1,3 @@
-// EventPage.java
 package Events;
 
 import Buttons.AboutUsPanel;
@@ -23,7 +22,7 @@ public class EventPage extends JFrame {
         // Create HeaderPanel with necessary callbacks
         HeaderPanel headerPanel = new HeaderPanel(
             eventList,
-            () -> loadEventCards(eventList.getEvents()), // Load all events
+            this::loadEventCards, // Pass loadEventCards method reference
             AboutUsPanel::showAboutUs,                  // Show About Us panel
             ContactUsPanel::showContactUs               // Show Contact Us panel
         );
@@ -40,13 +39,14 @@ public class EventPage extends JFrame {
         eventScrollPane.setBorder(null);
         mainPanel.add(eventScrollPane, BorderLayout.CENTER);
 
-        loadEventCards(eventList.getEvents(6)); // Load initial events
+        loadEventCards(eventList.getEvents(6));
 
-        pack();
-        setLocationRelativeTo(null);
+        setSize(800, 600);
+        setLocationRelativeTo(null); // Center the window
+        setVisible(true);
     }
 
-    private void loadEventCards(java.util.List<Event> events) {
+    public void loadEventCards(java.util.List<Event> events) {
         eventPanel.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
