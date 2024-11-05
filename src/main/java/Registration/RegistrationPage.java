@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-// import java.io.File;
+import java.io.File;
 
 public class RegistrationPage extends JFrame implements ActionListener {
 
@@ -117,8 +117,42 @@ public class RegistrationPage extends JFrame implements ActionListener {
 
     }
 
+    @Override
     public void actionPerformed(ActionEvent e){
+        if (e.getSource() == uploadButton) {
+            
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(this);
 
+            if (result == JFileChooser.APPROVE_OPTION) {
+                selectedImage = fileChooser.getSelectedFile();
+                
+                imageLabel.setText("Selected: " + selectedImage.getName());
+                imageLabel.setForeground(new Color(0x3B5998)); 
+            }
+        } else if (e.getSource() == registerButton) {
+            
+            String firstName = firstNameField.getText();
+            String lastName = lastNameField.getText();
+            String email = emailField.getText();
+            String mobile = mobileField.getText();
+            String age = ageField.getText();
+            String password = new String(passwordField.getPassword());
+
+            
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please fill in all required fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+    
+            JOptionPane.showMessageDialog(this, "Registration Successful!\n" +
+                    "Name: " + firstName + " " + lastName +
+                    "\nEmail: " + email +
+                    "\nMobile: " + mobile +
+                    "\nAge: " + age +
+                    "\nImage: " + (selectedImage != null ? selectedImage.getName() : "No image uploaded"));
+        }
     }
 
     public static void main(String[] args){
