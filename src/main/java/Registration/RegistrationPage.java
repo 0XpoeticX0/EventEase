@@ -156,6 +156,9 @@ public class RegistrationPage extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args){
-
+        SwingUtilities.invokeLater(() -> {
+            RegistrationPage frame = new RegistrationPage();
+            frame.setVisible(true);
+        });
     }
 }
