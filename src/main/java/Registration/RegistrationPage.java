@@ -105,6 +105,15 @@ public class RegistrationPage extends JFrame implements ActionListener {
         imageLabel.setFont(new Font("Arial", Font.ITALIC, 12));
         imageLabel.setForeground(Color.GRAY);
         inputPanel.add(imageLabel, gbc);
+        mainPanel.add(inputPanel, BorderLayout.CENTER);
+
+        registerButton = new JButton("Register");
+        registerButton.setBackground(new Color(0x008CBA)); // Blue button
+        registerButton.setForeground(Color.WHITE);
+        registerButton.setFont(new Font("Arial", Font.BOLD, 16));
+        registerButton.addActionListener(this);
+        mainPanel.add(registerButton, BorderLayout.SOUTH);
+        add(mainPanel);
 
     }
 
