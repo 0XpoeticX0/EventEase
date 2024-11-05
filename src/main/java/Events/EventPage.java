@@ -33,7 +33,7 @@ public class EventPage extends JFrame {
         HeaderButtons headerButtons = new HeaderButtons();
 
         // Header buttons
-        headerPanel.add(headerButtons.getHomeButton());
+        headerPanel.add(HeaderButtons.createEventEaseLogo());
         headerPanel.add(Box.createHorizontalStrut(80));
 
         JButton eventsButton = new JButton("All Events");

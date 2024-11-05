@@ -17,7 +17,7 @@ public class HeaderButtons {
 
     public HeaderButtons() {
         createProfileLogoButton();
-        createHomeButton();
+        createEventEaseLogo();
     }
 
     private void createProfileLogoButton() {
@@ -69,36 +69,42 @@ public class HeaderButtons {
         });
     }
 
-    private void createHomeButton() {
-        try {
-            BufferedImage originalImage = ImageIO.read(new File("src/main/java/Resorces/Images/p.jpg"));
+    public static JLabel createEventEaseLogo() {
+        JLabel eventEaseLogo = new JLabel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g.create();
 
-            // Crop or resize image if needed;
-            BufferedImage croppedImage = originalImage.getSubimage(1000, 1000, 2000, 2000);
-            Image scaledImage = croppedImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-            ImageIcon homeIcon = new ImageIcon(scaledImage);
+                // Enable anti-aliasing for smooth text
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            homeButton = new JButton(homeIcon) {
-                @Override
-                protected void paintComponent(Graphics g) {
-                    if (getIcon() != null) {
-                        Graphics2D g2 = (Graphics2D) g.create();
-                        g2.setClip(new Ellipse2D.Float(0, 0, getWidth(), getHeight()));
-                        super.paintComponent(g2);
-                        g2.dispose();
-                    } else {
-                        super.paintComponent(g);
-                    }
-                }
-            };
-        } catch (IOException e) {
-            homeButton = new JButton("Home"); // Fallback text if image fails to load
-        }
+                // Set gradient color for text
+                GradientPaint gradientPaint = new GradientPaint(
+                        0, 0, new Color(58, 123, 213), // Start color (blue)
+                        getWidth(), getHeight(), new Color(58, 213, 151) // End color (green)
+                );
+                g2d.setPaint(gradientPaint);
 
-        homeButton.setPreferredSize(new Dimension(50, 50)); // Set button size to match image
-        homeButton.setBorderPainted(false);
-        homeButton.setContentAreaFilled(false);
-        homeButton.setFocusPainted(false);
+                // Set font style and size
+                g2d.setFont(new Font("SansSerif", Font.BOLD, 22));
+
+                // Draw the text centered
+                FontMetrics fm = g2d.getFontMetrics();
+                int x = (getWidth() - fm.stringWidth("EventEase")) / 2;
+                int y = (getHeight() + fm.getAscent() - fm.getDescent()) / 2;
+                g2d.drawString("EventEase", x, y);
+
+                g2d.dispose();
+            }
+        };
+
+        eventEaseLogo.setHorizontalAlignment(SwingConstants.CENTER);
+        eventEaseLogo.setVerticalAlignment(SwingConstants.CENTER);
+        eventEaseLogo.setPreferredSize(new Dimension(150, 50)); // Set preferred size for layout purposes
+        eventEaseLogo.setOpaque(false); // Transparent background
+
+        return eventEaseLogo;
     }
 
     public JButton getProfileLogoButton() {
