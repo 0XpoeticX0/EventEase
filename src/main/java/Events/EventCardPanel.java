@@ -6,60 +6,66 @@ import java.io.File;
 
 public class EventCardPanel extends JPanel {
 
-    // Method to show the event
+    // Method to create and display the event card
     public static JPanel showevent(Event event) {
         JPanel eventCard = new JPanel();
-        eventCard.setLayout(new BoxLayout(eventCard, BoxLayout.Y_AXIS)); // Use BoxLayout for vertical stacking
-        eventCard.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add some padding around the event card
+        eventCard.setLayout(new BorderLayout());
+        eventCard.setPreferredSize(new Dimension(220, 200)); // Adjust height as needed
+//        eventCard.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Define fixed dimensions for the image
-        int width = 200; // Desired width
-        int imageHeight = 150; // Desired height
+        // Card styling: rounded corners, light shadow
+        eventCard.setBackground(Color.WHITE);
+        eventCard.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true), // Rounded border
+                BorderFactory.createEmptyBorder(2, 2, 2, 2)
+        ));
 
-        // Create ImageIcon and scale it to the fixed size
+        // Load and scale the event image to fit the panel size
         File file = new File(event.imagePath);
         ImageIcon originalIcon = new ImageIcon(file.getAbsolutePath());
-        Image scaledImage = originalIcon.getImage().getScaledInstance(width, imageHeight, Image.SCALE_SMOOTH);
-        JLabel eventImageLabel = new JLabel(new ImageIcon(scaledImage), SwingConstants.CENTER); // Show scaled image
-        eventImageLabel.setPreferredSize(new Dimension(width, imageHeight)); // Set preferred size for the image
+        Image scaledImage = originalIcon.getImage().getScaledInstance(220, 200, Image.SCALE_SMOOTH);
+        JLabel eventImageLabel = new JLabel(new ImageIcon(scaledImage));
+        eventImageLabel.setLayout(new BorderLayout());
 
-        // Create a label for the event name and set properties
+        // Overlay panel for event name with semi-transparent background
+        JPanel nameOverlayPanel = new JPanel();
+        nameOverlayPanel.setLayout(new BorderLayout());
+        nameOverlayPanel.setOpaque(true);
+        nameOverlayPanel.setBackground(new Color(0, 0, 0, 220)); // Semi-transparent black background
+
         JLabel eventNameLabel = new JLabel(event.name, SwingConstants.CENTER);
-        eventNameLabel.setPreferredSize(new Dimension(width, 30)); // Set width to match image
-        eventNameLabel.setForeground(Color.BLACK); // Set text color to black for visibility
-        eventNameLabel.setOpaque(true); // Make the label opaque
-        eventNameLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Add some padding
+        eventNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        eventNameLabel.setForeground(Color.WHITE); // Set text color to white for visibility
+        nameOverlayPanel.add(eventNameLabel, BorderLayout.CENTER);
 
-        // Create view details button
+        // Add the name overlay to the bottom of the image
+        eventImageLabel.add(nameOverlayPanel, BorderLayout.SOUTH);
+
+        // "View Details" button
         JButton viewDetailsButton = new JButton("View Details");
-        viewDetailsButton.setPreferredSize(new Dimension(width, 30)); // Set width to match image, height is
-                                                                      // customizable
-        viewDetailsButton.setMinimumSize(new Dimension(width, 30)); // Set minimum size
-        viewDetailsButton.setMaximumSize(new Dimension(width, 30)); // Set maximum size
-        viewDetailsButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the button in the box
+        viewDetailsButton.setFocusPainted(false);
+        viewDetailsButton.setForeground(Color.WHITE);
+        viewDetailsButton.setBackground(new Color(76, 133, 214));
+        viewDetailsButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        viewDetailsButton.setPreferredSize(new Dimension(220, 40)); // Make button width match panel width
+        viewDetailsButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        viewDetailsButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        viewDetailsButton.addActionListener(e -> showEventDetails(event));
 
-        // Center the components
-        eventImageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        eventNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewDetailsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewDetailsButton.addActionListener(e -> showEventDetails(event)); // Add action listener to the button
-
-        // Add components to the event card
-        eventCard.add(eventNameLabel);
-        eventCard.add(eventImageLabel);
-        eventCard.add(viewDetailsButton);
-        eventCard.add(Box.createRigidArea(new Dimension(0, 10))); // Add a bit more space below the button
+        // Add components to the card
+        eventCard.add(eventImageLabel, BorderLayout.CENTER);
+        eventCard.add(viewDetailsButton, BorderLayout.SOUTH);
 
         return eventCard;
     }
 
     // Show details of the event in a dialog
     private static void showEventDetails(Event event) {
-        String message = "Event Name: " + event.name + "\n" +
-                "Description: " + event.description + "\n" +
-                "Location: " + event.location + "\n" +
-                "Booking Price: " + event.price;
+        String message = "<html><body style='width: 300px;'>" + // Set fixed width for wrapping
+                "<strong>Event Name:</strong> " + event.name + "<br>" +
+                "<strong>Description:</strong> " + event.description + "<br>" +
+                "<strong>Location:</strong> " + event.location + "<br>" +
+                "<strong>Booking Price:</strong> " + event.price + "</body></html>";
         JOptionPane.showMessageDialog(null, message, "Event Details", JOptionPane.INFORMATION_MESSAGE);
     }
-
 }
