@@ -95,5 +95,14 @@ JPanel mainPanel = new JPanel() {
         gbc.gridy = 4;
         mainPanel.add(registerLabel, gbc);
 
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = getUsername();
+                String password = getPassword();
+                JOptionPane.showMessageDialog(mainPanel, "Login attempt by: " + username);
+            }
+        });
+
 
 }
