@@ -55,13 +55,45 @@ JPanel mainPanel = new JPanel() {
         registerLabel.setForeground(Color.WHITE);
 
         registerLabel.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page...");    
-            }
+            }});
 
             GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        mainPanel.add(titleLabel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        mainPanel.add(new JLabel("Username:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        mainPanel.add(usernameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        mainPanel.add(new JLabel("Password:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        mainPanel.add(passwordField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        mainPanel.add(loginButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        mainPanel.add(registerLabel, gbc);
 
 
 }
