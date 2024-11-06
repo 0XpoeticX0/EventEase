@@ -44,4 +44,10 @@ JPanel mainPanel = new JPanel() {
         passwordField = new JPasswordField(15);
         passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
         passwordField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+
+        loginButton = new JButton("Login");
+        loginButton.setFont(new Font("Arial", Font.BOLD, 14));
+        loginButton.setBackground(Color.WHITE);
+        loginButton.setForeground(Color.BLACK);
+
 }
