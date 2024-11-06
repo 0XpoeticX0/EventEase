@@ -103,6 +103,11 @@ JPanel mainPanel = new JPanel() {
                 JOptionPane.showMessageDialog(mainPanel, "Login attempt by: " + username);
             }
         });
-
-
 }
+public String getUsername() {
+        return usernameField.getText();
+    }
+
+    public void setUsername(String username) {
+        this.usernameField.setText(username);
+    }
