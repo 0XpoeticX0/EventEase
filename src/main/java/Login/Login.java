@@ -57,8 +57,11 @@ JPanel mainPanel = new JPanel() {
         registerLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page...");
-                
+                JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page...");    
             }
+
+            GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
 
 }
