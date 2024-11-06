@@ -32,4 +32,8 @@ JPanel mainPanel = new JPanel() {
         };
         mainPanel.setLayout(new GridBagLayout());
         add(mainPanel);
+
+        JLabel titleLabel = new JLabel("Hi There! Login", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        titleLabel.setForeground(Color.WHITE);
 }
