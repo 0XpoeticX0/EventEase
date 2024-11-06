@@ -30,4 +30,6 @@ JPanel mainPanel = new JPanel() {
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
+        mainPanel.setLayout(new GridBagLayout());
+        add(mainPanel);
 }
