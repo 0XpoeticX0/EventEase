@@ -54,4 +54,11 @@ JPanel mainPanel = new JPanel() {
         registerLabel.setFont(new Font("Arial", Font.BOLD, 15));
         registerLabel.setForeground(Color.WHITE);
 
+        registerLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page...");
+                
+            }
+
 }
