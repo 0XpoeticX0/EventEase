@@ -19,7 +19,6 @@ public class Login extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-}
 JPanel mainPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -118,3 +117,13 @@ public String getUsername() {
     public void setPassword(String password) {
         this.passwordField.setText(password);
     }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Login loginInterface = new Login();
+                loginInterface.setVisible(true);
+            }
+        });
+    }
+}
