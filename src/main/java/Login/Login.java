@@ -40,4 +40,8 @@ JPanel mainPanel = new JPanel() {
          usernameField = new JTextField(15);
         usernameField.setFont(new Font("Arial", Font.PLAIN, 14));
         usernameField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+
+        passwordField = new JPasswordField(15);
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
+        passwordField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
 }
