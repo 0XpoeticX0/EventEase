@@ -50,4 +50,8 @@ JPanel mainPanel = new JPanel() {
         loginButton.setBackground(Color.WHITE);
         loginButton.setForeground(Color.BLACK);
 
+        registerLabel = new JLabel("Don't have an account? Register");
+        registerLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        registerLabel.setForeground(Color.WHITE);
+
 }
