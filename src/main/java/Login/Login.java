@@ -111,3 +111,10 @@ public String getUsername() {
     public void setUsername(String username) {
         this.usernameField.setText(username);
     }
+    public String getPassword() {
+        return new String(passwordField.getPassword());
+    }
+
+    public void setPassword(String password) {
+        this.passwordField.setText(password);
+    }
