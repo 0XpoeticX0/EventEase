@@ -41,7 +41,7 @@ public class EventPage extends JFrame {
 
         loadEventCards(eventList.getEvents(6));
 
-        setSize(800, 600);
+        setSize(850, 900);
         setLocationRelativeTo(null); // Center the window
         setVisible(true);
     }
