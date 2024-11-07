@@ -107,6 +107,7 @@ public final class HeaderButtons {
         return button;
     }
 
+
     public JLabel createEventEaseLogo() {
         JLabel eventEaseLogo = new JLabel("EventEase", SwingConstants.CENTER);
         eventEaseLogo.setFont(new Font("SansSerif", Font.BOLD, 22));
