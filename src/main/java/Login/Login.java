@@ -4,14 +4,13 @@ import Registration.RegistrationPage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Login extends JFrame {
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JButton loginButton;
-    private JLabel newHereLabel;
-    private JButton registerButton;
+    private final JTextField usernameField;
+    private final JPasswordField passwordField;
+    private final JButton loginButton;
+    private final JLabel newHereLabel;
+    private final JButton registerButton;
 
     public Login() {
         setTitle("Colorful Login Interface");
@@ -108,13 +107,9 @@ public class Login extends JFrame {
         gbc.insets = new Insets(0, 0, 0, 0); // No extra padding for "New here?" and "Register" panel
         mainPanel.add(newHerePanel, gbc);
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = getUsername();
-                String password = getPassword();
-                JOptionPane.showMessageDialog(mainPanel, "Login attempt by: " + username);
-            }
+        loginButton.addActionListener((ActionEvent e) -> {
+            String username = getUsername();
+            JOptionPane.showMessageDialog(mainPanel, "Login attempt by: " + username);
         });
     }
 
