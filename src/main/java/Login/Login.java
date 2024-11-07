@@ -19,7 +19,7 @@ public class Login extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-JPanel mainPanel = new JPanel() {
+        JPanel mainPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -36,7 +36,7 @@ JPanel mainPanel = new JPanel() {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         titleLabel.setForeground(Color.WHITE);
 
-         usernameField = new JTextField(15);
+        usernameField = new JTextField(15);
         usernameField.setFont(new Font("Arial", Font.PLAIN, 14));
         usernameField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
 
@@ -54,13 +54,13 @@ JPanel mainPanel = new JPanel() {
         registerLabel.setForeground(Color.WHITE);
 
         registerLabel.addMouseListener(new MouseAdapter() {
-
             @Override
             public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page...");    
-            }});
+                JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page...");
+            }
+        });
 
-            GridBagConstraints gbc = new GridBagConstraints();
+        GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
         gbc.gridx = 0;
@@ -102,28 +102,21 @@ JPanel mainPanel = new JPanel() {
                 JOptionPane.showMessageDialog(mainPanel, "Login attempt by: " + username);
             }
         });
-}
-public String getUsername() {
+    }
+
+    public String getUsername() {
         return usernameField.getText();
     }
 
     public void setUsername(String username) {
         this.usernameField.setText(username);
     }
+
     public String getPassword() {
         return new String(passwordField.getPassword());
     }
 
     public void setPassword(String password) {
         this.passwordField.setText(password);
-    }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Login loginInterface = new Login();
-                loginInterface.setVisible(true);
-            }
-        });
     }
 }
