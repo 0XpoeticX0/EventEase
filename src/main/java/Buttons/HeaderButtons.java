@@ -106,8 +106,6 @@ public final class HeaderButtons {
         button.setBorderPainted(false);
         return button;
     }
-
-
     public JLabel createEventEaseLogo() {
         JLabel eventEaseLogo = new JLabel("EventEase", SwingConstants.CENTER);
         eventEaseLogo.setFont(new Font("SansSerif", Font.BOLD, 22));
@@ -116,7 +114,6 @@ public final class HeaderButtons {
         eventEaseLogo.setOpaque(false); // Transparent background
         return eventEaseLogo;
     }
-
     public JButton getProfileLogoButton() {
         return profileLogoButton;
     }
