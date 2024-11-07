@@ -53,7 +53,7 @@ public class Login extends JFrame {
         newHereLabel = new JLabel("New here?");
         newHereLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         newHereLabel.setForeground(Color.WHITE);
-
+      
         registerButton = createStyledButton("Register", "#ffffff", "#343a40");
         registerButton.addActionListener(e -> JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page..."));
 
@@ -64,9 +64,23 @@ public class Login extends JFrame {
         newHerePanel.add(newHereLabel);
         newHerePanel.add(Box.createHorizontalStrut(-10)); // Horizontal spacing
         newHerePanel.add(registerButton);
+      
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 50, 10, 10);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 50, 10, 10);
+      
+        registerLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page...");
+            }
+        });
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -114,6 +128,7 @@ public class Login extends JFrame {
         });
     }
 
+
     private JButton createStyledButton(String text, String textColorHex, String bgColorHex) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 15));
@@ -124,6 +139,7 @@ public class Login extends JFrame {
         button.setContentAreaFilled(false); // Transparent background
         return button;
     }
+
 
     public String getUsername() {
         return usernameField.getText();
@@ -141,10 +157,12 @@ public class Login extends JFrame {
         this.passwordField.setText(password);
     }
 
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Login frame = new Login();
             frame.setVisible(true);
         });
     }
+
 }
