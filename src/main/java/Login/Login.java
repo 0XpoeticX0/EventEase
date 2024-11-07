@@ -1,18 +1,16 @@
 package Login;
 
+import Registration.RegistrationPage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class Login extends JFrame {
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JButton loginButton;
-    private JLabel newHereLabel;
-    private JButton registerButton;
+    private final JTextField usernameField;
+    private final JPasswordField passwordField;
+    private final JButton loginButton;
+    private final JLabel newHereLabel;
+    private final JButton registerButton;
 
     public Login() {
         setTitle("Colorful Login Interface");
@@ -55,7 +53,12 @@ public class Login extends JFrame {
         newHereLabel.setForeground(Color.WHITE);
 
         registerButton = createStyledButton("Register", "#ffffff", "#343a40");
-        registerButton.addActionListener(e -> JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page..."));
+        registerButton.addActionListener(e -> {
+            // Open the RegistrationPage when "Register" is clicked
+            RegistrationPage registrationPage = new RegistrationPage();
+            registrationPage.setVisible(true);
+            this.dispose(); // Close the Login frame
+        });
 
         // Create a sub-panel to hold "New here?" and "Register" button side by side
         JPanel newHerePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // 5px gap, no vertical gap
@@ -104,13 +107,9 @@ public class Login extends JFrame {
         gbc.insets = new Insets(0, 0, 0, 0); // No extra padding for "New here?" and "Register" panel
         mainPanel.add(newHerePanel, gbc);
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = getUsername();
-                String password = getPassword();
-                JOptionPane.showMessageDialog(mainPanel, "Login attempt by: " + username);
-            }
+        loginButton.addActionListener((ActionEvent e) -> {
+            String username = getUsername();
+            JOptionPane.showMessageDialog(mainPanel, "Login attempt by: " + username);
         });
     }
 
@@ -139,12 +138,5 @@ public class Login extends JFrame {
 
     public void setPassword(String password) {
         this.passwordField.setText(password);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Login frame = new Login();
-            frame.setVisible(true);
-        });
     }
 }
