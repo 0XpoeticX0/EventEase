@@ -1,19 +1,11 @@
 package Events;
 
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
+import java.awt.*;
+import javax.swing.*;
 import Buttons.AboutUsPanel;
 import Buttons.ContactUsPanel;
 
-public class EventPage extends JFrame {
+public final class EventPage extends JFrame {
 
     private final EventList eventList;
     private final JPanel eventPanel;
@@ -27,12 +19,13 @@ public class EventPage extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout());
         setContentPane(mainPanel);
 
-        // Create HeaderPanel with necessary callbacks
+        // Pass this frame as the parentFrame to HeaderButtons
         HeaderPanel headerPanel = new HeaderPanel(
-            eventList,
-            this::loadEventCards, // Pass loadEventCards method reference
-            AboutUsPanel::showAboutUs,                  // Show About Us panel
-            ContactUsPanel::showContactUs               // Show Contact Us panel
+                this, // Pass reference to the current frame
+                eventList,
+                this::loadEventCards, // Pass loadEventCards method reference
+                AboutUsPanel::showAboutUs, // Show About Us panel
+                ContactUsPanel::showContactUs // Show Contact Us panel
         );
 
         mainPanel.add(headerPanel, BorderLayout.NORTH);

@@ -3,6 +3,7 @@ package Buttons;
 import Login.Login;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
@@ -15,8 +16,14 @@ public final class HeaderButtons {
 
     private JButton profileLogoButton;
     private final JLabel eventEaseLogo; // Store the logo here
+    private JFrame parentFrame = null; // Reference to the parent frame
 
-    public HeaderButtons() {
+    public HeaderButtons(JFrame parentFrame) {
+        this.parentFrame = parentFrame; // Set the parent frame
+        createProfileLogoButton();
+        eventEaseLogo = createEventEaseLogo(); // Create and store the logo
+    }
+     public HeaderButtons() {
         createProfileLogoButton();
         eventEaseLogo = createEventEaseLogo(); // Create and store the logo
     }
@@ -79,26 +86,24 @@ public final class HeaderButtons {
             // If the user is not logged in, show a "Login" button
             profileLogoButton = createStyledButton(new JButton("Login"), "#ffffff", "#343a40");
 
-            // Add action listener to open the Login interface when clicked
-            profileLogoButton.addActionListener(e -> {
+            // Add action listener to open the Login interface and close the current frame
+            profileLogoButton.addActionListener((ActionEvent e) -> {
                 Login loginInterface = new Login();
-                loginInterface.setVisible(true);
+                loginInterface.setVisible(true); // Show the login frame
+                parentFrame.dispose(); // Close the current frame
             });
         }
 
-        // Add the profile button to the UI (assuming there's a layout or panel for it)
         return profileLogoButton;
     }
-    
-    
 
-// Placeholder method to check if the user is logged in
+    // Placeholder method to check if the user is logged in
     private boolean checkUserLoginStatus() {
         // Replace with actual login logic
         return false; // Return true if the user is logged in, otherwise false
     }
 
-// Helper method to style buttons (based on your existing createStyledButton method)
+    // Helper method to style buttons (based on your existing createStyledButton method)
     private JButton createStyledButton(JButton button, String foregroundColor, String backgroundColor) {
         button.setForeground(Color.decode(foregroundColor));
         button.setBackground(Color.decode(backgroundColor));
@@ -106,6 +111,7 @@ public final class HeaderButtons {
         button.setBorderPainted(false);
         return button;
     }
+
     public JLabel createEventEaseLogo() {
         JLabel eventEaseLogo = new JLabel("EventEase", SwingConstants.CENTER);
         eventEaseLogo.setFont(new Font("SansSerif", Font.BOLD, 22));
@@ -114,6 +120,7 @@ public final class HeaderButtons {
         eventEaseLogo.setOpaque(false); // Transparent background
         return eventEaseLogo;
     }
+
     public JButton getProfileLogoButton() {
         return profileLogoButton;
     }

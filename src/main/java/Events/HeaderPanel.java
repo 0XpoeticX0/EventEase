@@ -1,7 +1,7 @@
 package Events;
 
 import Buttons.HeaderButtons;
-import Buttons.Search; // Import the Search class
+import Buttons.Search;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -15,16 +15,16 @@ public class HeaderPanel extends JPanel {
     private final JButton contactUsButton;
     private final JTextField searchField;
     private final JButton searchButton;
-    private final Search search; // Instance of Search class
+    private final Search search;
 
-    public HeaderPanel(EventList eventList, java.util.function.Consumer<List<Event>> loadEventCardsCallback, Runnable showAboutUsCallback, Runnable showContactUsCallback) {
+    public HeaderPanel(JFrame parentFrame, EventList eventList, java.util.function.Consumer<List<Event>> loadEventCardsCallback, Runnable showAboutUsCallback, Runnable showContactUsCallback) {
         // Set background color and layout
         setBackground(Color.decode("#343a40"));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // Initialize HeaderButtons
-        headerButtons = new HeaderButtons();
+        // Initialize HeaderButtons with reference to parentFrame
+        headerButtons = new HeaderButtons(parentFrame);
 
         // Add EventEase logo
         add(headerButtons.getEventEaseLogo());
@@ -47,19 +47,17 @@ public class HeaderPanel extends JPanel {
         searchField = new JTextField(20);
         searchField.setFont(new Font("Arial", Font.PLAIN, 14));
         searchField.setBorder(BorderFactory.createLineBorder(Color.decode("#cccccc")));
-        searchField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Set width and height
+        searchField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
         searchField.setMinimumSize(new Dimension(150, 30));
         add(searchField);
 
         // Initialize and style search button
         searchButton = createStyledButton(new JButton("Search"), "#ffffff", "#007bff");
-        searchButton.setMaximumSize(new Dimension(80, 30)); // Match height to search field
+        searchButton.setMaximumSize(new Dimension(80, 30));
         add(searchButton);
 
-        // Initialize Search with the events from eventList
         search = new Search(eventList.getEvents());
 
-        // Add action listener for search button
         searchButton.addActionListener(e -> {
             String query = searchField.getText();
             if (!query.isEmpty()) {
@@ -67,19 +65,17 @@ public class HeaderPanel extends JPanel {
                 if (matchedEvents.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "No events found for your search.");
                 } else {
-                    loadEventCardsCallback.accept(matchedEvents); // Load matched events
+                    loadEventCardsCallback.accept(matchedEvents);
                 }
             } else {
-                loadEventCardsCallback.accept(eventList.getEvents().stream().limit(6).toList()); // Load first 6 events if search is empty
+                loadEventCardsCallback.accept(eventList.getEvents().stream().limit(6).toList());
             }
         });
 
-        // Add profile button from HeaderButtons
         add(Box.createHorizontalStrut(20)); // Horizontal spacing
         add(headerButtons.getProfileLogoButton());
     }
 
-    // Method to create styled buttons
     private JButton createStyledButton(JButton button, String textColor, String bgColor) {
         button.setForeground(Color.decode(textColor));
         button.setBackground(Color.decode(bgColor));
