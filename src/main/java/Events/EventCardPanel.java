@@ -11,14 +11,6 @@ public class EventCardPanel extends JPanel {
         JPanel eventCard = new JPanel();
         eventCard.setLayout(new BorderLayout());
         eventCard.setPreferredSize(new Dimension(220, 200)); // Adjust height as needed
-//        eventCard.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        // Card styling: rounded corners, light shadow
-        eventCard.setBackground(Color.WHITE);
-        eventCard.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true), // Rounded border
-                BorderFactory.createEmptyBorder(2, 2, 2, 2)
-        ));
 
         // Load and scale the event image to fit the panel size
         File file = new File(event.imagePath);
