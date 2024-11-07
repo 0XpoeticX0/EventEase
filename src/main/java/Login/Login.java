@@ -1,11 +1,10 @@
 package Login;
 
+import Registration.RegistrationPage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class Login extends JFrame {
     private JTextField usernameField;
@@ -54,9 +53,13 @@ public class Login extends JFrame {
         newHereLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         newHereLabel.setForeground(Color.WHITE);
 
-<<<<<<< HEAD
         registerButton = createStyledButton("Register", "#ffffff", "#343a40");
-        registerButton.addActionListener(e -> JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page..."));
+        registerButton.addActionListener(e -> {
+            // Open the RegistrationPage when "Register" is clicked
+            RegistrationPage registrationPage = new RegistrationPage();
+            registrationPage.setVisible(true);
+            this.dispose(); // Close the Login frame
+        });
 
         // Create a sub-panel to hold "New here?" and "Register" button side by side
         JPanel newHerePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // 5px gap, no vertical gap
@@ -68,17 +71,6 @@ public class Login extends JFrame {
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 50, 10, 10);
-=======
-        registerLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page...");
-            }
-        });
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
->>>>>>> fd018781fb295ca2b1bc8f4290994871808d0d4c
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -126,7 +118,6 @@ public class Login extends JFrame {
         });
     }
 
-<<<<<<< HEAD
     private JButton createStyledButton(String text, String textColorHex, String bgColorHex) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 15));
@@ -138,8 +129,6 @@ public class Login extends JFrame {
         return button;
     }
 
-=======
->>>>>>> fd018781fb295ca2b1bc8f4290994871808d0d4c
     public String getUsername() {
         return usernameField.getText();
     }
@@ -155,14 +144,4 @@ public class Login extends JFrame {
     public void setPassword(String password) {
         this.passwordField.setText(password);
     }
-<<<<<<< HEAD
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Login frame = new Login();
-            frame.setVisible(true);
-        });
-    }
-=======
->>>>>>> fd018781fb295ca2b1bc8f4290994871808d0d4c
 }

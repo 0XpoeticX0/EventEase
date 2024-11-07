@@ -96,18 +96,6 @@ public final class HeaderButtons {
     private boolean checkUserLoginStatus() {
         // Replace with actual login logic
         return false; // Return true if the user is logged in, otherwise false
-<<<<<<< HEAD
-    }
-
-// Helper method to style buttons (based on your existing createStyledButton method)
-    private JButton createStyledButton(JButton button, String foregroundColor, String backgroundColor) {
-        button.setForeground(Color.decode(foregroundColor));
-        button.setBackground(Color.decode(backgroundColor));
-        button.setFocusPainted(false);
-        button.setBorderPainted(false);
-        return button;
-=======
->>>>>>> fd018781fb295ca2b1bc8f4290994871808d0d4c
     }
 
 // Helper method to style buttons (based on your existing createStyledButton method)
