@@ -54,6 +54,7 @@ public class Login extends JFrame {
         newHereLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         newHereLabel.setForeground(Color.WHITE);
 
+<<<<<<< HEAD
         registerButton = createStyledButton("Register", "#ffffff", "#343a40");
         registerButton.addActionListener(e -> JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page..."));
 
@@ -67,6 +68,17 @@ public class Login extends JFrame {
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 50, 10, 10);
+=======
+        registerLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page...");
+            }
+        });
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+>>>>>>> fd018781fb295ca2b1bc8f4290994871808d0d4c
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -114,6 +126,7 @@ public class Login extends JFrame {
         });
     }
 
+<<<<<<< HEAD
     private JButton createStyledButton(String text, String textColorHex, String bgColorHex) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 15));
@@ -125,6 +138,8 @@ public class Login extends JFrame {
         return button;
     }
 
+=======
+>>>>>>> fd018781fb295ca2b1bc8f4290994871808d0d4c
     public String getUsername() {
         return usernameField.getText();
     }
@@ -140,6 +155,7 @@ public class Login extends JFrame {
     public void setPassword(String password) {
         this.passwordField.setText(password);
     }
+<<<<<<< HEAD
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -147,4 +163,6 @@ public class Login extends JFrame {
             frame.setVisible(true);
         });
     }
+=======
+>>>>>>> fd018781fb295ca2b1bc8f4290994871808d0d4c
 }

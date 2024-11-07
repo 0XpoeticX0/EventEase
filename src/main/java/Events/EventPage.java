@@ -1,9 +1,17 @@
 package Events;
 
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import Buttons.AboutUsPanel;
 import Buttons.ContactUsPanel;
-import javax.swing.*;
-import java.awt.*;
 
 public class EventPage extends JFrame {
 
