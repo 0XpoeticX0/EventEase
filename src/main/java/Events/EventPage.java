@@ -20,12 +20,25 @@ public final class EventPage extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
+
+                // Create a Graphics2D object from the Graphics object
                 Graphics2D g2d = (Graphics2D) g;
-                // Apply gradient background: from cyan to magenta
+
+                // Enable anti-aliasing for smoother gradient edges
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // Apply the gradient from cyan to magenta
                 GradientPaint gradient = new GradientPaint(0, 0, Color.CYAN, getWidth(), getHeight(), Color.MAGENTA);
                 g2d.setPaint(gradient);
-                g2d.fillRect(0, 0, getWidth(), getHeight());  // Fill the whole panel with the gradient
+                g2d.fillRect(0, 0, getWidth(), getHeight());  // Fill the panel with the gradient
+
+                // Now, apply the semi-transparent white background over the gradient
+                g2d.setColor(new Color(255, 255, 255, 180));  // Semi-transparent white
+                g2d.fillRect(0, 0, getWidth(), getHeight());  // Overlay with the semi-transparent white
+
+                // The semi-transparent background will overlay on top of the gradient
             }
+
         };
 
         // Set the background color for the main panel (to ensure the gradient is visible)
@@ -46,13 +59,19 @@ public final class EventPage extends JFrame {
         eventPanel = new JPanel(new GridBagLayout());
         eventPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Set background color for event panel so the gradient is visible behind it
-        eventPanel.setBackground(new Color(255, 255, 255, 180)); // Semi-transparent white background
+// Make the eventPanel opaque so it doesn't show the content behind, just the gradient
+        eventPanel.setOpaque(false); // Ensures the eventPanel does not block the gradient
 
-        // Wrap eventPanel in a JScrollPane, allowing it to resize
+// Wrap eventPanel in a JScrollPane, allowing it to resize
         JScrollPane eventScrollPane = new JScrollPane(eventPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         eventScrollPane.setBorder(null);
+
+// Set background of eventScrollPane to transparent to preserve the gradient effect
+        eventScrollPane.setOpaque(false);
+        eventScrollPane.getViewport().setOpaque(false); // Keep viewport transparent for smooth scroll behavior
+
+// Now add this eventScrollPane to the main panel
         mainPanel.add(eventScrollPane, BorderLayout.CENTER);
 
         loadEventCards(eventList.getEvents(6));
@@ -66,12 +85,17 @@ public final class EventPage extends JFrame {
     }
 
     public void loadEventCards(java.util.List<Event> events) {
+        // Clear any existing event cards
         eventPanel.removeAll();
+        eventPanel.revalidate();  // Revalidate the layout to remove any lingering components
+        eventPanel.repaint();     // Repaint to clear out anything left in the panel
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
+        // Add event cards to the panel
         int columns = 3;
         for (int i = 0; i < events.size(); i++) {
             Event event = events.get(i);
@@ -82,15 +106,15 @@ public final class EventPage extends JFrame {
             eventPanel.add(eventCard, gbc);
         }
 
+        // Optionally, you can add a transparent filler to keep the layout stable if there are fewer items than the grid can fit
         gbc.gridx = 0;
         gbc.gridy = events.size() / columns + 1;
         gbc.weighty = 1.0;
-
-        // Create a fully transparent JPanel and add it to the layout
         JPanel transparentPanel = new JPanel();
-        transparentPanel.setBackground(new Color(0, 0, 0, 0));  // Fully transparent background
+        transparentPanel.setBackground(new Color(0, 0, 0, 0));  // Fully transparent
         eventPanel.add(transparentPanel, gbc);
 
+        // Finally, revalidate and repaint to make sure the panel reflects the new state
         eventPanel.revalidate();
         eventPanel.repaint();
     }
