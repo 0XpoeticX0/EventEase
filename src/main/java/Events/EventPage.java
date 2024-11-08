@@ -59,19 +59,23 @@ public final class EventPage extends JFrame {
         eventPanel = new JPanel(new GridBagLayout());
         eventPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-// Make the eventPanel opaque so it doesn't show the content behind, just the gradient
+        // Make the eventPanel opaque so it doesn't show the content behind, just the gradient
         eventPanel.setOpaque(false); // Ensures the eventPanel does not block the gradient
 
-// Wrap eventPanel in a JScrollPane, allowing it to resize
+        // Wrap eventPanel in a JScrollPane, allowing it to resize
         JScrollPane eventScrollPane = new JScrollPane(eventPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         eventScrollPane.setBorder(null);
 
-// Set background of eventScrollPane to transparent to preserve the gradient effect
+        // Set faster scrolling speed
+        eventScrollPane.getVerticalScrollBar().setUnitIncrement(20); // Adjust the value to control scroll speed
+        eventScrollPane.getVerticalScrollBar().setBlockIncrement(50); // Adjust the value for larger jumps
+
+        // Set background of eventScrollPane to transparent to preserve the gradient effect
         eventScrollPane.setOpaque(false);
         eventScrollPane.getViewport().setOpaque(false); // Keep viewport transparent for smooth scroll behavior
 
-// Now add this eventScrollPane to the main panel
+        // Now add this eventScrollPane to the main panel
         mainPanel.add(eventScrollPane, BorderLayout.CENTER);
 
         loadEventCards(eventList.getEvents(6));
