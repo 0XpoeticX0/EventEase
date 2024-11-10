@@ -18,7 +18,7 @@ public class DatabaseInitializer {
                         age INT CHECK (age >= 18),
                         role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
                         status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
-                        image VARCHAR(255)
+                        image VARCHAR(255) DEFAULT 'src/main/java/Resorces/Images/demoUser.png'
                     );
                 """;
 
