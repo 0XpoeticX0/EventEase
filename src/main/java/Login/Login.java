@@ -20,9 +20,11 @@ public class Login extends JFrame {
     private final JButton loginButton;
     private final JLabel newHereLabel;
     private final JButton registerButton;
+    private JButton togglePasswordButton;
+    private boolean isPasswordVisible = false;
 
     public Login() {
-        setTitle("Colorful Login Interface");
+        setTitle("Login Interface");
         setSize(700, 550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -51,6 +53,19 @@ public class Login extends JFrame {
         passwordField = new JPasswordField(15);
         passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
         passwordField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+
+        JPanel passwordPanel = new JPanel(new BorderLayout());
+        passwordPanel.setOpaque(false);
+
+        togglePasswordButton = new JButton("Show");
+        togglePasswordButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        togglePasswordButton.setFocusable(false);
+
+        togglePasswordButton.addActionListener(e -> togglePasswordVisibility());
+
+        passwordPanel.add(passwordField, BorderLayout.CENTER);
+        passwordPanel.add(togglePasswordButton, BorderLayout.EAST);
+
 
         loginButton = new JButton("Login");
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
@@ -145,6 +160,17 @@ public class Login extends JFrame {
                 JOptionPane.showMessageDialog(mainPanel, "Error during login.");
             }
         });
+    }
+
+     private void togglePasswordVisibility() {
+        isPasswordVisible = !isPasswordVisible;
+        if (isPasswordVisible) {
+            passwordField.setEchoChar((char) 0); // Show password
+            togglePasswordButton.setText("Hide");
+        } else {
+            passwordField.setEchoChar('*'); // Mask password
+            togglePasswordButton.setText("Show");
+        }
     }
 
     private JButton createStyledButton(String text, String textColorHex, String bgColorHex) {

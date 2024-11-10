@@ -62,6 +62,7 @@ public class DatabaseInitializer {
 
             statement.executeUpdate(createEventsTable);
             statement.executeUpdate(createUsersTable);
+            System.out.println("databases: ");
 
             String countQuery = "SELECT COUNT(*) AS rowCount FROM events";
             ResultSet countResultSet = statement.executeQuery(countQuery);
