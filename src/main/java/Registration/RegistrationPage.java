@@ -1,10 +1,17 @@
 package Registration;
 
 import javax.swing.*;
+
+import DataBase.DatabaseConnect;
+import utils.PasswordUtils;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class RegistrationPage extends JFrame implements ActionListener {
 
@@ -94,7 +101,7 @@ public class RegistrationPage extends JFrame implements ActionListener {
 
         gbc.gridx = 1;
         uploadButton = new JButton("Upload Image");
-        uploadButton.setBackground(new Color(0x4CAF50)); 
+        uploadButton.setBackground(new Color(0x4CAF50));
         uploadButton.setForeground(Color.WHITE);
         uploadButton.addActionListener(this);
         inputPanel.add(uploadButton, gbc);
@@ -118,47 +125,109 @@ public class RegistrationPage extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
         if (e.getSource() == uploadButton) {
-            
+
             JFileChooser fileChooser = new JFileChooser();
             int result = fileChooser.showOpenDialog(this);
 
             if (result == JFileChooser.APPROVE_OPTION) {
                 selectedImage = fileChooser.getSelectedFile();
-                
+
                 imageLabel.setText("Selected: " + selectedImage.getName());
-                imageLabel.setForeground(new Color(0x3B5998)); 
+                imageLabel.setForeground(new Color(0x3B5998));
             }
         } else if (e.getSource() == registerButton) {
-            
+
             String firstName = firstNameField.getText();
             String lastName = lastNameField.getText();
             String email = emailField.getText();
             String mobile = mobileField.getText();
-            String age = ageField.getText();
-            String password = new String(passwordField.getPassword());
+            String ageText = ageField.getText();
+            String plainPassword = new String(passwordField.getPassword());
+            String password = PasswordUtils.hashPassword(plainPassword);
 
-            
-            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Please fill in all required fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            // Validation checks
+            if (!firstName.matches("[A-Za-z]+")) {
+                JOptionPane.showMessageDialog(this, "Invalid first name.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-    
-            JOptionPane.showMessageDialog(this, "Registration Successful!\n" +
-                    "Name: " + firstName + " " + lastName +
-                    "\nEmail: " + email +
-                    "\nMobile: " + mobile +
-                    "\nAge: " + age +
-                    "\nImage: " + (selectedImage != null ? selectedImage.getName() : "No image uploaded"));
+            if (!lastName.matches("[A-Za-z]+")) {
+                JOptionPane.showMessageDialog(this, "Invalid last name.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                JOptionPane.showMessageDialog(this, "Invalid email address.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (!mobile.matches("\\d{10,15}")) {
+                JOptionPane.showMessageDialog(this, "Invalid mobile number.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int age;
+            try {
+                age = Integer.parseInt(ageText);
+                if (age < 18) {
+                    JOptionPane.showMessageDialog(this, "You must be at least 18 years old.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid age. Please enter a number.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (plainPassword.length() < 6) {
+                JOptionPane.showMessageDialog(this, "Password should be at least 6 characters long.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please fill in all required fields.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            ImageIcon icon = null;
+            if (selectedImage != null) {
+                icon = new ImageIcon(new ImageIcon(selectedImage.getAbsolutePath()).getImage()
+                        .getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+            }
+
+            // Database insertion
+            try (Connection connection = DatabaseConnect.getConnection();
+                    PreparedStatement pstmt = connection.prepareStatement(
+                            "INSERT INTO users (firstname, lastname, email, mobileNumber, age, password, image) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+
+                pstmt.setString(1, firstName);
+                pstmt.setString(2, lastName);
+                pstmt.setString(3, email);
+                pstmt.setString(4, mobile);
+                pstmt.setInt(5, age);
+                pstmt.setString(6, password);
+                pstmt.setString(7, selectedImage != null ? selectedImage.getAbsolutePath() : null);
+                pstmt.executeUpdate();
+
+                JOptionPane.showMessageDialog(this, "Registration Successful!\n" +
+                        "Name: " + firstName + " " + lastName +
+                        "\nEmail: " + email +
+                        "\nMobile: " + mobile +
+                        "\nAge: " + ageText,
+                        "Registration Details",
+                        JOptionPane.INFORMATION_MESSAGE,
+                        icon);
+            } catch (SQLException err) {
+                err.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Registration failed due to database error.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
         }
     }
 
-    public static void main(String[] args){
-        SwingUtilities.invokeLater(() -> {
-            RegistrationPage frame = new RegistrationPage();
-            frame.setVisible(true);
-        });
-    }
 }
