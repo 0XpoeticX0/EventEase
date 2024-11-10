@@ -1,6 +1,7 @@
 package DataBase;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 
@@ -59,10 +60,17 @@ public class DatabaseInitializer {
         try (Connection connection = DatabaseConnect.getConnection();
                 Statement statement = connection.createStatement()) {
 
-            // Execute table creation queries
-            statement.executeUpdate(createUsersTable);
             statement.executeUpdate(createEventsTable);
-            statement.executeUpdate(insertQuery);
+            statement.executeUpdate(createUsersTable);
+
+            String countQuery = "SELECT COUNT(*) AS rowCount FROM events";
+            ResultSet countResultSet = statement.executeQuery(countQuery);
+            if (countResultSet.next() && countResultSet.getInt("rowCount") == 0) {
+                System.out.println("The events table is empty. Inserting default data.");
+                statement.executeUpdate(insertQuery);
+            }
+
+            // Execute table creation queries
             System.out.println("Database tables initialized successfully.");
 
         } catch (SQLException e) {
