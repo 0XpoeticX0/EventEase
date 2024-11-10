@@ -1,32 +1,27 @@
 package Login;
 
-import Registration.RegistrationPage;
-import utils.PasswordUtils;
-
 import javax.swing.*;
-
-import DataBase.DatabaseConnect;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Login extends JFrame {
-    private final JTextField email;
-    private final JPasswordField passwordField;
-    private final JButton loginButton;
-    private final JLabel newHereLabel;
-    private final JButton registerButton;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JButton loginButton;
+    private JLabel registerLabel;
+    private JButton togglePasswordButton;
+    private boolean isPasswordVisible = false;
 
     public Login() {
-        setTitle("Colorful Login Interface");
-        setSize(700, 550);
+        setTitle("Login Interface");
+        setSize(700, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        // Main panel with gradient background
         JPanel mainPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -40,132 +35,122 @@ public class Login extends JFrame {
         mainPanel.setLayout(new GridBagLayout());
         add(mainPanel);
 
+        // Create login panel components
         JLabel titleLabel = new JLabel("Hi There! Login", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         titleLabel.setForeground(Color.WHITE);
 
-        email = new JTextField(15);
-        email.setFont(new Font("Arial", Font.PLAIN, 14));
-        email.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        usernameField = new JTextField(15);
+        usernameField.setFont(new Font("Arial", Font.PLAIN, 19));
+        usernameField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
 
         passwordField = new JPasswordField(15);
         passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
         passwordField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+
+        // Create password panel to hold password field and toggle button
+        JPanel passwordPanel = new JPanel(new BorderLayout());
+        passwordPanel.setOpaque(false); // Make the background transparent
+
+        // Initialize the toggle button with "Show"
+        togglePasswordButton = new JButton("Show");
+        togglePasswordButton.setFont(new Font("Arial", Font.PLAIN, 12));
+        togglePasswordButton.setFocusable(false);
+
+        // Add an action listener to the button to toggle password visibility
+        togglePasswordButton.addActionListener(e -> togglePasswordVisibility());
+
+        // Add password field and toggle button to password panel
+        passwordPanel.add(passwordField, BorderLayout.CENTER);
+        passwordPanel.add(togglePasswordButton, BorderLayout.EAST);
 
         loginButton = new JButton("Login");
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
         loginButton.setBackground(Color.WHITE);
         loginButton.setForeground(Color.BLACK);
 
-        newHereLabel = new JLabel("New here?");
-        newHereLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        newHereLabel.setForeground(Color.WHITE);
+        // Register Label
+        registerLabel = new JLabel("Don't have an account? Register");
+        registerLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        registerLabel.setForeground(Color.WHITE);
 
-        registerButton = createStyledButton("Register", "#ffffff", "#343a40");
-        registerButton.addActionListener(e -> {
-            // Open the RegistrationPage when "Register" is clicked
-            RegistrationPage registrationPage = new RegistrationPage();
-            registrationPage.setVisible(true);
-            this.dispose(); // Close the Login frame
+        // Mouse listener to simulate a link effect
+        registerLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page...");
+                // Code to open the registration window can go here
+            }
         });
 
-        JPanel newHerePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // 5px gap, no vertical gap
-        newHerePanel.setOpaque(false); // Transparent background for the panel
-        newHerePanel.add(Box.createHorizontalStrut(80)); // Horizontal spacing
-        newHerePanel.add(newHereLabel);
-        newHerePanel.add(Box.createHorizontalStrut(-10)); // Horizontal spacing
-        newHerePanel.add(registerButton);
-
+        // Adding components to main panel using GridBagLayout
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 50, 10, 10);
+        gbc.insets = new Insets(10, 10, 10, 10);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(10, 40, 10, 10); // 40px padding on the left
         mainPanel.add(titleLabel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(10, 10, 10, 10); // extra padding
-        mainPanel.add(new JLabel("Email:"), gbc);
+        mainPanel.add(new JLabel("Username:"), gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
-        mainPanel.add(email, gbc); // Corrected variable name
+        mainPanel.add(usernameField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
         mainPanel.add(new JLabel("Password:"), gbc);
-
+        
+// Add the password panel (which contains the password field and toggle button) instead of the password field directly
         gbc.gridx = 1;
         gbc.gridy = 2;
-        mainPanel.add(passwordField, gbc);
+        mainPanel.add(passwordPanel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(10, 70, 10, 10); // 70px padding on the left
         mainPanel.add(loginButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 4;
-        gbc.gridwidth = 2;
-        gbc.insets = new Insets(0, 0, 0, 0); // No extra padding for "New here?" and "Register" panel
-        mainPanel.add(newHerePanel, gbc);
+        mainPanel.add(registerLabel, gbc); // Add the register label below the login button
 
-        loginButton.addActionListener((ActionEvent e) -> {
-            String username = getEmail();
-            String plainPassword = getPassword();
-            String query = "SELECT password FROM users WHERE email = ?";
-
-            try (Connection connection = DatabaseConnect.getConnection();
-                    PreparedStatement statement = connection.prepareStatement(query)) {
-
-                statement.setString(1, username);
-                ResultSet resultSet = statement.executeQuery();
-
-                if (resultSet.next()) {
-                    String hashedPassword = resultSet.getString("password");
-
-                    // Verify the entered password with the stored hash
-                    if (PasswordUtils.verifyPassword(plainPassword, hashedPassword)) {
-                        System.out.println("Login successful!");
-                        JOptionPane.showMessageDialog(mainPanel, "Login successful!");
-                    } else {
-                        JOptionPane.showMessageDialog(mainPanel, "Invalid email or password.");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(mainPanel, "User not found.");
-                }
-
-            } catch (SQLException err) {
-                err.printStackTrace();
-                JOptionPane.showMessageDialog(mainPanel, "Error during login.");
+        // Action listener for login button
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = getUsername();
+                String password = getPassword();
+                JOptionPane.showMessageDialog(mainPanel, "Login attempt by: " + username);
             }
         });
     }
 
-    private JButton createStyledButton(String text, String textColorHex, String bgColorHex) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.BOLD, 15));
-        button.setForeground(Color.decode(textColorHex));
-        button.setBackground(Color.decode(bgColorHex));
-        button.setBorderPainted(false);
-        button.setFocusPainted(false);
-        button.setContentAreaFilled(false); // Transparent background
-        return button;
+    // Method to toggle the visibility of the password
+    private void togglePasswordVisibility() {
+        isPasswordVisible = !isPasswordVisible;
+        if (isPasswordVisible) {
+            passwordField.setEchoChar((char) 0); // Show password
+            togglePasswordButton.setText("Hide");
+        } else {
+            togglePasswordButton.setText("Show");
+        }
     }
 
-    public String getEmail() {
-        return email.getText();
+    // Getter and Setter for Username
+    public String getUsername() {
+        return usernameField.getText();
     }
 
-    public void setEmail(String username) {
-        this.email.setText(username);
+    public void setUsername(String username) {
+        this.usernameField.setText(username);
     }
 
+    // Getter and Setter for Password
     public String getPassword() {
         return new String(passwordField.getPassword());
     }
@@ -173,4 +158,5 @@ public class Login extends JFrame {
     public void setPassword(String password) {
         this.passwordField.setText(password);
     }
+
 }
