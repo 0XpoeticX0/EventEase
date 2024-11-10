@@ -1,12 +1,21 @@
 package Login;
 
 import Registration.RegistrationPage;
+import utils.PasswordUtils;
+
 import javax.swing.*;
+
+import DataBase.DatabaseConnect;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Login extends JFrame {
-    private final JTextField usernameField;
+    private final JTextField email;
     private final JPasswordField passwordField;
     private final JButton loginButton;
     private final JLabel newHereLabel;
@@ -35,9 +44,9 @@ public class Login extends JFrame {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         titleLabel.setForeground(Color.WHITE);
 
-        usernameField = new JTextField(15);
-        usernameField.setFont(new Font("Arial", Font.PLAIN, 14));
-        usernameField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        email = new JTextField(15);
+        email.setFont(new Font("Arial", Font.PLAIN, 14));
+        email.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
 
         passwordField = new JPasswordField(15);
         passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -60,7 +69,6 @@ public class Login extends JFrame {
             this.dispose(); // Close the Login frame
         });
 
-        // Create a sub-panel to hold "New here?" and "Register" button side by side
         JPanel newHerePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // 5px gap, no vertical gap
         newHerePanel.setOpaque(false); // Transparent background for the panel
         newHerePanel.add(Box.createHorizontalStrut(80)); // Horizontal spacing
@@ -81,11 +89,11 @@ public class Login extends JFrame {
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(10, 10, 10, 10); // extra padding
-        mainPanel.add(new JLabel("Username:"), gbc);
+        mainPanel.add(new JLabel("Email:"), gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
-        mainPanel.add(usernameField, gbc);
+        mainPanel.add(email, gbc); // Corrected variable name
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -108,8 +116,34 @@ public class Login extends JFrame {
         mainPanel.add(newHerePanel, gbc);
 
         loginButton.addActionListener((ActionEvent e) -> {
-            String username = getUsername();
-            JOptionPane.showMessageDialog(mainPanel, "Login attempt by: " + username);
+            String username = getEmail();
+            String plainPassword = getPassword();
+            String query = "SELECT password FROM users WHERE email = ?";
+
+            try (Connection connection = DatabaseConnect.getConnection();
+                    PreparedStatement statement = connection.prepareStatement(query)) {
+
+                statement.setString(1, username);
+                ResultSet resultSet = statement.executeQuery();
+
+                if (resultSet.next()) {
+                    String hashedPassword = resultSet.getString("password");
+
+                    // Verify the entered password with the stored hash
+                    if (PasswordUtils.verifyPassword(plainPassword, hashedPassword)) {
+                        System.out.println("Login successful!");
+                        JOptionPane.showMessageDialog(mainPanel, "Login successful!");
+                    } else {
+                        JOptionPane.showMessageDialog(mainPanel, "Invalid email or password.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(mainPanel, "User not found.");
+                }
+
+            } catch (SQLException err) {
+                err.printStackTrace();
+                JOptionPane.showMessageDialog(mainPanel, "Error during login.");
+            }
         });
     }
 
@@ -124,12 +158,12 @@ public class Login extends JFrame {
         return button;
     }
 
-    public String getUsername() {
-        return usernameField.getText();
+    public String getEmail() {
+        return email.getText();
     }
 
-    public void setUsername(String username) {
-        this.usernameField.setText(username);
+    public void setEmail(String username) {
+        this.email.setText(username);
     }
 
     public String getPassword() {
