@@ -1,18 +1,18 @@
 package Login;
 
+import Registration.RegistrationPage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class Login extends JFrame {
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JButton loginButton;
-    private JLabel registerLabel;
-    private JButton togglePasswordButton;
+
+    private final JTextField usernameField;
+    private final JPasswordField passwordField;
+    private final JButton loginButton;
+    private final JButton togglePasswordButton;
+    private final JButton registerButton;
+    private final JLabel newHereLabel;
     private boolean isPasswordVisible = false;
 
     public Login() {
@@ -68,20 +68,26 @@ public class Login extends JFrame {
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
         loginButton.setBackground(Color.WHITE);
         loginButton.setForeground(Color.BLACK);
+        
+        newHereLabel = new JLabel("New here?");
+        newHereLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        newHereLabel.setForeground(Color.WHITE);
 
         // Register Label
-        registerLabel = new JLabel("Don't have an account? Register");
-        registerLabel.setFont(new Font("Arial", Font.BOLD, 15));
-        registerLabel.setForeground(Color.WHITE);
-
-        // Mouse listener to simulate a link effect
-        registerLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(mainPanel, "Redirecting to Registration Page...");
-                // Code to open the registration window can go here
-            }
+        registerButton = createStyledButton("Register", "#ffffff", "#343a40");
+        registerButton.addActionListener(e -> {
+            // Open the RegistrationPage when "Register" is clicked
+            RegistrationPage registrationPage = new RegistrationPage();
+            registrationPage.setVisible(true);
+            this.dispose(); // Close the Login frame
         });
+        
+        JPanel newHerePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // 5px gap, no vertical gap
+        newHerePanel.setOpaque(false); // Transparent background for the panel
+        newHerePanel.add(Box.createHorizontalStrut(80)); // Horizontal spacing
+        newHerePanel.add(newHereLabel);
+        newHerePanel.add(Box.createHorizontalStrut(-10)); // Horizontal spacing
+        newHerePanel.add(registerButton);
 
         // Adding components to main panel using GridBagLayout
         GridBagConstraints gbc = new GridBagConstraints();
@@ -104,7 +110,7 @@ public class Login extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 2;
         mainPanel.add(new JLabel("Password:"), gbc);
-        
+
 // Add the password panel (which contains the password field and toggle button) instead of the password field directly
         gbc.gridx = 1;
         gbc.gridy = 2;
@@ -117,15 +123,23 @@ public class Login extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 4;
-        mainPanel.add(registerLabel, gbc); // Add the register label below the login button
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(0, 0, 0, 0); // No extra padding for "New here?" and "Register" panel
+        mainPanel.add(newHerePanel, gbc);
 
         // Action listener for login button
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = getUsername();
-                String password = getPassword();
-                JOptionPane.showMessageDialog(mainPanel, "Login attempt by: " + username);
+        loginButton.addActionListener((ActionEvent e) -> {
+            String username = getUsername();
+            String password = getPassword();
+
+            // Create an instance of ValidateLogin to check credentials
+            ValidateLogin validator = new ValidateLogin();
+
+            // Validate the login
+            if (validator.validateLogin(username, password)) {
+                JOptionPane.showMessageDialog(mainPanel, "Login successful!");
+            } else {
+                JOptionPane.showMessageDialog(mainPanel, "Username or password invalid.");
             }
         });
     }
@@ -137,8 +151,20 @@ public class Login extends JFrame {
             passwordField.setEchoChar((char) 0); // Show password
             togglePasswordButton.setText("Hide");
         } else {
+            passwordField.setEchoChar('.'); // Mask password
             togglePasswordButton.setText("Show");
         }
+    }
+
+    private JButton createStyledButton(String text, String textColorHex, String bgColorHex) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Arial", Font.BOLD, 15));
+        button.setForeground(Color.decode(textColorHex));
+        button.setBackground(Color.decode(bgColorHex));
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setContentAreaFilled(false); // Transparent background
+        return button;
     }
 
     // Getter and Setter for Username
