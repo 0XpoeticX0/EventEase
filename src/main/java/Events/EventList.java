@@ -22,40 +22,6 @@ public class EventList {
         try (Connection connection = DatabaseConnect.getConnection();
                 Statement statement = connection.createStatement()) {
 
-            // Query to count rows in the events table
-            String countQuery = "SELECT COUNT(*) AS rowCount FROM events";
-            ResultSet countResultSet = statement.executeQuery(countQuery);
-
-            if (countResultSet.next() && countResultSet.getInt("rowCount") == 0) {
-                System.out.println("The events table is empty. Inserting default data.");
-
-                // Insert default data if table is empty
-                String insertQuery = "INSERT INTO events (name, description, location, price, image) VALUES " +
-                        "('Music Concert', 'A live music event with various artists performing.', 'New York', 50, 'src/main/java/Resorces/Images/1.jfif'),"
-                        +
-                        "('Art Exhibition', 'A showcase of contemporary art by local artists.', 'Los Angeles', 30, 'src/main/java/Resorces/Images/2.jfif'),"
-                        +
-                        "('Tech Conference', 'A gathering of tech enthusiasts and professionals.', 'San Francisco', 100, 'src/main/java/Resorces/Images/3.jfif'),"
-                        +
-                        "('Food Festival', 'A variety of local and international cuisines.', 'Chicago', 20, 'src/main/java/Resorces/Images/4.jfif'),"
-                        +
-                        "('Book Fair', 'A collection of books from different genres and authors.', 'Seattle', 10, 'src/main/java/Resorces/Images/5.jfif'),"
-                        +
-                        "('Theater Play', 'A dramatic performance showcasing talent on stage.', 'Boston', 25, 'src/main/java/Resorces/Images/6.jfif'),"
-                        +
-                        "('Film Screening', 'An evening of classic and contemporary films.', 'Austin', 15, 'src/main/java/Resorces/Images/7.jfif'),"
-                        +
-                        "('Charity Gala', 'A fundraising event for local charities.', 'Miami', 200, 'src/main/java/Resorces/Images/8.jfif'),"
-                        +
-                        "('Dance Workshop', 'Learn different dance styles from professional instructors.', 'Las Vegas', 40, 'src/main/java/Resorces/Images/9.jfif'),"
-                        +
-                        "('Sports Day', 'A fun-filled day of various sports and activities.', 'Denver', 5, 'src/main/java/Resorces/Images/10.jfif'),"
-                        +
-                        "('Fashion Show', 'An exhibition of the latest fashion trends.', 'New Orleans', 75, 'src/main/java/Resorces/Images/11.jfif');";
-
-                statement.executeUpdate(insertQuery);
-            }
-
             // Retrieve event data from the database
             String query = "SELECT * FROM events";
             ResultSet resultSet = statement.executeQuery(query);
