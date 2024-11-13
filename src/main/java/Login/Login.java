@@ -1,32 +1,26 @@
 package Login;
 
 import Registration.RegistrationPage;
-import utils.PasswordUtils;
-
 import javax.swing.*;
-
-import DataBase.DatabaseConnect;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Login extends JFrame {
-    private final JTextField email;
+
+    private final JTextField usernameField;
     private final JPasswordField passwordField;
     private final JButton loginButton;
-    private final JLabel newHereLabel;
     private final JButton registerButton;
+    private final JLabel newHereLabel;
+    private boolean isPasswordVisible = false;
 
     public Login() {
-        setTitle("Colorful Login Interface");
-        setSize(700, 550);
+        setTitle("Login Interface");
+        setSize(700, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        // Main panel with gradient background
         JPanel mainPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -40,60 +34,106 @@ public class Login extends JFrame {
         mainPanel.setLayout(new GridBagLayout());
         add(mainPanel);
 
+        // Create login panel components
         JLabel titleLabel = new JLabel("Hi There! Login", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         titleLabel.setForeground(Color.WHITE);
 
-        email = new JTextField(15);
-        email.setFont(new Font("Arial", Font.PLAIN, 14));
-        email.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        // Define the fixed width and height for the text fields
+        Dimension fixedSize = new Dimension(200, 30);
 
+        // Username panel with fixed size and null layout for manual positioning
+        JPanel usernamePanel = new JPanel(null);
+        usernamePanel.setPreferredSize(fixedSize);
+        usernamePanel.setMinimumSize(fixedSize);
+        usernamePanel.setMaximumSize(fixedSize);
+        usernamePanel.setOpaque(false);  // Make it transparent to match the background
+
+// Username field with fixed size and font
+        usernameField = new JTextField(15);
+        usernameField.setFont(new Font("Arial", Font.PLAIN, 19));
+        usernameField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        usernameField.setPreferredSize(fixedSize);
+        usernameField.setBounds(0, 0, fixedSize.width, fixedSize.height);
+
+// Add username field to the username panel
+        usernamePanel.add(usernameField);
+
+// Password layered panel with fixed size
+        JLayeredPane passwordLayeredPane = new JLayeredPane();
+        passwordLayeredPane.setPreferredSize(fixedSize);
+        passwordLayeredPane.setMinimumSize(fixedSize);
+        passwordLayeredPane.setMaximumSize(fixedSize);
+
+// Password field
         passwordField = new JPasswordField(15);
-        passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 19));
         passwordField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        passwordField.setPreferredSize(fixedSize);
+        passwordField.setMinimumSize(fixedSize);
+        passwordField.setMaximumSize(fixedSize);
+        passwordField.setBounds(0, 0, fixedSize.width, fixedSize.height);
+        passwordField.setEchoChar('\u2022'); // Set default masking character
 
+// Checkbox overlay
+        JCheckBox togglePasswordCheckbox = new JCheckBox();
+        togglePasswordCheckbox.setOpaque(false); // Transparent background for the checkbox
+        togglePasswordCheckbox.setFocusable(false);
+        togglePasswordCheckbox.setBorder(null); // Remove border for a cleaner look
+        togglePasswordCheckbox.setBounds(fixedSize.width - 15, (fixedSize.height - 20) / 2, 20, 20); // Align to the middle-right
+
+// Add checkbox action listener to toggle password visibility
+        togglePasswordCheckbox.addActionListener(e -> togglePasswordVisibility());
+
+// Add password field and checkbox to the layered pane
+        passwordLayeredPane.add(passwordField, JLayeredPane.DEFAULT_LAYER);
+        passwordLayeredPane.add(togglePasswordCheckbox, JLayeredPane.PALETTE_LAYER);
+
+        // Login button
         loginButton = new JButton("Login");
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
         loginButton.setBackground(Color.WHITE);
         loginButton.setForeground(Color.BLACK);
 
+        // Register button
         newHereLabel = new JLabel("New here?");
         newHereLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         newHereLabel.setForeground(Color.WHITE);
 
         registerButton = createStyledButton("Register", "#ffffff", "#343a40");
         registerButton.addActionListener(e -> {
-            // Open the RegistrationPage when "Register" is clicked
             RegistrationPage registrationPage = new RegistrationPage();
             registrationPage.setVisible(true);
-            this.dispose(); // Close the Login frame
+            this.dispose();
         });
 
-        JPanel newHerePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0)); // 5px gap, no vertical gap
-        newHerePanel.setOpaque(false); // Transparent background for the panel
-        newHerePanel.add(Box.createHorizontalStrut(80)); // Horizontal spacing
+        // New here panel
+        JPanel newHerePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        newHerePanel.setOpaque(false);
+        newHerePanel.add(Box.createHorizontalStrut(80));
         newHerePanel.add(newHereLabel);
-        newHerePanel.add(Box.createHorizontalStrut(-10)); // Horizontal spacing
+        newHerePanel.add(Box.createHorizontalStrut(-10));
         newHerePanel.add(registerButton);
 
+        // Adding components to main panel using GridBagLayout
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 50, 10, 10);
+        gbc.insets = new Insets(10, 10, 10, 10);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(10, 40, 10, 10); // 40px padding on the left
+        gbc.insets = new Insets(10, 60, 10, 10);
         mainPanel.add(titleLabel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(10, 10, 10, 10); // extra padding
-        mainPanel.add(new JLabel("Email:"), gbc);
+        gbc.insets = new Insets(10, 10, 10, 10);
+        mainPanel.add(new JLabel("Username:"), gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
-        mainPanel.add(email, gbc); // Corrected variable name
+        mainPanel.add(usernamePanel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -101,50 +141,39 @@ public class Login extends JFrame {
 
         gbc.gridx = 1;
         gbc.gridy = 2;
-        mainPanel.add(passwordField, gbc);
+        mainPanel.add(passwordLayeredPane, gbc);
 
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        gbc.insets = new Insets(10, 70, 10, 10); // 70px padding on the left
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.CENTER; // Aligns the button to the CENTER
+        gbc.insets = new Insets(10, -5, 10, 10);
         mainPanel.add(loginButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(0, 0, 0, 0); // No extra padding for "New here?" and "Register" panel
+        gbc.insets = new Insets(0, 0, 0, 0);
         mainPanel.add(newHerePanel, gbc);
 
+        // Action listener for login button
         loginButton.addActionListener((ActionEvent e) -> {
-            String username = getEmail();
-            String plainPassword = getPassword();
-            String query = "SELECT password FROM users WHERE email = ?";
+            String username = getUsername();
+            String password = getPassword();
 
-            try (Connection connection = DatabaseConnect.getConnection();
-                    PreparedStatement statement = connection.prepareStatement(query)) {
+            ValidateLogin validator = new ValidateLogin();
 
-                statement.setString(1, username);
-                ResultSet resultSet = statement.executeQuery();
-
-                if (resultSet.next()) {
-                    String hashedPassword = resultSet.getString("password");
-
-                    // Verify the entered password with the stored hash
-                    if (PasswordUtils.verifyPassword(plainPassword, hashedPassword)) {
-                        System.out.println("Login successful!");
-                        JOptionPane.showMessageDialog(mainPanel, "Login successful!");
-                    } else {
-                        JOptionPane.showMessageDialog(mainPanel, "Invalid email or password.");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(mainPanel, "User not found.");
-                }
-
-            } catch (SQLException err) {
-                err.printStackTrace();
-                JOptionPane.showMessageDialog(mainPanel, "Error during login.");
+            if (validator.validateLogin(username, password)) {
+                JOptionPane.showMessageDialog(mainPanel, "Login successful!");
+            } else {
+                JOptionPane.showMessageDialog(mainPanel, "Username or password invalid.");
             }
         });
+    }
+
+    private void togglePasswordVisibility() {
+        isPasswordVisible = !isPasswordVisible;
+        passwordField.setEchoChar(isPasswordVisible ? (char) 0 : '\u2022');
     }
 
     private JButton createStyledButton(String text, String textColorHex, String bgColorHex) {
@@ -154,16 +183,16 @@ public class Login extends JFrame {
         button.setBackground(Color.decode(bgColorHex));
         button.setBorderPainted(false);
         button.setFocusPainted(false);
-        button.setContentAreaFilled(false); // Transparent background
+        button.setContentAreaFilled(false);
         return button;
     }
 
-    public String getEmail() {
-        return email.getText();
+    public String getUsername() {
+        return usernameField.getText();
     }
 
-    public void setEmail(String username) {
-        this.email.setText(username);
+    public void setUsername(String username) {
+        this.usernameField.setText(username);
     }
 
     public String getPassword() {
