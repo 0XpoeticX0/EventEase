@@ -1,33 +1,47 @@
 package Buttons;
 
 import Login.Login;
-import Login.ValidateLogin;  // Import the ValidateLogin class to check the login status
+import Login.ValidateLogin;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
+import java.awt.event.*;
+import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.geom.Ellipse2D;
 
 public final class HeaderButtons {
 
     private JButton profileLogoButton;
     private final JLabel eventEaseLogo; // Store the logo here
     private JFrame parentFrame = null; // Reference to the parent frame
+    private JPanel menuPanel; // Panel that will hold the menu options
+    private boolean isMenuOpen = false; // To track if the menu is open or closed
 
     public HeaderButtons(JFrame parentFrame) {
         this.parentFrame = parentFrame; // Set the parent frame
         createProfileLogoButton();
         eventEaseLogo = createEventEaseLogo(); // Create and store the logo
+        createMenuPanel(); // Initialize the menu panel
+
+        // Add MouseListener to the parent frame to close the menu if clicked outside
+        parentFrame.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (isMenuOpen && !menuPanel.getBounds().contains(e.getPoint())
+                        && !profileLogoButton.getBounds().contains(e.getPoint())) {
+                    // Close the menu if clicked outside
+                    toggleMenu();
+                }
+            }
+        });
     }
 
     public HeaderButtons() {
         createProfileLogoButton();
         eventEaseLogo = createEventEaseLogo(); // Create and store the logo
+        createMenuPanel(); // Initialize the menu panel
     }
 
     private JButton createProfileLogoButton() {
@@ -69,34 +83,11 @@ public final class HeaderButtons {
                 profileLogoButton.setFocusPainted(false);
                 profileLogoButton.setBackground(new Color(0, 0, 0, 0)); // Set transparent background
 
-                // Add popup menu for logged-in user
-                JPopupMenu profilePopupMenu = new JPopupMenu();
-                JMenuItem logoutMenuItem = new JMenuItem("Logout");
-                JMenuItem recordsMenuItem = new JMenuItem("Records");
-
-                logoutMenuItem.addActionListener(e -> {
-                    // You can handle the logout logic here
-                    ValidateLogin.loggedInUserEmail = null; // Clear the logged-in email on logout
-                    JOptionPane.showMessageDialog(null, "Logged out successfully.");
-                });
-
-                recordsMenuItem.addActionListener(e -> JOptionPane.showMessageDialog(null, "Displaying records."));
-
-                profilePopupMenu.add(recordsMenuItem);
-                profilePopupMenu.add(logoutMenuItem);
-
-                profileLogoButton.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        if (SwingUtilities.isLeftMouseButton(e)) {
-                            profilePopupMenu.show(e.getComponent(), e.getX(), e.getY());
-                        }
-                    }
-                });
+                // Add action listener to open the menu
+                profileLogoButton.addActionListener(e -> toggleMenu());
 
             } catch (IOException e) {
                 System.out.println(e);
-                profileLogoButton = new JButton("Profile"); // Fallback button in case of error
             }
         } else {
             // If the user is not logged in, show a "Login" button
@@ -113,7 +104,7 @@ public final class HeaderButtons {
         return profileLogoButton;
     }
 
-    // Helper method to style buttons (based on your existing createStyledButton method)
+    // Helper method to style buttons
     private JButton createStyledButton(JButton button, String foregroundColor, String backgroundColor) {
         button.setForeground(Color.decode(foregroundColor));
         button.setBackground(Color.decode(backgroundColor));
@@ -122,6 +113,7 @@ public final class HeaderButtons {
         return button;
     }
 
+    // Create the "EventEase" logo
     public static JLabel createEventEaseLogo() {
         JLabel eventEaseLogo = new JLabel("EventEase", SwingConstants.CENTER);
         eventEaseLogo.setFont(new Font("SansSerif", Font.BOLD, 22));
@@ -131,11 +123,42 @@ public final class HeaderButtons {
         return eventEaseLogo;
     }
 
+    // Create a simple menu panel
+    private void createMenuPanel() {
+        // Main menu panel
+        menuPanel = new JPanel();
+        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS)); // Use vertical BoxLayout for buttons
+        menuPanel.setBackground(Color.decode("#343a40")); // Menu background color
+        menuPanel.setPreferredSize(new Dimension(150, 200)); // Adjust size as needed
+        menuPanel.setVisible(false); // Initially hidden
+
+        
+    }
+
+    // Toggle the visibility of the menu (slide in/out effect)
+    private void toggleMenu() {
+        if (isMenuOpen) {
+            menuPanel.setVisible(false);
+        } else {
+            menuPanel.setVisible(true);
+        }
+        isMenuOpen = !isMenuOpen;
+
+        // Revalidate and repaint the parent frame to refresh the layout
+        parentFrame.revalidate();
+        parentFrame.repaint();
+    }
+
     public JButton getProfileLogoButton() {
         return profileLogoButton;
     }
 
     public JLabel getEventEaseLogo() {
         return eventEaseLogo; // Provide a getter for the logo
+    }
+
+    // Add the menu panel to the parent frame (you'll need to call this from your main window setup)
+    public void addMenuToFrame(JFrame frame) {
+        frame.add(menuPanel, BorderLayout.EAST); // Adjust the position as needed
     }
 }
