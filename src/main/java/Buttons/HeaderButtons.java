@@ -125,32 +125,71 @@ public final class HeaderButtons {
 
     // Create a simple menu panel
     private void createMenuPanel() {
-        // Main menu panel
+        // Main menu panel with BorderLayout to separate header and body
         menuPanel = new JPanel();
-        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS)); // Use vertical BoxLayout for buttons
-        menuPanel.setBackground(Color.decode("#343a40")); // Menu background color
+        menuPanel.setLayout(new BorderLayout()); // Use BorderLayout for header and body separation
         menuPanel.setPreferredSize(new Dimension(150, 200)); // Adjust size as needed
         menuPanel.setVisible(false); // Initially hidden
 
-        
+        // Header panel (fixed height)
+        JPanel headerPanel = new JPanel(); // Panel for header section
+        headerPanel.setBackground(Color.decode("#343a40")); // Set header background color (blue)
+        headerPanel.setPreferredSize(new Dimension(150, 80)); // Set header height to 50px
+
+        JButton profileLogoButton = getProfileLogoButton(); // Get the profile logo button
+        headerPanel.add(Box.createHorizontalStrut(60)); // Optional spacing to the right of the button
+        headerPanel.add(profileLogoButton, BorderLayout.EAST); // Add it to the header
+
+        // Add the headerPanel to the top of the menuPanel
+        menuPanel.add(headerPanel, BorderLayout.NORTH); // Add header to the top (north) position
+
+        // Body panel (remaining space)
+        JPanel bodyPanel = new JPanel(); // Panel for body section
+        bodyPanel.setLayout(new BoxLayout(bodyPanel, BoxLayout.Y_AXIS)); // Stack buttons vertically
+        bodyPanel.setBackground(Color.decode("#343a40")); // Set body background color (dark gray)
+
+        // Profile and Logout buttons for the body
+        JButton profileItem = createStyledButton(new JButton("Profile"), "#ffffff", "#343a40");
+        profileItem.addActionListener(e -> JOptionPane.showMessageDialog(null, "Profile clicked"));
+
+        JButton logoutItem = createStyledButton(new JButton("Logout"), "#ffffff", "#343a40");
+        logoutItem.addActionListener(e -> {
+            ValidateLogin.loggedInUserEmail = null; // Clear the logged-in email
+            JOptionPane.showMessageDialog(null, "Logged out successfully.");
+        });
+
+        // Add buttons to bodyPanel
+        profileItem.setAlignmentX(Component.CENTER_ALIGNMENT);
+        logoutItem.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bodyPanel.add(profileItem);
+        bodyPanel.add(Box.createVerticalStrut(5)); // Small gap between buttons
+        bodyPanel.add(logoutItem);
+
+        // Add the bodyPanel to the center of the menuPanel
+        menuPanel.add(bodyPanel, BorderLayout.CENTER); // Add body to the center (remaining space)
+
+        // Optionally add vertical glue at the bottom of bodyPanel if needed
+        bodyPanel.add(Box.createVerticalGlue());
     }
 
     // Toggle the visibility of the menu (slide in/out effect)
     private void toggleMenu() {
         if (isMenuOpen) {
+            // Hide the menu panel
             menuPanel.setVisible(false);
         } else {
+            // Show the menu panel
             menuPanel.setVisible(true);
         }
+        // Toggle the menu state
         isMenuOpen = !isMenuOpen;
 
-        // Revalidate and repaint the parent frame to refresh the layout
-        parentFrame.revalidate();
-        parentFrame.repaint();
+        // Since the menu is added to a JLayeredPane, no need to revalidate or repaint the entire frame.
+        // The layered pane will handle the visibility change automatically.
     }
 
     public JButton getProfileLogoButton() {
-        return profileLogoButton;
+        return createProfileLogoButton();
     }
 
     public JLabel getEventEaseLogo() {
@@ -159,6 +198,12 @@ public final class HeaderButtons {
 
     // Add the menu panel to the parent frame (you'll need to call this from your main window setup)
     public void addMenuToFrame(JFrame frame) {
-        frame.add(menuPanel, BorderLayout.EAST); // Adjust the position as needed
+        // Get the layered pane of the frame to add components on top of others
+        JLayeredPane layeredPane = frame.getLayeredPane();
+
+        // Set the menu panel position and layer
+        menuPanel.setBounds(690, 10, 150, 850); // Position and size for the menu panel
+        layeredPane.add(menuPanel, JLayeredPane.PALETTE_LAYER); // Add the menuPanel to the palette layer
     }
+
 }
