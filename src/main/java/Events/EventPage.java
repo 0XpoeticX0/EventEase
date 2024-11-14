@@ -81,7 +81,7 @@ public final class EventPage extends JFrame {
         loadEventCards(eventList.getEvents(6));
 
         // Set up the JFrame
-        setSize(800, 850);
+        setSize(850, 850);
         setLocationRelativeTo(null); // Center the window
         setResizable(false); // Make the window size fixed
         add(mainPanel); // Add the main panel to the JFrame
