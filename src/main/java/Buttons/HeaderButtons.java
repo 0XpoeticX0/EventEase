@@ -1,5 +1,6 @@
 package Buttons;
 
+import Events.EventPage;
 import Login.Login;
 import Login.ValidateLogin;
 import javax.swing.*;
@@ -153,9 +154,17 @@ public final class HeaderButtons {
         profileItem.addActionListener(e -> JOptionPane.showMessageDialog(null, "Profile clicked"));
 
         JButton logoutItem = createStyledButton(new JButton("Logout"), "#ffffff", "#343a40");
-        logoutItem.addActionListener(e -> {
-            ValidateLogin.loggedInUserEmail = null; // Clear the logged-in email
-            JOptionPane.showMessageDialog(null, "Logged out successfully.");
+        // Logout button action
+        logoutItem.addActionListener((ActionEvent e) -> {
+            // Clear the logged-in user information (if any)
+            ValidateLogin.loggedInUserEmail = null; // or any relevant user information
+            
+            // Close the current EventPage
+            parentFrame.dispose(); // Close the current frame, assuming parentFrame is EventPage
+            
+            // Open a new instance of the Login page
+            EventPage eventPage = new EventPage();
+            eventPage.setVisible(true);
         });
 
         // Add buttons to bodyPanel
