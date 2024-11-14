@@ -12,6 +12,10 @@ public class ValidateLogin {
     // SQL query to select password for an active user
     String query = "SELECT password FROM users WHERE email = ? AND status = 'active'";
 
+    // Static variable to store the logged-in user's email
+    public static String loggedInUserEmail = null;
+
+    // Method to validate the login
     public boolean validateLogin(String username, String password) {
         try (Connection conn = DatabaseConnect.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             // Set the email parameter (username) in the query
@@ -23,7 +27,9 @@ public class ValidateLogin {
                     String dbPassword = rs.getString("password"); // Get the hashed password from DB
                     // Use BCrypt to verify the entered password against the stored hashed password
                     if (PasswordUtils.verifyPassword(password, dbPassword)) {
-                        return true;  // Login successful
+                        // Login successful, store the email
+                        loggedInUserEmail = username;
+                        return true;
                     }
                 }
             }
@@ -32,6 +38,14 @@ public class ValidateLogin {
             JOptionPane.showMessageDialog(null, "Error connecting to the database.");
         }
 
-        return false;  // If the username or password is incorrect
+        // If the username or password is incorrect, clear the email
+        loggedInUserEmail = null;
+        return false;
     }
+
+    // Method to check if the user is logged in
+    public static boolean isLoggedIn() {
+        return loggedInUserEmail != null; // If email is not null, user is logged in
+    }
+
 }

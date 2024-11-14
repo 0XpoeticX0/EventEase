@@ -1,6 +1,7 @@
 package Buttons;
 
 import Login.Login;
+import Login.ValidateLogin;  // Import the ValidateLogin class to check the login status
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,48 +24,62 @@ public final class HeaderButtons {
         createProfileLogoButton();
         eventEaseLogo = createEventEaseLogo(); // Create and store the logo
     }
-     public HeaderButtons() {
+
+    public HeaderButtons() {
         createProfileLogoButton();
         eventEaseLogo = createEventEaseLogo(); // Create and store the logo
     }
 
     private JButton createProfileLogoButton() {
-        // Check if the user is logged in (this is a placeholder; replace with your actual login check)
-        boolean isLoggedIn = checkUserLoginStatus();
+        // Check if the user is logged in using ValidateLogin
+        boolean isLoggedIn = ValidateLogin.isLoggedIn();
 
         if (isLoggedIn) {
             // If the user is logged in, show the profile photo
             try {
-                BufferedImage originalImage = ImageIO.read(new File("src/main/java/Resources/Images/p.jpg"));
-                BufferedImage croppedImage = originalImage.getSubimage(1000, 1000, 2000, 2000);
+                BufferedImage originalImage = ImageIO.read(new File("src/main/java/Resorces/Images/p.jpg"));
+                BufferedImage croppedImage = originalImage.getSubimage(1000, 1000, 2000, 2000); // Cropping to a square
                 Image scaledImage = croppedImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
                 ImageIcon profileIcon = new ImageIcon(scaledImage);
 
                 profileLogoButton = new JButton(profileIcon) {
                     @Override
                     protected void paintComponent(Graphics g) {
+                        // Ensure the button remains circular
                         if (getIcon() != null) {
                             Graphics2D g2 = (Graphics2D) g.create();
-                            g2.setClip(new Ellipse2D.Float(0, 0, getWidth(), getHeight()));
+                            g2.setClip(new Ellipse2D.Float(0, 0, getWidth(), getHeight())); // Round the button's content
                             super.paintComponent(g2);
                             g2.dispose();
                         } else {
                             super.paintComponent(g);
                         }
                     }
+
+                    @Override
+                    public Dimension getPreferredSize() {
+                        // Set preferred size as square for a round shape
+                        return new Dimension(50, 50); // Maintain square size to ensure it's round
+                    }
                 };
 
-                profileLogoButton.setPreferredSize(new Dimension(50, 50));
+                profileLogoButton.setPreferredSize(new Dimension(50, 50)); // Set the size of the button
                 profileLogoButton.setBorderPainted(false);
                 profileLogoButton.setContentAreaFilled(false);
                 profileLogoButton.setFocusPainted(false);
+                profileLogoButton.setBackground(new Color(0, 0, 0, 0)); // Set transparent background
 
                 // Add popup menu for logged-in user
                 JPopupMenu profilePopupMenu = new JPopupMenu();
                 JMenuItem logoutMenuItem = new JMenuItem("Logout");
                 JMenuItem recordsMenuItem = new JMenuItem("Records");
 
-                logoutMenuItem.addActionListener(e -> JOptionPane.showMessageDialog(null, "Logged out successfully."));
+                logoutMenuItem.addActionListener(e -> {
+                    // You can handle the logout logic here
+                    ValidateLogin.loggedInUserEmail = null; // Clear the logged-in email on logout
+                    JOptionPane.showMessageDialog(null, "Logged out successfully.");
+                });
+
                 recordsMenuItem.addActionListener(e -> JOptionPane.showMessageDialog(null, "Displaying records."));
 
                 profilePopupMenu.add(recordsMenuItem);
@@ -80,6 +95,7 @@ public final class HeaderButtons {
                 });
 
             } catch (IOException e) {
+                System.out.println(e);
                 profileLogoButton = new JButton("Profile"); // Fallback button in case of error
             }
         } else {
@@ -95,12 +111,6 @@ public final class HeaderButtons {
         }
 
         return profileLogoButton;
-    }
-
-    // Placeholder method to check if the user is logged in
-    private boolean checkUserLoginStatus() {
-        // Replace with actual login logic
-        return false; // Return true if the user is logged in, otherwise false
     }
 
     // Helper method to style buttons (based on your existing createStyledButton method)
