@@ -222,9 +222,7 @@ public class RegistrationPage extends JFrame implements ActionListener {
                         JOptionPane.INFORMATION_MESSAGE,
                         icon);
             } catch (SQLException err) {
-                err.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Registration failed due to database error.", "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Already Exist A user Under Same Email");
             }
 
         }

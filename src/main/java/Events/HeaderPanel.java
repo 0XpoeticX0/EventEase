@@ -9,7 +9,6 @@ import javax.swing.border.EmptyBorder;
 
 public class HeaderPanel extends JPanel {
 
-    private final HeaderButtons headerButtons;
     private final JButton eventsButton;
     private final JButton aboutUsButton;
     private final JButton contactUsButton;
@@ -24,9 +23,12 @@ public class HeaderPanel extends JPanel {
         setBorder(new EmptyBorder(10, 10, 10, 10));
 
         // Initialize HeaderButtons with reference to parentFrame
-        headerButtons = new HeaderButtons(parentFrame);
+        HeaderButtons headerButtons = new HeaderButtons(parentFrame);
+        headerButtons.addMenuToFrame(parentFrame);
+
 
         // Add EventEase logo
+        add(Box.createHorizontalStrut(-15)); // Horizontal spacing
         add(headerButtons.getEventEaseLogo());
         add(Box.createHorizontalStrut(50)); // Horizontal spacing
 

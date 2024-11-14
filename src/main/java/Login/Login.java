@@ -1,5 +1,6 @@
 package Login;
 
+import Events.EventPage;
 import Registration.RegistrationPage;
 import javax.swing.*;
 import java.awt.*;
@@ -201,7 +202,13 @@ public class Login extends JFrame {
             ValidateLogin validator = new ValidateLogin();
 
             if (validator.validateLogin(username, password)) {
-                JOptionPane.showMessageDialog(mainPanel, "Login successful!");
+                // Open the EventPage after successful login
+                EventPage eventPage = new EventPage(); // Instantiate the EventPage
+                eventPage.setVisible(true); // Show the EventPage
+
+                // Close the current login window
+                dispose(); // Close the login frame
+
             } else {
                 JOptionPane.showMessageDialog(mainPanel, "Username or password invalid.");
             }
