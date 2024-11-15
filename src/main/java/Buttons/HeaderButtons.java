@@ -18,6 +18,7 @@ public final class HeaderButtons {
     private final JLabel eventEaseLogo; // Store the logo here
     private JFrame parentFrame = null; // Reference to the parent frame
     private JPanel menuPanel; // Panel that will hold the menu options
+    private JPanel overlayPanel; // Transparent overlay panel
     private boolean isMenuOpen = false; // To track if the menu is open or closed
 
     public HeaderButtons(JFrame parentFrame) {
@@ -25,24 +26,14 @@ public final class HeaderButtons {
         createProfileLogoButton();
         eventEaseLogo = createEventEaseLogo(); // Create and store the logo
         createMenuPanel(); // Initialize the menu panel
-
-        // Add MouseListener to the parent frame to close the menu if clicked outside
-        parentFrame.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (isMenuOpen && !menuPanel.getBounds().contains(e.getPoint())
-                        && !profileLogoButton.getBounds().contains(e.getPoint())) {
-                    // Close the menu if clicked outside
-                    toggleMenu();
-                }
-            }
-        });
+        createOverlayPanel(); // Initialize the overlay panel
     }
 
     public HeaderButtons() {
         createProfileLogoButton();
         eventEaseLogo = createEventEaseLogo(); // Create and store the logo
         createMenuPanel(); // Initialize the menu panel
+        createOverlayPanel(); // Initialize the overlay panel
     }
 
     private JButton createProfileLogoButton() {
@@ -158,10 +149,10 @@ public final class HeaderButtons {
         logoutItem.addActionListener((ActionEvent e) -> {
             // Clear the logged-in user information (if any)
             ValidateLogin.loggedInUserEmail = null; // or any relevant user information
-            
+
             // Close the current EventPage
             parentFrame.dispose(); // Close the current frame, assuming parentFrame is EventPage
-            
+
             // Open a new instance of the Login page
             EventPage eventPage = new EventPage();
             eventPage.setVisible(true);
@@ -181,20 +172,28 @@ public final class HeaderButtons {
         bodyPanel.add(Box.createVerticalGlue());
     }
 
-    // Toggle the visibility of the menu (slide in/out effect)
-    private void toggleMenu() {
-        if (isMenuOpen) {
-            // Hide the menu panel
-            menuPanel.setVisible(false);
-        } else {
-            // Show the menu panel
-            menuPanel.setVisible(true);
-        }
-        // Toggle the menu state
-        isMenuOpen = !isMenuOpen;
+    // Create the overlay panel
+    private void createOverlayPanel() {
+        overlayPanel = new JPanel();
+        overlayPanel.setBackground(new Color(0, 0, 0, 100)); // Semi-transparent black
+        overlayPanel.setOpaque(true);
+        overlayPanel.setVisible(false);
 
-        // Since the menu is added to a JLayeredPane, no need to revalidate or repaint the entire frame.
-        // The layered pane will handle the visibility change automatically.
+        overlayPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (isMenuOpen) {
+                    toggleMenu(); // Close menu when clicking on the overlay
+                }
+            }
+        });
+    }
+
+    // Toggle menu and overlay visibility
+    private void toggleMenu() {
+        isMenuOpen = !isMenuOpen;
+        menuPanel.setVisible(isMenuOpen);
+        overlayPanel.setVisible(isMenuOpen);
     }
 
     public JButton getProfileLogoButton() {
@@ -202,17 +201,19 @@ public final class HeaderButtons {
     }
 
     public JLabel getEventEaseLogo() {
-        return eventEaseLogo; // Provide a getter for the logo
+        return eventEaseLogo;
     }
 
-    // Add the menu panel to the parent frame (you'll need to call this from your main window setup)
+    // Add components to the parent frame
     public void addMenuToFrame(JFrame frame) {
-        // Get the layered pane of the frame to add components on top of others
         JLayeredPane layeredPane = frame.getLayeredPane();
 
-        // Set the menu panel position and layer
-        menuPanel.setBounds(690, 10, 150, 850); // Position and size for the menu panel
-        layeredPane.add(menuPanel, JLayeredPane.PALETTE_LAYER); // Add the menuPanel to the palette layer
-    }
+        // Set overlay and menu bounds
+        overlayPanel.setBounds(0, 0, 690, 850);
+        menuPanel.setBounds(690, 10, 150, 850);
 
+        // Add components to layered pane
+        layeredPane.add(overlayPanel, JLayeredPane.DEFAULT_LAYER); // Lower layer for overlay
+        layeredPane.add(menuPanel, JLayeredPane.POPUP_LAYER);      // Higher layer for menu
+    }
 }
