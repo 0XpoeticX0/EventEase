@@ -111,6 +111,11 @@ public class AdminDash extends javax.swing.JFrame {
         jButton4.setBorder(null);
         jButton4.setContentAreaFilled(false);
         jButton4.setIconTextGap(15);
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton4MouseClicked(evt);
+            }
+        });
 
         jButton5.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
@@ -260,6 +265,12 @@ public class AdminDash extends javax.swing.JFrame {
         ViewEventsJP.setVisible(true);
         AddNewEvent.setVisible(false);
     }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+        ManageUserJP.setVisible(false);
+        ViewEventsJP.setVisible(false);
+        AddNewEvent.setVisible(true);
+    }//GEN-LAST:event_jButton4MouseClicked
 
     /**
      * @param args the command line arguments
