@@ -23,7 +23,7 @@ public class RegistrationPage extends JFrame implements ActionListener {
 
     public RegistrationPage() {
         setTitle("User Registration");
-        setSize(500, 500);
+        setSize(850, 850);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
