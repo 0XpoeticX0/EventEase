@@ -237,6 +237,9 @@
             <Property name="contentAreaFilled" type="boolean" value="false"/>
             <Property name="iconTextGap" type="int" value="15"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton4MouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton5">
           <Properties>
