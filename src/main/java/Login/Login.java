@@ -18,7 +18,7 @@ public class Login extends JFrame {
 
     public Login() {
         setTitle("Login Interface");
-        setSize(700, 600);
+        setSize(850, 850);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
