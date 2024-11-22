@@ -37,8 +37,11 @@ public class AdminDash extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         ManageUserJP = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         ViewEventsJP = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
         AddNewEvent = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(850, 850));
@@ -180,15 +183,25 @@ public class AdminDash extends javax.swing.JFrame {
         ManageUserJP.setBackground(new java.awt.Color(153, 255, 255));
         ManageUserJP.setPreferredSize(new java.awt.Dimension(580, 850));
 
+        jLabel2.setFont(new java.awt.Font("Cambria", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Manage Users");
+
         javax.swing.GroupLayout ManageUserJPLayout = new javax.swing.GroupLayout(ManageUserJP);
         ManageUserJP.setLayout(ManageUserJPLayout);
         ManageUserJPLayout.setHorizontalGroup(
             ManageUserJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 580, Short.MAX_VALUE)
+            .addGroup(ManageUserJPLayout.createSequentialGroup()
+                .addGap(206, 206, 206)
+                .addComponent(jLabel2)
+                .addContainerGap(220, Short.MAX_VALUE))
         );
         ManageUserJPLayout.setVerticalGroup(
             ManageUserJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 850, Short.MAX_VALUE)
+            .addGroup(ManageUserJPLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addContainerGap(815, Short.MAX_VALUE))
         );
 
         jPanel2.add(ManageUserJP);
@@ -196,15 +209,25 @@ public class AdminDash extends javax.swing.JFrame {
         ViewEventsJP.setBackground(new java.awt.Color(153, 153, 255));
         ViewEventsJP.setPreferredSize(new java.awt.Dimension(580, 850));
 
+        jLabel4.setFont(new java.awt.Font("Cambria", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("View All Events");
+
         javax.swing.GroupLayout ViewEventsJPLayout = new javax.swing.GroupLayout(ViewEventsJP);
         ViewEventsJP.setLayout(ViewEventsJPLayout);
         ViewEventsJPLayout.setHorizontalGroup(
             ViewEventsJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 580, Short.MAX_VALUE)
+            .addGroup(ViewEventsJPLayout.createSequentialGroup()
+                .addGap(203, 203, 203)
+                .addComponent(jLabel4)
+                .addContainerGap(207, Short.MAX_VALUE))
         );
         ViewEventsJPLayout.setVerticalGroup(
             ViewEventsJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 850, Short.MAX_VALUE)
+            .addGroup(ViewEventsJPLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addContainerGap(815, Short.MAX_VALUE))
         );
 
         jPanel2.add(ViewEventsJP);
@@ -212,15 +235,25 @@ public class AdminDash extends javax.swing.JFrame {
         AddNewEvent.setBackground(new java.awt.Color(204, 102, 255));
         AddNewEvent.setPreferredSize(new java.awt.Dimension(580, 850));
 
+        jLabel5.setFont(new java.awt.Font("Cambria", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Add New Event");
+
         javax.swing.GroupLayout AddNewEventLayout = new javax.swing.GroupLayout(AddNewEvent);
         AddNewEvent.setLayout(AddNewEventLayout);
         AddNewEventLayout.setHorizontalGroup(
             AddNewEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 580, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddNewEventLayout.createSequentialGroup()
+                .addContainerGap(208, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addGap(206, 206, 206))
         );
         AddNewEventLayout.setVerticalGroup(
             AddNewEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 850, Short.MAX_VALUE)
+            .addGroup(AddNewEventLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addContainerGap(815, Short.MAX_VALUE))
         );
 
         jPanel2.add(AddNewEvent);
@@ -317,7 +350,10 @@ public class AdminDash extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
