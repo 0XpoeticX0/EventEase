@@ -164,17 +164,17 @@ public class UserDash extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel2.setPreferredSize(new java.awt.Dimension(550, 850));
+        jPanel2.setPreferredSize(new java.awt.Dimension(580, 850));
         jPanel2.setLayout(new javax.swing.OverlayLayout(jPanel2));
 
         homeJP.setBackground(new java.awt.Color(153, 153, 255));
-        homeJP.setPreferredSize(new java.awt.Dimension(850, 850));
+        homeJP.setPreferredSize(new java.awt.Dimension(580, 850));
 
         javax.swing.GroupLayout homeJPLayout = new javax.swing.GroupLayout(homeJP);
         homeJP.setLayout(homeJPLayout);
         homeJPLayout.setHorizontalGroup(
             homeJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 550, Short.MAX_VALUE)
+            .addGap(0, 580, Short.MAX_VALUE)
         );
         homeJPLayout.setVerticalGroup(
             homeJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,13 +184,13 @@ public class UserDash extends javax.swing.JFrame {
         jPanel2.add(homeJP);
 
         profileJP.setBackground(new java.awt.Color(255, 102, 255));
-        profileJP.setPreferredSize(new java.awt.Dimension(595, 425));
+        profileJP.setPreferredSize(new java.awt.Dimension(580, 850));
 
         javax.swing.GroupLayout profileJPLayout = new javax.swing.GroupLayout(profileJP);
         profileJP.setLayout(profileJPLayout);
         profileJPLayout.setHorizontalGroup(
             profileJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 550, Short.MAX_VALUE)
+            .addGap(0, 580, Short.MAX_VALUE)
         );
         profileJPLayout.setVerticalGroup(
             profileJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,13 +200,13 @@ public class UserDash extends javax.swing.JFrame {
         jPanel2.add(profileJP);
 
         bookingJP.setBackground(new java.awt.Color(51, 255, 0));
-        bookingJP.setPreferredSize(new java.awt.Dimension(595, 425));
+        bookingJP.setPreferredSize(new java.awt.Dimension(580, 850));
 
         javax.swing.GroupLayout bookingJPLayout = new javax.swing.GroupLayout(bookingJP);
         bookingJP.setLayout(bookingJPLayout);
         bookingJPLayout.setHorizontalGroup(
             bookingJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 550, Short.MAX_VALUE)
+            .addGap(0, 580, Short.MAX_VALUE)
         );
         bookingJPLayout.setVerticalGroup(
             bookingJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
