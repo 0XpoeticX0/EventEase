@@ -28,7 +28,6 @@ public class HeaderPanel extends JPanel {
 
 
         // Add EventEase logo
-        add(Box.createHorizontalStrut(-15)); // Horizontal spacing
         add(headerButtons.getEventEaseLogo());
         add(Box.createHorizontalStrut(50)); // Horizontal spacing
 
