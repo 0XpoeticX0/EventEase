@@ -8,7 +8,7 @@ public class DatabaseConfig {
     private static final Properties properties = new Properties();
 
     static {
-        try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
+        try (InputStream input = new FileInputStream("src/main/Resources/config.properties")) {
             properties.load(input);
         } catch (IOException e) {
             e.printStackTrace();

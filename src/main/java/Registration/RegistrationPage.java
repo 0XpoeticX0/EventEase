@@ -12,6 +12,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import Login.Login;
 
 public class RegistrationPage extends JFrame implements ActionListener {
 
@@ -221,6 +222,10 @@ public class RegistrationPage extends JFrame implements ActionListener {
                         "Registration Details",
                         JOptionPane.INFORMATION_MESSAGE,
                         icon);
+                
+                Login loginInterface = new Login();
+                loginInterface.setVisible(true); // Show the login frame
+                this.dispose(); // Close the current frame                   
             } catch (SQLException err) {
                 JOptionPane.showMessageDialog(this, "Already Exist A user Under Same Email");
             }
