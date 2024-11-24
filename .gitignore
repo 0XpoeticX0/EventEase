@@ -2,7 +2,7 @@
 target/
 
 #Ignore config.properties
-config.properties
+src/main/resources/config.properties
 
 # Ignore Eclipse files
 .classpath
