@@ -25,6 +25,7 @@ public class ValidateLogin {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     String dbPassword = rs.getString("password"); // Get the hashed password from DB
+
                     // Use BCrypt to verify the entered password against the stored hashed password
                     if (PasswordUtils.verifyPassword(password, dbPassword)) {
                         // Login successful, store the email
