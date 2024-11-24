@@ -2,15 +2,19 @@ package Login;
 
 import DataBase.DatabaseConnect;
 import javax.swing.JOptionPane;
+
+import CurrentUser.CurrentUser;
+import DataBase.LoggedInUser; // Import the LoggedInUser singleton
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import utils.PasswordUtils; // Import the PasswordUtils class
+import utils.PasswordUtils;
 
 public class ValidateLogin {
     // SQL query to select password for an active user
-    String query = "SELECT password FROM users WHERE email = ? AND status = 'active'";
+    String query = "SELECT password, firstname, lastname, email, mobileNumber, image, age, role FROM users WHERE email = ? AND status = 'active'";
 
     // Static variable to store the logged-in user's email
     public static String loggedInUserEmail = null;
@@ -30,7 +34,28 @@ public class ValidateLogin {
                     if (PasswordUtils.verifyPassword(password, dbPassword)) {
                         // Login successful, store the email
                         loggedInUserEmail = username;
-                        return true;
+
+                        // Update the database to set islogin = true
+                        String updateLoginStatusQuery = "UPDATE users SET islogin = true, last_login = NOW() WHERE email = ?";
+                        try (PreparedStatement updateStmt = conn.prepareStatement(updateLoginStatusQuery)) {
+                            updateStmt.setString(1, username);
+                            updateStmt.executeUpdate();
+                        }
+
+                        // Create the CurrentUser object
+                        CurrentUser loggedInUser = new CurrentUser(
+                                rs.getString("firstname"),
+                                rs.getString("lastname"),
+                                rs.getString("email"),
+                                rs.getString("mobileNumber"),
+                                rs.getString("image"),
+                                rs.getInt("age"),
+                                rs.getString("role"));
+
+                        // Set the current user in the LoggedInUser singleton
+                        LoggedInUser.getInstance().setCurrentUser(loggedInUser);
+
+                        return true; // Login successful
                     }
                 }
             }
@@ -48,5 +73,4 @@ public class ValidateLogin {
     public static boolean isLoggedIn() {
         return loggedInUserEmail != null; // If email is not null, user is logged in
     }
-
 }

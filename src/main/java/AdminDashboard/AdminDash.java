@@ -15,6 +15,7 @@ public class AdminDash extends javax.swing.JFrame {
      */
     public AdminDash() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**

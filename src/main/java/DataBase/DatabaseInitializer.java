@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import CurrentUser.CurrentUser;
 import utils.PasswordUtils;
 
 import java.sql.SQLException;
@@ -13,22 +14,22 @@ public class DatabaseInitializer {
 
     public static void initializeDatabase() {
         String createUsersTable = """
-                                CREATE TABLE IF NOT EXISTS users (
-                                    u_id INT AUTO_INCREMENT PRIMARY KEY,
-                                    firstname VARCHAR(100) NOT NULL,
-                                    lastname VARCHAR(100) NOT NULL,
-                                    email VARCHAR(255) UNIQUE NOT NULL,
-                                    mobileNumber VARCHAR(15),
-                                    password VARCHAR(255) NOT NULL,
-                                    age INT CHECK (age >= 18),
-                                    role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
-                                    status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
-                                    image VARCHAR(255) DEFAULT 'src/main/java/Resorces/Images/demoUser.png',
-                                     islogin BOOLEAN DEFAULT false,
-                last_login TIMESTAMP DEFAULT NULL,
-                last_logout TIMESTAMP DEFAULT NULL
-                                );
-                            """;
+                    CREATE TABLE IF NOT EXISTS users (
+                        u_id INT AUTO_INCREMENT PRIMARY KEY,
+                        firstname VARCHAR(100) NOT NULL,
+                        lastname VARCHAR(100) NOT NULL,
+                        email VARCHAR(255) UNIQUE NOT NULL,
+                        mobileNumber VARCHAR(15),
+                        password VARCHAR(255) NOT NULL,
+                        age INT CHECK (age >= 18),
+                        role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
+                        status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+                        image VARCHAR(255) DEFAULT 'src/main/java/Resorces/Images/demoUser.png',
+                        islogin BOOLEAN DEFAULT false,
+                        last_login TIMESTAMP DEFAULT NULL,
+                        last_logout TIMESTAMP DEFAULT NULL
+                    );
+                """;
 
         String createEventsTable = """
                     CREATE TABLE IF NOT EXISTS events (
@@ -77,13 +78,14 @@ public class DatabaseInitializer {
         try (Connection connection = DatabaseConnect.getConnection();
                 Statement statement = connection.createStatement()) {
 
+            // Execute table creation queries
             statement.executeUpdate(createEventsTable);
             statement.executeUpdate(createUsersTable);
 
+            // Check if an admin exists; if not, create it
             String checkAdminQuery = "SELECT COUNT(*) AS rowCount FROM users WHERE role = 'admin'";
             try (ResultSet resultSet = statement.executeQuery(checkAdminQuery)) {
                 if (resultSet.next() && resultSet.getInt("rowCount") == 0) {
-                    // Admin does not exist; insert admin
                     try (PreparedStatement adminStmt = connection.prepareStatement(insertAdminUser)) {
                         adminStmt.setString(1, "Utsho");
                         adminStmt.setString(2, "Roy");
@@ -99,6 +101,7 @@ public class DatabaseInitializer {
                 }
             }
 
+            // Check if events table is empty, and if so, insert default events
             String countQuery = "SELECT COUNT(*) AS rowCount FROM events";
             ResultSet countResultSet = statement.executeQuery(countQuery);
             if (countResultSet.next() && countResultSet.getInt("rowCount") == 0) {
@@ -106,7 +109,25 @@ public class DatabaseInitializer {
                 statement.executeUpdate(insertQuery);
             }
 
-            // Execute table creation queries
+            // Query to check if there are any users who are logged in
+            String getLoggedInUsersQuery = "SELECT * FROM users WHERE islogin = true LIMIT 1";
+            try (ResultSet loggedInUsersResultSet = statement.executeQuery(getLoggedInUsersQuery)) {
+                if (loggedInUsersResultSet.next()) {
+                    // If a logged-in user is found, create a CurrentUser object
+                    CurrentUser currentUser = new CurrentUser(
+                            loggedInUsersResultSet.getString("firstname"),
+                            loggedInUsersResultSet.getString("lastname"),
+                            loggedInUsersResultSet.getString("email"),
+                            loggedInUsersResultSet.getString("mobileNumber"),
+                            loggedInUsersResultSet.getString("image"),
+                            loggedInUsersResultSet.getInt("age"),
+                            loggedInUsersResultSet.getString("role"));
+
+                    // Set the current user in the LoggedInUser singleton
+                    LoggedInUser.getInstance().setCurrentUser(currentUser);
+                }
+            }
+
             System.out.println("Database tables initialized successfully.");
 
         } catch (SQLException e) {
