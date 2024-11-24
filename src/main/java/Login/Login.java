@@ -3,6 +3,7 @@ package Login;
 import Events.EventPage;
 import Registration.RegistrationPage;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -49,25 +50,25 @@ public class Login extends JFrame {
         usernamePanel.setPreferredSize(fixedSize);
         usernamePanel.setMinimumSize(fixedSize);
         usernamePanel.setMaximumSize(fixedSize);
-        usernamePanel.setOpaque(false);  // Make it transparent to match the background
+        usernamePanel.setOpaque(false); // Make it transparent to match the background
 
-// Username field with fixed size and font
+        // Username field with fixed size and font
         usernameField = new JTextField(15);
         usernameField.setFont(new Font("Arial", Font.PLAIN, 19));
         usernameField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         usernameField.setPreferredSize(fixedSize);
         usernameField.setBounds(0, 0, fixedSize.width, fixedSize.height);
 
-// Add username field to the username panel
+        // Add username field to the username panel
         usernamePanel.add(usernameField);
 
-// Password layered panel with fixed size
+        // Password layered panel with fixed size
         JLayeredPane passwordLayeredPane = new JLayeredPane();
         passwordLayeredPane.setPreferredSize(fixedSize);
         passwordLayeredPane.setMinimumSize(fixedSize);
         passwordLayeredPane.setMaximumSize(fixedSize);
 
-// Password field
+        // Password field
         passwordField = new JPasswordField(15);
         passwordField.setFont(new Font("Arial", Font.PLAIN, 19));
         passwordField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
@@ -77,36 +78,37 @@ public class Login extends JFrame {
         passwordField.setBounds(0, 0, fixedSize.width, fixedSize.height);
         passwordField.setEchoChar('\u2022'); // Set default masking character
 
-// Checkbox overlay
+        // Checkbox overlay
         JCheckBox togglePasswordCheckbox = new JCheckBox();
         togglePasswordCheckbox.setOpaque(false); // Transparent background for the checkbox
         togglePasswordCheckbox.setFocusable(false);
         togglePasswordCheckbox.setBorder(null); // Remove border for a cleaner look
-        togglePasswordCheckbox.setBounds(fixedSize.width - 21, (fixedSize.height - 20) / 2, 20, 20); // Align to the middle-right
+        togglePasswordCheckbox.setBounds(fixedSize.width - 21, (fixedSize.height - 20) / 2, 20, 20); // Align to the
+                                                                                                     // middle-right
 
-// Create a filled white square for the unchecked icon
+        // Create a filled white square for the unchecked icon
         Icon uncheckedIcon = new ImageIcon(new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB) {
             {
                 Graphics2D g2 = createGraphics();
                 g2.setColor(Color.WHITE);
                 g2.fillRect(3, 3, 12, 12); // Fill the square with white
-                g2.setColor(Color.BLACK);  // Border color
+                g2.setColor(Color.BLACK); // Border color
                 g2.drawRect(3, 3, 12, 12); // Draw border
                 g2.dispose();
             }
         });
 
-// Create a filled white square with a black checkmark for the checked icon
+        // Create a filled white square with a black checkmark for the checked icon
         Icon checkedIcon = new ImageIcon(new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB) {
             {
                 Graphics2D g2 = createGraphics();
                 g2.setColor(Color.WHITE);
                 g2.fillRect(2, 2, 16, 16); // Fill the square with white
-                g2.setColor(Color.BLACK);  // Border color
+                g2.setColor(Color.BLACK); // Border color
                 g2.drawRect(2, 2, 16, 16); // Draw border
 
                 // Set the stroke (line width) to make the checkmark bolder
-                g2.setStroke(new BasicStroke(2));  // 3 pixels thickness for bolder lines
+                g2.setStroke(new BasicStroke(2)); // 3 pixels thickness for bolder lines
 
                 // Draw the checkmark with the bolder lines
                 g2.drawLine(5, 10, 9, 14); // Draw first line of checkmark
@@ -116,14 +118,14 @@ public class Login extends JFrame {
             }
         });
 
-// Set the custom icons for the checkbox
+        // Set the custom icons for the checkbox
         togglePasswordCheckbox.setIcon(uncheckedIcon);
         togglePasswordCheckbox.setSelectedIcon(checkedIcon);
         // Add checkbox action listener to toggle password visibility
         togglePasswordCheckbox
                 .addActionListener(e -> togglePasswordVisibility());
 
-// Add password field and checkbox to the layered pane
+        // Add password field and checkbox to the layered pane
         passwordLayeredPane.add(passwordField, JLayeredPane.DEFAULT_LAYER);
         passwordLayeredPane.add(togglePasswordCheckbox, JLayeredPane.PALETTE_LAYER);
 

@@ -2,13 +2,21 @@ package Buttons;
 
 import Events.EventPage;
 import Login.Login;
-import Login.ValidateLogin;
 import javax.swing.*;
+
+import AdminDashboard.AdminDash;
+import CurrentUser.CurrentUser;
+import DataBase.DatabaseConnect;
+import DataBase.LoggedInUser;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.awt.image.BufferedImage;
 import java.awt.geom.Ellipse2D;
 import UserDashboard.UserDash;
@@ -37,26 +45,53 @@ public final class HeaderButtons {
         createOverlayPanel(); // Initialize the overlay panel
     }
 
+    CurrentUser currentUser = LoggedInUser.getInstance().getCurrentUser();
+
     private JButton createProfileLogoButton() {
         // Check if the user is logged in using ValidateLogin
-        boolean isLoggedIn = ValidateLogin.isLoggedIn();
+        // boolean isLoggedIn = ValidateLogin.isLoggedIn();
 
-        if (isLoggedIn) {
+        if (currentUser != null) {
             // If the user is logged in, show the profile photo
             try {
-                BufferedImage originalImage = ImageIO.read(new File("src/main/java/Resorces/Images/p.jpg"));
-                BufferedImage croppedImage = originalImage.getSubimage(1000, 1000, 2000, 2000); // Cropping to a square
+                // Get the image path; if user image is null, use default image
+                String imagePath = currentUser.getImage() != null ? currentUser.getImage()
+                        : "src/main/java/Resorces/Images/p.jpg";
+
+                // Load the image
+                BufferedImage originalImage = ImageIO.read(new File(imagePath));
+
+                // Determine the cropping size based on the image's dimensions
+                int width = originalImage.getWidth();
+                int height = originalImage.getHeight();
+
+                // If the image is too small to crop, we'll just use the full image
+                int cropSize = Math.min(width, height);
+
+                // Crop the image to a square (use the top-left corner for simplicity)
+                BufferedImage croppedImage = originalImage.getSubimage(0, 0, cropSize, cropSize);
+
+                // Resize the cropped image to 50x50 pixels
                 Image scaledImage = croppedImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
                 ImageIcon profileIcon = new ImageIcon(scaledImage);
 
+                // Create the profile button with circular shape
                 profileLogoButton = new JButton(profileIcon) {
                     @Override
                     protected void paintComponent(Graphics g) {
                         // Ensure the button remains circular
                         if (getIcon() != null) {
                             Graphics2D g2 = (Graphics2D) g.create();
-                            g2.setClip(new Ellipse2D.Float(0, 0, getWidth(), getHeight())); // Round the button's content
-                            super.paintComponent(g2);
+
+                            // Set the clip to circular
+                            g2.setClip(new Ellipse2D.Float(0, 0, getWidth(), getHeight()));
+
+                            // Center the image in the circular button
+                            int x = (getWidth() - profileIcon.getIconWidth()) / 2; // Center horizontally
+                            int y = (getHeight() - profileIcon.getIconHeight()) / 2; // Center vertically
+                            g2.drawImage(profileIcon.getImage(), x, y, this); // Draw the image at the calculated
+                                                                              // position
+
                             g2.dispose();
                         } else {
                             super.paintComponent(g);
@@ -70,18 +105,32 @@ public final class HeaderButtons {
                     }
                 };
 
+                // Set properties for the profile button
                 profileLogoButton.setPreferredSize(new Dimension(50, 50)); // Set the size of the button
                 profileLogoButton.setBorderPainted(false);
                 profileLogoButton.setContentAreaFilled(false);
                 profileLogoButton.setFocusPainted(false);
                 profileLogoButton.setBackground(new Color(0, 0, 0, 0)); // Set transparent background
 
-                // Add action listener to open the menu
+                // Add action listener to open the menu (toggleMenu method should be implemented
+                // elsewhere)
                 profileLogoButton.addActionListener(e -> toggleMenu());
 
             } catch (IOException e) {
-                System.out.println(e);
+                e.printStackTrace(); // Log the exception
+                // Optionally, handle the error by setting a fallback image or showing a default
+                // icon
+                try {
+                    BufferedImage defaultImage = ImageIO.read(new File("src/main/java/Resorces/Images/p.jpg"));
+                    Image scaledImage = defaultImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+                    ImageIcon profileIcon = new ImageIcon(scaledImage);
+
+                    profileLogoButton = new JButton(profileIcon);
+                } catch (IOException ex) {
+                    ex.printStackTrace(); // Log the second exception if it occurs
+                }
             }
+
         } else {
             // If the user is not logged in, show a "Login" button
             profileLogoButton = createStyledButton(new JButton("Login"), "#ffffff", "#343a40");
@@ -146,10 +195,19 @@ public final class HeaderButtons {
         JButton profileItem = createStyledButton(new JButton("Profile"), "#ffffff", "#343a40");
         profileItem.addActionListener(e -> {
             // Create and show the UserDash JFrame
-            UserDash dashboard = new UserDash(); // This is generated by NetBeans from your .form file
+
+            UserDash u_dashboard = new UserDash(); // This is generated by NetBeans from your .form file
+            AdminDash a_dashboard = new AdminDash(); // This is generated by NetBeans from your .form file
 
             // Make the dashboard visible
-            dashboard.setVisible(true);
+            if (currentUser.getRole().equals("user")) {
+                u_dashboard.setVisible(true);
+                a_dashboard.setVisible(false);
+            } else {
+                a_dashboard.setVisible(true);
+                u_dashboard.setVisible(false);
+
+            }
 
             // Close the parent frame if it is not null
             if (parentFrame != null) {
@@ -161,7 +219,31 @@ public final class HeaderButtons {
         // Logout button action
         logoutItem.addActionListener((ActionEvent e) -> {
             // Clear the logged-in user information (if any)
-            ValidateLogin.loggedInUserEmail = null; // or any relevant user information
+            if (currentUser != null) {
+                // Prepare the SQL query to update the user's login status and last_logout
+                // timestamp
+                String updateQuery = "UPDATE users SET islogin = false, last_logout = NOW() WHERE email = ?";
+
+                try (Connection conn = DatabaseConnect.getConnection();
+                        PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
+
+                    // Set the email parameter (from currentUser) in the query
+                    stmt.setString(1, currentUser.getEmail());
+
+                    // Execute the update query
+                    int rowsUpdated = stmt.executeUpdate();
+                    if (rowsUpdated > 0) {
+                        System.out.println("User logout successfully updated in the database.");
+                    }
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    System.out.println("Error updating logout status in the database.");
+                }
+
+                // Clear the logged-in user information by resetting the singleton
+                LoggedInUser.getInstance().resetCurrentUser();
+            } // or any relevant user information
 
             // Close the current EventPage
             parentFrame.dispose(); // Close the current frame, assuming parentFrame is EventPage
@@ -227,6 +309,6 @@ public final class HeaderButtons {
 
         // Add components to layered pane
         layeredPane.add(overlayPanel, JLayeredPane.DEFAULT_LAYER); // Lower layer for overlay
-        layeredPane.add(menuPanel, JLayeredPane.POPUP_LAYER);      // Higher layer for menu
+        layeredPane.add(menuPanel, JLayeredPane.POPUP_LAYER); // Higher layer for menu
     }
 }
