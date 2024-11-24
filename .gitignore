@@ -1,6 +1,9 @@
 # Ignore Maven target directory (build artifacts)
 target/
 
+#Ignore config.properties
+config.properties
+
 # Ignore Eclipse files
 .classpath
 .project

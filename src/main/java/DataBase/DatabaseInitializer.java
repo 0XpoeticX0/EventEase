@@ -1,27 +1,34 @@
 package DataBase;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+import utils.PasswordUtils;
+
 import java.sql.SQLException;
 
 public class DatabaseInitializer {
 
     public static void initializeDatabase() {
         String createUsersTable = """
-                    CREATE TABLE IF NOT EXISTS users (
-                        u_id INT AUTO_INCREMENT PRIMARY KEY,
-                        firstname VARCHAR(100) NOT NULL,
-                        lastname VARCHAR(100) NOT NULL,
-                        email VARCHAR(255) UNIQUE NOT NULL,
-                        mobileNumber VARCHAR(15),
-                        password VARCHAR(255) NOT NULL,
-                        age INT CHECK (age >= 18),
-                        role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
-                        status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
-                        image VARCHAR(255) DEFAULT 'src/main/java/Resorces/Images/demoUser.png'
-                    );
-                """;
+                                CREATE TABLE IF NOT EXISTS users (
+                                    u_id INT AUTO_INCREMENT PRIMARY KEY,
+                                    firstname VARCHAR(100) NOT NULL,
+                                    lastname VARCHAR(100) NOT NULL,
+                                    email VARCHAR(255) UNIQUE NOT NULL,
+                                    mobileNumber VARCHAR(15),
+                                    password VARCHAR(255) NOT NULL,
+                                    age INT CHECK (age >= 18),
+                                    role ENUM('admin', 'user') NOT NULL DEFAULT 'user',
+                                    status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+                                    image VARCHAR(255) DEFAULT 'src/main/java/Resorces/Images/demoUser.png',
+                                     islogin BOOLEAN DEFAULT false,
+                last_login TIMESTAMP DEFAULT NULL,
+                last_logout TIMESTAMP DEFAULT NULL
+                                );
+                            """;
 
         String createEventsTable = """
                     CREATE TABLE IF NOT EXISTS events (
@@ -57,11 +64,40 @@ public class DatabaseInitializer {
                 +
                 "('Fashion Show', 'An exhibition of the latest fashion trends.', 'New Orleans', 75, 'src/main/java/Resorces/Images/11.jfif');";
 
+        String insertAdminUser = """
+                INSERT INTO users (firstname, lastname, email, mobileNumber, password, age, role, status)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+                """;
+
+        String adminEmail = DatabaseConfig.getAdminEmail();
+        String adminPassword = DatabaseConfig.getAdminPassword();
+
+        String hashedPassword = PasswordUtils.hashPassword(adminPassword);
+
         try (Connection connection = DatabaseConnect.getConnection();
                 Statement statement = connection.createStatement()) {
 
             statement.executeUpdate(createEventsTable);
             statement.executeUpdate(createUsersTable);
+
+            String checkAdminQuery = "SELECT COUNT(*) AS rowCount FROM users WHERE role = 'admin'";
+            try (ResultSet resultSet = statement.executeQuery(checkAdminQuery)) {
+                if (resultSet.next() && resultSet.getInt("rowCount") == 0) {
+                    // Admin does not exist; insert admin
+                    try (PreparedStatement adminStmt = connection.prepareStatement(insertAdminUser)) {
+                        adminStmt.setString(1, "Utsho");
+                        adminStmt.setString(2, "Roy");
+                        adminStmt.setString(3, adminEmail);
+                        adminStmt.setString(4, "1234567890");
+                        adminStmt.setString(5, hashedPassword);
+                        adminStmt.setInt(6, 30); // Age
+                        adminStmt.setString(7, "admin");
+                        adminStmt.setString(8, "active");
+                        adminStmt.executeUpdate();
+                        System.out.println("Default admin user created.");
+                    }
+                }
+            }
 
             String countQuery = "SELECT COUNT(*) AS rowCount FROM events";
             ResultSet countResultSet = statement.executeQuery(countQuery);

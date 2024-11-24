@@ -27,4 +27,12 @@ public class DatabaseConfig {
     public static String getPassword() {
         return properties.getProperty("DB_PASSWORD");
     }
+
+    public static String getAdminPassword() {
+        return properties.getProperty("DB_ADMIN_Password");
+    }
+
+    public static String getAdminEmail() {
+        return properties.getProperty("DB_ADMIN_Email");
+    }
 }
