@@ -27,7 +27,8 @@ public class DatabaseInitializer {
                         image VARCHAR(255) DEFAULT 'src/main/java/Resorces/Images/demoUser.png',
                         islogin BOOLEAN DEFAULT false,
                         last_login TIMESTAMP DEFAULT NULL,
-                        last_logout TIMESTAMP DEFAULT NULL
+                        last_logout TIMESTAMP DEFAULT NULL,
+                        isDeleted BOOLEAN NOT NULL DEFAULT FALSE
                     );
                 """;
 
@@ -37,8 +38,20 @@ public class DatabaseInitializer {
                         name VARCHAR(255) NOT NULL,
                         description TEXT,
                         location VARCHAR(255) NOT NULL,
-                        price INT CHECK (price >= 0),
-                        image VARCHAR(255)
+                        price DECIMAL(10, 2) NOT NULL,
+                        image VARCHAR(255),
+                        isDeleted BOOLEAN NOT NULL DEFAULT FALSE
+                    );
+                """;
+        String createBookingsTable = """
+                    CREATE TABLE IF NOT EXISTS bookings (
+                        bookingId INT AUTO_INCREMENT PRIMARY KEY,
+                        userId INT NOT NULL,
+                        eventId INT NOT NULL,
+                        eventDate DATE NOT NULL,
+                        price DECIMAL(10, 2) NOT NULL,
+                        FOREIGN KEY (userId) REFERENCES users(u_id) ON DELETE CASCADE,
+                        FOREIGN KEY (eventId) REFERENCES events(e_id) ON DELETE CASCADE
                     );
                 """;
 
@@ -81,6 +94,7 @@ public class DatabaseInitializer {
             // Execute table creation queries
             statement.executeUpdate(createEventsTable);
             statement.executeUpdate(createUsersTable);
+            statement.executeUpdate(createBookingsTable);
 
             // Check if an admin exists; if not, create it
             String checkAdminQuery = "SELECT COUNT(*) AS rowCount FROM users WHERE role = 'admin'";
@@ -115,6 +129,7 @@ public class DatabaseInitializer {
                 if (loggedInUsersResultSet.next()) {
                     // If a logged-in user is found, create a CurrentUser object
                     CurrentUser currentUser = new CurrentUser(
+                            loggedInUsersResultSet.getString("u_id"),
                             loggedInUsersResultSet.getString("firstname"),
                             loggedInUsersResultSet.getString("lastname"),
                             loggedInUsersResultSet.getString("email"),
