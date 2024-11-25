@@ -4,6 +4,9 @@
  */
 package AdminDashboard;
 
+import Events.EventPage;
+import static LogOut.LogOut.logOut;
+
 /**
  *
  * @author ACER
@@ -45,7 +48,6 @@ public class AdminDash extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(850, 850));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(2, 62, 138));
@@ -74,6 +76,11 @@ public class AdminDash extends javax.swing.JFrame {
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
+            }
+        });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -128,6 +135,11 @@ public class AdminDash extends javax.swing.JFrame {
         jButton5.setBorder(null);
         jButton5.setContentAreaFilled(false);
         jButton5.setIconTextGap(15);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -305,6 +317,19 @@ public class AdminDash extends javax.swing.JFrame {
         ViewEventsJP.setVisible(false);
         AddNewEvent.setVisible(true);
     }//GEN-LAST:event_jButton4MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        EventPage home = new EventPage();
+        home.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        logOut();
+        EventPage eventPage = new EventPage();
+        eventPage.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
