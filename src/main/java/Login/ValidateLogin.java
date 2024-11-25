@@ -44,6 +44,7 @@ public class ValidateLogin {
 
                         // Create the CurrentUser object
                         CurrentUser loggedInUser = new CurrentUser(
+                                rs.getString("u_id"),
                                 rs.getString("firstname"),
                                 rs.getString("lastname"),
                                 rs.getString("email"),

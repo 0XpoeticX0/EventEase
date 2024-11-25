@@ -1,6 +1,7 @@
 package CurrentUser;
 
 public class CurrentUser {
+    private String u_id;
     private String firstName;
     private String lastName;
     private String email;
@@ -10,8 +11,10 @@ public class CurrentUser {
     private String role;
 
     // Constructor
-    public CurrentUser(String firstName, String lastName, String email, String mobileNumber, String image, int age,
+    public CurrentUser(String u_id, String firstName, String lastName, String email, String mobileNumber, String image,
+            int age,
             String role) {
+        this.u_id = u_id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -22,6 +25,10 @@ public class CurrentUser {
     }
 
     // Getters
+    public String getUserId() {
+        return u_id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
