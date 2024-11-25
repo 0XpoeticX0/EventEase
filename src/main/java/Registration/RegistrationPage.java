@@ -222,10 +222,10 @@ public class RegistrationPage extends JFrame implements ActionListener {
                         "Registration Details",
                         JOptionPane.INFORMATION_MESSAGE,
                         icon);
-                
+
                 Login loginInterface = new Login();
                 loginInterface.setVisible(true); // Show the login frame
-                this.dispose(); // Close the current frame                   
+                this.dispose(); // Close the current frame
             } catch (SQLException err) {
                 JOptionPane.showMessageDialog(this, "Already Exist A user Under Same Email");
             }
