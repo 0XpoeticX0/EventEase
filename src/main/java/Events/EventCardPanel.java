@@ -3,6 +3,7 @@ package Events;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import static Events.ViewEventDetails.showEventDetailsInDialog;
 
 public class EventCardPanel extends JPanel {
 
@@ -42,7 +43,7 @@ public class EventCardPanel extends JPanel {
         viewDetailsButton.setPreferredSize(new Dimension(220, 40)); // Make button width match panel width
         viewDetailsButton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
         viewDetailsButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        viewDetailsButton.addActionListener(e -> showEventDetails(event));
+        viewDetailsButton.addActionListener(e -> showEventDetailsInDialog(event));
 
         // Add components to the card
         eventCard.add(eventImageLabel, BorderLayout.CENTER);
@@ -51,13 +52,4 @@ public class EventCardPanel extends JPanel {
         return eventCard;
     }
 
-    // Show details of the event in a dialog
-    private static void showEventDetails(Event event) {
-        String message = "<html><body style='width: 300px;'>" + // Set fixed width for wrapping
-                "<strong>Event Name:</strong> " + event.name + "<br>" +
-                "<strong>Description:</strong> " + event.description + "<br>" +
-                "<strong>Location:</strong> " + event.location + "<br>" +
-                "<strong>Booking Price:</strong> " + event.price + "</body></html>";
-        JOptionPane.showMessageDialog(null, message, "Event Details", JOptionPane.INFORMATION_MESSAGE);
-    }
 }

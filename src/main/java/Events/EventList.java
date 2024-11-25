@@ -27,12 +27,13 @@ public class EventList {
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
+                String e_id = resultSet.getString("e_id");
                 String name = resultSet.getString("name");
                 String description = resultSet.getString("description");
                 String location = resultSet.getString("location");
                 int price = resultSet.getInt("price");
                 String imagePath = resultSet.getString("image");
-                events.add(new Event(name, imagePath, description, location, price));
+                events.add(new Event(e_id, name, imagePath, description, location, price));
             }
 
         } catch (SQLException e) {
