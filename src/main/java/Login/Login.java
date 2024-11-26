@@ -37,6 +37,8 @@ public class Login extends JFrame {
         mainPanel.setLayout(new GridBagLayout());
         add(mainPanel);
 
+        JLabel eventEaseLogo = createEventEaseLogo();
+
         // Create login panel components
         JLabel titleLabel = new JLabel("Hi There! Login", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
@@ -54,7 +56,7 @@ public class Login extends JFrame {
 
         // Username field with fixed size and font
         usernameField = new JTextField(15);
-        usernameField.setFont(new Font("Arial", Font.PLAIN, 19));
+        usernameField.setFont(new Font("Arial", Font.PLAIN, 25));
         usernameField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         usernameField.setPreferredSize(fixedSize);
         usernameField.setBounds(0, 0, fixedSize.width, fixedSize.height);
@@ -70,7 +72,7 @@ public class Login extends JFrame {
 
         // Password field
         passwordField = new JPasswordField(15);
-        passwordField.setFont(new Font("Arial", Font.PLAIN, 19));
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 25));
         passwordField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         passwordField.setPreferredSize(fixedSize);
         passwordField.setMinimumSize(fixedSize);
@@ -169,7 +171,7 @@ public class Login extends JFrame {
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(10, 10, 10, 10);
-        mainPanel.add(new JLabel("Username:"), gbc);
+        mainPanel.add(new JLabel("Email:"), gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
