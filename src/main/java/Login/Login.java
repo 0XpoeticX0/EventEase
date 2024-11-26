@@ -37,6 +37,8 @@ public class Login extends JFrame {
         mainPanel.setLayout(new GridBagLayout());
         add(mainPanel);
 
+        JLabel eventEaseLogo = createEventEaseLogo();
+
         // Create login panel components
         JLabel titleLabel = new JLabel("Hi There! Login", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
