@@ -69,7 +69,7 @@ public class Login extends JFrame {
         usernamePanel.setOpaque(false);
 
         usernameField = new JTextField(15);
-        usernameField.setFont(new Font("Arial", Font.PLAIN, 14));
+        usernameField.setFont(new Font("Arial", Font.PLAIN, 16));
         usernameField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         usernameField.setBounds(0, 0, fixedSize.width, fixedSize.height);
         usernamePanel.add(usernameField);
@@ -82,7 +82,7 @@ public class Login extends JFrame {
 
         // Password field
         passwordField = new JPasswordField(15);
-        passwordField.setFont(new Font("Arial", Font.PLAIN, 25));
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 16));
         passwordField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         passwordField.setPreferredSize(fixedSize);
         passwordField.setMinimumSize(fixedSize);
