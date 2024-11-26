@@ -30,19 +30,20 @@ public final class EventPage extends JFrame {
                 // Apply the gradient from cyan to magenta
                 GradientPaint gradient = new GradientPaint(0, 0, Color.CYAN, getWidth(), getHeight(), Color.MAGENTA);
                 g2d.setPaint(gradient);
-                g2d.fillRect(0, 0, getWidth(), getHeight());  // Fill the panel with the gradient
+                g2d.fillRect(0, 0, getWidth(), getHeight()); // Fill the panel with the gradient
 
                 // Now, apply the semi-transparent white background over the gradient
-                g2d.setColor(new Color(255, 255, 255, 180));  // Semi-transparent white
-                g2d.fillRect(0, 0, getWidth(), getHeight());  // Overlay with the semi-transparent white
+                g2d.setColor(new Color(255, 255, 255, 180)); // Semi-transparent white
+                g2d.fillRect(0, 0, getWidth(), getHeight()); // Overlay with the semi-transparent white
 
                 // The semi-transparent background will overlay on top of the gradient
             }
 
         };
 
-        // Set the background color for the main panel (to ensure the gradient is visible)
-        mainPanel.setBackground(Color.CYAN);  // Or any color you prefer as base
+        // Set the background color for the main panel (to ensure the gradient is
+        // visible)
+        mainPanel.setBackground(Color.CYAN); // Or any color you prefer as base
 
         // Pass this frame as the parentFrame to HeaderButtons
         HeaderPanel headerPanel = new HeaderPanel(
@@ -59,7 +60,8 @@ public final class EventPage extends JFrame {
         eventPanel = new JPanel(new GridBagLayout());
         eventPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Make the eventPanel opaque so it doesn't show the content behind, just the gradient
+        // Make the eventPanel opaque so it doesn't show the content behind, just the
+        // gradient
         eventPanel.setOpaque(false); // Ensures the eventPanel does not block the gradient
 
         // Wrap eventPanel in a JScrollPane, allowing it to resize
@@ -71,7 +73,8 @@ public final class EventPage extends JFrame {
         eventScrollPane.getVerticalScrollBar().setUnitIncrement(20); // Adjust the value to control scroll speed
         eventScrollPane.getVerticalScrollBar().setBlockIncrement(50); // Adjust the value for larger jumps
 
-        // Set background of eventScrollPane to transparent to preserve the gradient effect
+        // Set background of eventScrollPane to transparent to preserve the gradient
+        // effect
         eventScrollPane.setOpaque(false);
         eventScrollPane.getViewport().setOpaque(false); // Keep viewport transparent for smooth scroll behavior
 
@@ -81,7 +84,7 @@ public final class EventPage extends JFrame {
         loadEventCards(eventList.getEvents(6));
 
         // Set up the JFrame
-        setSize(850, 850);
+        setSize(900, 850);
         setLocationRelativeTo(null); // Center the window
         setResizable(false); // Make the window size fixed
         add(mainPanel); // Add the main panel to the JFrame
@@ -91,8 +94,8 @@ public final class EventPage extends JFrame {
     public void loadEventCards(java.util.List<Event> events) {
         // Clear any existing event cards
         eventPanel.removeAll();
-        eventPanel.revalidate();  // Revalidate the layout to remove any lingering components
-        eventPanel.repaint();     // Repaint to clear out anything left in the panel
+        eventPanel.revalidate(); // Revalidate the layout to remove any lingering components
+        eventPanel.repaint(); // Repaint to clear out anything left in the panel
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -110,12 +113,13 @@ public final class EventPage extends JFrame {
             eventPanel.add(eventCard, gbc);
         }
 
-        // Optionally, you can add a transparent filler to keep the layout stable if there are fewer items than the grid can fit
+        // Optionally, you can add a transparent filler to keep the layout stable if
+        // there are fewer items than the grid can fit
         gbc.gridx = 0;
         gbc.gridy = events.size() / columns + 1;
         gbc.weighty = 1.0;
         JPanel transparentPanel = new JPanel();
-        transparentPanel.setBackground(new Color(0, 0, 0, 0));  // Fully transparent
+        transparentPanel.setBackground(new Color(0, 0, 0, 0)); // Fully transparent
         eventPanel.add(transparentPanel, gbc);
 
         // Finally, revalidate and repaint to make sure the panel reflects the new state

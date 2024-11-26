@@ -154,11 +154,26 @@ public final class HeaderButtons {
 
     // Create the "EventEase" logo
     public static JLabel createEventEaseLogo() {
+        // JLabel eventEaseLogo = new JLabel("EventEase", SwingConstants.CENTER);
+        // eventEaseLogo.setFont(new Font("Cambria", Font.BOLD | Font.ITALIC, 32)); //
+        // Bold italic Cambria
+        // eventEaseLogo.setPreferredSize(new Dimension(150, 50)); // Set preferred size
+        // for layout purposes
+        // eventEaseLogo.setForeground(new Color(58, 123, 213)); // Set a visible text
+        // color
+        // eventEaseLogo.setOpaque(false); // Transparent background
+        // return eventEaseLogo;
         JLabel eventEaseLogo = new JLabel("EventEase", SwingConstants.CENTER);
         eventEaseLogo.setFont(new Font("Cambria", Font.BOLD | Font.ITALIC, 32)); // Bold italic Cambria
-        eventEaseLogo.setPreferredSize(new Dimension(150, 50)); // Set preferred size for layout purposes
-        eventEaseLogo.setForeground(new Color(58, 123, 213)); // Set a visible text color
-        eventEaseLogo.setOpaque(false); // Transparent background
+        eventEaseLogo.setForeground(Color.WHITE); // Set text color (white for blue background)
+
+        // Load the icon
+        ImageIcon calendarIcon = new ImageIcon(
+                HeaderButtons.class.getResource("/Icons/calendar-range.png"));
+        eventEaseLogo.setIcon(calendarIcon);
+        eventEaseLogo.setHorizontalTextPosition(SwingConstants.RIGHT); // Place text to the right of the icon
+        eventEaseLogo.setIconTextGap(10); // Add some spacing between icon and text
+
         return eventEaseLogo;
     }
 
@@ -277,7 +292,7 @@ public final class HeaderButtons {
 
         // Set overlay and menu bounds
         overlayPanel.setBounds(0, 0, 690, 850);
-        menuPanel.setBounds(690, 10, 160, 850);
+        menuPanel.setBounds(690, 10, 210, 850);
 
         // Add components to layered pane
         layeredPane.add(overlayPanel, JLayeredPane.DEFAULT_LAYER); // Lower layer for overlay
