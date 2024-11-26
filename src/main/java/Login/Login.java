@@ -1,5 +1,6 @@
 package Login;
 
+import static Buttons.HeaderButtons.createEventEaseLogo;
 import Events.EventPage;
 import Registration.RegistrationPage;
 import javax.swing.*;
@@ -23,8 +24,8 @@ public class Login extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Main panel with gradient background
-        JPanel mainPanel = new JPanel() {
+        // Set the main content pane with BorderLayout
+        JPanel contentPane = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -34,37 +35,46 @@ public class Login extends JFrame {
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
         };
-        mainPanel.setLayout(new GridBagLayout());
-        add(mainPanel);
+        setContentPane(contentPane);
 
-        // JLabel eventEaseLogo = createEventEaseLogo();
+// Create a layered pane for overlay
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setLayout(null); // Absolute positioning
+        contentPane.add(layeredPane, BorderLayout.CENTER);
 
-        // Create login panel components
+// Main panel
+        JPanel mainPanel = new JPanel();
+        mainPanel.setBounds(0, 0, 850, 850); // Full window size
+        mainPanel.setOpaque(false);
+        mainPanel.setLayout(new GridBagLayout()); // Centered layout
+        layeredPane.add(mainPanel, JLayeredPane.DEFAULT_LAYER);
+
+// Overlay logo
+        JLabel eventEaseLogo = createEventEaseLogo();
+        eventEaseLogo.setBounds((850 - 200) / 2, 80, 220, 80); // Centered at the top (adjust size and position)
+        eventEaseLogo.setHorizontalAlignment(SwingConstants.CENTER);
+        layeredPane.add(eventEaseLogo, JLayeredPane.PALETTE_LAYER);
+
+// Add login components to the main panel
         JLabel titleLabel = new JLabel("Hi There! Login", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         titleLabel.setForeground(Color.WHITE);
 
-        // Define the fixed width and height for the text fields
-        Dimension fixedSize = new Dimension(200, 30);
+// Define fixed sizes for text fields
+        Dimension fixedSize = new Dimension(250, 30);
 
-        // Username panel with fixed size and null layout for manual positioning
+// Username panel
         JPanel usernamePanel = new JPanel(null);
         usernamePanel.setPreferredSize(fixedSize);
-        usernamePanel.setMinimumSize(fixedSize);
-        usernamePanel.setMaximumSize(fixedSize);
-        usernamePanel.setOpaque(false); // Make it transparent to match the background
+        usernamePanel.setOpaque(false);
 
-        // Username field with fixed size and font
         usernameField = new JTextField(15);
-        usernameField.setFont(new Font("Arial", Font.PLAIN, 25));
+        usernameField.setFont(new Font("Arial", Font.PLAIN, 16));
         usernameField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-        usernameField.setPreferredSize(fixedSize);
         usernameField.setBounds(0, 0, fixedSize.width, fixedSize.height);
-
-        // Add username field to the username panel
         usernamePanel.add(usernameField);
 
-        // Password layered panel with fixed size
+// Password layered panel with fixed size
         JLayeredPane passwordLayeredPane = new JLayeredPane();
         passwordLayeredPane.setPreferredSize(fixedSize);
         passwordLayeredPane.setMinimumSize(fixedSize);
@@ -72,7 +82,7 @@ public class Login extends JFrame {
 
         // Password field
         passwordField = new JPasswordField(15);
-        passwordField.setFont(new Font("Arial", Font.PLAIN, 25));
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 16));
         passwordField.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         passwordField.setPreferredSize(fixedSize);
         passwordField.setMinimumSize(fixedSize);
@@ -86,7 +96,7 @@ public class Login extends JFrame {
         togglePasswordCheckbox.setFocusable(false);
         togglePasswordCheckbox.setBorder(null); // Remove border for a cleaner look
         togglePasswordCheckbox.setBounds(fixedSize.width - 21, (fixedSize.height - 20) / 2, 20, 20); // Align to the
-                                                                                                     // middle-right
+        // middle-right
 
         // Create a filled white square for the unchecked icon
         Icon uncheckedIcon = new ImageIcon(new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB) {
@@ -131,13 +141,11 @@ public class Login extends JFrame {
         passwordLayeredPane.add(passwordField, JLayeredPane.DEFAULT_LAYER);
         passwordLayeredPane.add(togglePasswordCheckbox, JLayeredPane.PALETTE_LAYER);
 
-        // Login button
         loginButton = new JButton("Login");
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
         loginButton.setBackground(Color.WHITE);
         loginButton.setForeground(Color.BLACK);
 
-        // Register button
         newHereLabel = new JLabel("New here?");
         newHereLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         newHereLabel.setForeground(Color.WHITE);
@@ -149,7 +157,6 @@ public class Login extends JFrame {
             this.dispose();
         });
 
-        // New here panel
         JPanel newHerePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         newHerePanel.setOpaque(false);
         newHerePanel.add(Box.createHorizontalStrut(80));
@@ -157,20 +164,18 @@ public class Login extends JFrame {
         newHerePanel.add(Box.createHorizontalStrut(-10));
         newHerePanel.add(registerButton);
 
-        // Adding components to main panel using GridBagLayout
+// Arrange components in the mainPanel
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(10, 60, 10, 10);
         mainPanel.add(titleLabel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(10, 10, 10, 10);
         mainPanel.add(new JLabel("Email:"), gbc);
 
         gbc.gridx = 1;
@@ -188,8 +193,7 @@ public class Login extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.CENTER; // Aligns the button to the CENTER
-        gbc.insets = new Insets(10, -5, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
         mainPanel.add(loginButton, gbc);
 
         gbc.gridx = 0;
