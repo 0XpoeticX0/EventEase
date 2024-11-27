@@ -123,6 +123,32 @@ public class RegistrationPage extends JFrame implements ActionListener {
         mainPanel.add(registerButton, BorderLayout.SOUTH);
         add(mainPanel);
 
+        JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
+        footerPanel.setBorder(BorderFactory.createEmptyBorder(-15, 10, 10, 10));
+        footerPanel.setOpaque(false);
+
+        JLabel alreadyRegisteredLabel = new JLabel("Already registered?");
+        alreadyRegisteredLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        alreadyRegisteredLabel.setForeground(Color.BLACK);
+        footerPanel.add(alreadyRegisteredLabel);
+
+        JButton loginButton = new JButton("Login");
+        loginButton.setFont(new Font("Arial", Font.BOLD, 14));
+        loginButton.setForeground(Color.BLACK); // White text
+        loginButton.setBackground(Color.decode("#343a40")); // Dark gray background
+        loginButton.setBorderPainted(false);
+        loginButton.setFocusPainted(false);
+        loginButton.setContentAreaFilled(false);
+        loginButton.addActionListener(e -> {
+            Login loginPage = new Login();
+            loginPage.setVisible(true);
+            this.dispose();
+        });
+        footerPanel.add(Box.createHorizontalStrut(-20)); // Horizontal spacing
+        footerPanel.add(loginButton);
+
+        add(footerPanel, BorderLayout.SOUTH);
+
     }
 
     @Override
@@ -201,9 +227,8 @@ public class RegistrationPage extends JFrame implements ActionListener {
             }
 
             // Database insertion
-            try (Connection connection = DatabaseConnect.getConnection();
-                    PreparedStatement pstmt = connection.prepareStatement(
-                            "INSERT INTO users (firstname, lastname, email, mobileNumber, age, password, image) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+            try (Connection connection = DatabaseConnect.getConnection(); PreparedStatement pstmt = connection.prepareStatement(
+                    "INSERT INTO users (firstname, lastname, email, mobileNumber, age, password, image) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
 
                 pstmt.setString(1, firstName);
                 pstmt.setString(2, lastName);
@@ -214,11 +239,11 @@ public class RegistrationPage extends JFrame implements ActionListener {
                 pstmt.setString(7, selectedImage != null ? selectedImage.getAbsolutePath() : null);
                 pstmt.executeUpdate();
 
-                JOptionPane.showMessageDialog(this, "Registration Successful!\n" +
-                        "Name: " + firstName + " " + lastName +
-                        "\nEmail: " + email +
-                        "\nMobile: " + mobile +
-                        "\nAge: " + ageText,
+                JOptionPane.showMessageDialog(this, "Registration Successful!\n"
+                        + "Name: " + firstName + " " + lastName
+                        + "\nEmail: " + email
+                        + "\nMobile: " + mobile
+                        + "\nAge: " + ageText,
                         "Registration Details",
                         JOptionPane.INFORMATION_MESSAGE,
                         icon);
