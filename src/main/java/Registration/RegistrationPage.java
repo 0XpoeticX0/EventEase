@@ -87,16 +87,26 @@ public class RegistrationPage extends JFrame implements ActionListener {
         gbc.gridx = 1;
         gbc.gridy = 7;
         imageLabel = new JLabel("No image uploaded", JLabel.CENTER);
-        imageLabel.setFont(new Font("Arial", Font.ITALIC, 12));
+        imageLabel.setFont(new Font("Arial", Font.ITALIC, 18));
         imageLabel.setForeground(Color.GRAY);
         inputPanel.add(imageLabel, gbc);
         mainPanel.add(inputPanel, BorderLayout.CENTER);
 
+        JPanel bottomPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcBottom = new GridBagConstraints();
+        gbcBottom.insets = new Insets(10, 10, 10, 10);
+
         registerButton = new JButton("Register");
-        registerButton.setBackground(new Color(0x008CBA)); // Blue button
+        registerButton.setFont(new Font("Arial", Font.BOLD, 18));
+        registerButton.setPreferredSize(new Dimension(300, 40));
+        registerButton.setBackground(new Color(87, 197, 182));
         registerButton.setForeground(Color.WHITE);
-        registerButton.setFont(new Font("Arial", Font.BOLD, 16));
         registerButton.addActionListener(this);
+        gbcBottom.gridx = 0;
+        gbcBottom.gridy = 0;
+        bottomPanel.add(registerButton, gbcBottom);
+
+        
         mainPanel.add(registerButton, BorderLayout.SOUTH);
         add(mainPanel);
 
