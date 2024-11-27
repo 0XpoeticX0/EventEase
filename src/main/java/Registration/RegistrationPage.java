@@ -51,59 +51,26 @@ public class RegistrationPage extends JFrame implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.EAST;
-        inputPanel.add(new JLabel("First Name:"), gbc);
+        addLabelAndField("First Name:", inputPanel, gbc, 0);
+        firstNameField = createTextField(inputPanel, gbc, 0);
 
+        addLabelAndField("Last Name:", inputPanel, gbc, 1);
+        lastNameField = createTextField(inputPanel, gbc, 1);
+
+        addLabelAndField("Email:", inputPanel, gbc, 2);
+        emailField = createTextField(inputPanel, gbc, 2);
+
+        addLabelAndField("Mobile:", inputPanel, gbc, 3);
+        mobileField = createTextField(inputPanel, gbc, 3);
+
+        addLabelAndField("Age:", inputPanel, gbc, 4);
+        ageField = createTextField(inputPanel, gbc, 4);
+
+        addLabelAndField("Password:", inputPanel, gbc, 5);
+        passwordField = new JPasswordField(25);
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 18));
+        passwordField.setPreferredSize(new Dimension(300, 40));
         gbc.gridx = 1;
-        firstNameField = new JTextField(15);
-        firstNameField.setToolTipText("Enter your first name");
-        inputPanel.add(firstNameField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        inputPanel.add(new JLabel("Last Name:"), gbc);
-
-        gbc.gridx = 1;
-        lastNameField = new JTextField(15);
-        lastNameField.setToolTipText("Enter your last name");
-        inputPanel.add(lastNameField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        inputPanel.add(new JLabel("Email:"), gbc);
-
-        gbc.gridx = 1;
-        emailField = new JTextField(15);
-        emailField.setToolTipText("Enter your email address");
-        inputPanel.add(emailField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        inputPanel.add(new JLabel("Mobile:"), gbc);
-
-        gbc.gridx = 1;
-        mobileField = new JTextField(15);
-        mobileField.setToolTipText("Enter your mobile number");
-        inputPanel.add(mobileField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        inputPanel.add(new JLabel("Age:"), gbc);
-
-        gbc.gridx = 1;
-        ageField = new JTextField(15);
-        ageField.setToolTipText("Enter your age");
-        inputPanel.add(ageField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        inputPanel.add(new JLabel("Password:"), gbc);
-
-        gbc.gridx = 1;
-        passwordField = new JPasswordField(15);
-        passwordField.setToolTipText("Enter your password");
         inputPanel.add(passwordField, gbc);
 
         gbc.gridx = 0;
