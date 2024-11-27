@@ -38,9 +38,14 @@ public class RegistrationPage extends JFrame implements ActionListener {
         mainPanel.add(logoLabel, BorderLayout.NORTH);
 
         JLabel headerLabel = new JLabel("Register New User", JLabel.CENTER);
-        headerLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        headerLabel.setForeground(new Color(0x3B5998));
-        mainPanel.add(headerLabel, BorderLayout.NORTH);
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        headerLabel.setForeground(new Color(122, 178, 211));
+
+        JPanel topPanel = new JPanel(new GridLayout(2, 1, 0, 10));
+        topPanel.add(logoLabel);
+        topPanel.add(headerLabel);
+
+        mainPanel.add(topPanel, BorderLayout.NORTH);
 
         JPanel inputPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
