@@ -21,6 +21,7 @@ public class RegistrationPage extends JFrame implements ActionListener {
     private JLabel imageLabel;
     private JButton registerButton, uploadButton;
     private File selectedImage;
+    private JLabel loginLink;
 
     public RegistrationPage() {
         setTitle("User Registration");
@@ -106,8 +107,21 @@ public class RegistrationPage extends JFrame implements ActionListener {
         gbcBottom.gridy = 0;
         bottomPanel.add(registerButton, gbcBottom);
 
-        
-        mainPanel.add(registerButton, BorderLayout.SOUTH);
+        loginLink = new JLabel("<HTML><U>If you are registered, Log In</U></HTML>");
+        loginLink.setFont(new Font("Arial", Font.PLAIN, 18));
+        loginLink.setForeground(new Color(0x0000FF));
+        loginLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        loginLink.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                JOptionPane.showMessageDialog(null, "Redirecting to Log In page...");
+            }
+        });
+        gbcBottom.gridx = 0;
+        gbcBottom.gridy = 1;
+        bottomPanel.add(loginLink, gbcBottom);
+
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
         add(mainPanel);
 
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
