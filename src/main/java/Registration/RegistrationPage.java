@@ -29,8 +29,13 @@ public class RegistrationPage extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        JPanel mainPanel = new JPanel(new BorderLayout(20, 20));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel logoLabel = new JLabel("Event Ease", JLabel.CENTER);
+        logoLabel.setFont(new Font("Segoe UI", Font.BOLD, 36));
+        logoLabel.setForeground(new Color(106, 30, 85)); 
+        mainPanel.add(logoLabel, BorderLayout.NORTH);
 
         JLabel headerLabel = new JLabel("Register New User", JLabel.CENTER);
         headerLabel.setFont(new Font("Arial", Font.BOLD, 24));
