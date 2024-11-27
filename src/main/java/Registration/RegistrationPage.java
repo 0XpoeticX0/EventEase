@@ -151,6 +151,24 @@ public class RegistrationPage extends JFrame implements ActionListener {
 
     }
 
+    private void addLabelAndField(String text, JPanel panel, GridBagConstraints gbc, int row) {
+        JLabel label = new JLabel(text, JLabel.RIGHT);
+        label.setFont(new Font("Arial", Font.PLAIN, 18));
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        panel.add(label, gbc);
+    }
+
+    private JTextField createTextField(JPanel panel, GridBagConstraints gbc, int row) {
+        JTextField textField = new JTextField(25);
+        textField.setFont(new Font("Arial", Font.PLAIN, 18));
+        textField.setPreferredSize(new Dimension(300, 40));
+        gbc.gridx = 1;
+        gbc.gridy = row;
+        panel.add(textField, gbc);
+        return textField;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == uploadButton) {
