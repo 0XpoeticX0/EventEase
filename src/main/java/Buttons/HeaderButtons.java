@@ -87,7 +87,7 @@ public final class HeaderButtons {
                             int x = (getWidth() - profileIcon.getIconWidth()) / 2; // Center horizontally
                             int y = (getHeight() - profileIcon.getIconHeight()) / 2; // Center vertically
                             g2.drawImage(profileIcon.getImage(), x, y, this); // Draw the image at the calculated
-                                                                              // position
+                            // position
 
                             g2.dispose();
                         } else {
@@ -154,15 +154,6 @@ public final class HeaderButtons {
 
     // Create the "EventEase" logo
     public static JLabel createEventEaseLogo() {
-        // JLabel eventEaseLogo = new JLabel("EventEase", SwingConstants.CENTER);
-        // eventEaseLogo.setFont(new Font("Cambria", Font.BOLD | Font.ITALIC, 32)); //
-        // Bold italic Cambria
-        // eventEaseLogo.setPreferredSize(new Dimension(150, 50)); // Set preferred size
-        // for layout purposes
-        // eventEaseLogo.setForeground(new Color(58, 123, 213)); // Set a visible text
-        // color
-        // eventEaseLogo.setOpaque(false); // Transparent background
-        // return eventEaseLogo;
         JLabel eventEaseLogo = new JLabel("EventEase", SwingConstants.CENTER);
         eventEaseLogo.setFont(new Font("Cambria", Font.BOLD | Font.ITALIC, 32)); // Bold italic Cambria
         eventEaseLogo.setForeground(Color.WHITE); // Set text color (white for blue background)
