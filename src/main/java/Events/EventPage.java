@@ -98,7 +98,7 @@ public final class EventPage extends JFrame {
         eventPanel.repaint(); // Repaint to clear out anything left in the panel
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
