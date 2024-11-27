@@ -73,15 +73,15 @@ public class RegistrationPage extends JFrame implements ActionListener {
         gbc.gridx = 1;
         inputPanel.add(passwordField, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 6;
-        inputPanel.add(new JLabel("Profile Image:"), gbc);
-
-        gbc.gridx = 1;
+        
+        addLabelAndField("Profile Image:", inputPanel, gbc, 6);
         uploadButton = new JButton("Upload Image");
-        uploadButton.setBackground(new Color(0x4CAF50));
+        uploadButton.setFont(new Font("Arial", Font.BOLD, 18));
+        uploadButton.setPreferredSize(new Dimension(300, 40));
+        uploadButton.setBackground(new Color(8, 131, 149));
         uploadButton.setForeground(Color.WHITE);
         uploadButton.addActionListener(this);
+        gbc.gridx = 1;
         inputPanel.add(uploadButton, gbc);
 
         gbc.gridx = 1;
