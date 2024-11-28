@@ -7,7 +7,6 @@ import Registration.RegistrationPage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 
 public class Login extends JFrame {
 
