@@ -18,10 +18,12 @@ import Login.Login;
 
 public class RegistrationPage extends JFrame implements ActionListener {
 
-    private JTextField firstNameField, lastNameField, emailField, mobileField, ageField;
-    private JPasswordField passwordField;
-    private JLabel imageLabel;
-    private JButton registerButton, uploadButton;
+    private final JTextField firstNameField;
+
+    final private JTextField lastNameField, emailField, mobileField, ageField;
+    final private JPasswordField passwordField;
+    final private JLabel imageLabel;
+    final private JButton registerButton, uploadButton;
     private File selectedImage;
 
     public RegistrationPage() {
@@ -31,12 +33,24 @@ public class RegistrationPage extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        JPanel mainPanel = new JPanel(new BorderLayout(20, 20));
+        JPanel mainPanel = new JPanel(new BorderLayout(20, 20)){
+            private final Image backgroundImage = new ImageIcon("src/main/java/Resorces/Bg/bg-reg.jpg").getImage();
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+
+                // Draw the image scaled to fit the panel
+                g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel eventEaseLogo = createEventEaseLogo();
         eventEaseLogo.setBounds((850 - 200) / 2, 80, 220, 80); // Centered at the top
         eventEaseLogo.setHorizontalAlignment(SwingConstants.CENTER);
+        eventEaseLogo.setOpaque(false);
         mainPanel.add(eventEaseLogo, BorderLayout.NORTH);
 
         JLabel headerLabel = new JLabel("Register New User", JLabel.CENTER);
@@ -44,12 +58,14 @@ public class RegistrationPage extends JFrame implements ActionListener {
         headerLabel.setForeground(new Color(122, 178, 211));
 
         JPanel topPanel = new JPanel(new GridLayout(2, 1, 0, 10));
+        topPanel.setOpaque(false);
         topPanel.add(eventEaseLogo);
         topPanel.add(headerLabel);
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
         JPanel inputPanel = new JPanel(new GridBagLayout());
+        inputPanel.setOpaque(false);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
@@ -94,6 +110,7 @@ public class RegistrationPage extends JFrame implements ActionListener {
         mainPanel.add(inputPanel, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel(new GridBagLayout());
+        bottomPanel.setOpaque(false);
         GridBagConstraints gbcBottom = new GridBagConstraints();
         gbcBottom.insets = new Insets(5, 10, 10, 10);
 
@@ -127,8 +144,11 @@ public class RegistrationPage extends JFrame implements ActionListener {
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
         footerPanel.setBorder(BorderFactory.createEmptyBorder(-15, 10, 10, 10));
         footerPanel.setOpaque(false);
+        footerPanel.setBackground(Color.red);
+        
 
         JLabel alreadyRegisteredLabel = new JLabel("Already registered?");
+        alreadyRegisteredLabel.setOpaque(false);
         alreadyRegisteredLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         alreadyRegisteredLabel.setForeground(Color.BLACK);
         footerPanel.add(alreadyRegisteredLabel);

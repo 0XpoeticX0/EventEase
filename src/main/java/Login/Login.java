@@ -28,13 +28,15 @@ public class Login extends JFrame {
 
         // Set the main content pane with BorderLayout
         JPanel contentPane = new JPanel(new BorderLayout()) {
+            private Image backgroundImage = new ImageIcon("src/main/java/Resorces/Bg/bg-login.jpg").getImage();
+
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
-                GradientPaint gradient = new GradientPaint(0, 0, Color.CYAN, getWidth(), getHeight(), Color.MAGENTA);
-                g2d.setPaint(gradient);
-                g2d.fillRect(0, 0, getWidth(), getHeight());
+
+                // Draw the image scaled to fit the panel
+                g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         };
         setContentPane(contentPane);
