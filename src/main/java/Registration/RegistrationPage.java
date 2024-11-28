@@ -5,6 +5,8 @@ import javax.swing.*;
 import DataBase.DatabaseConnect;
 import utils.PasswordUtils;
 
+import static Buttons.HeaderButtons.createEventEaseLogo;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +23,6 @@ public class RegistrationPage extends JFrame implements ActionListener {
     private JLabel imageLabel;
     private JButton registerButton, uploadButton;
     private File selectedImage;
-    private JLabel loginLink;
 
     public RegistrationPage() {
         setTitle("User Registration");
@@ -33,17 +34,17 @@ public class RegistrationPage extends JFrame implements ActionListener {
         JPanel mainPanel = new JPanel(new BorderLayout(20, 20));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JLabel logoLabel = new JLabel("Event Ease", JLabel.CENTER);
-        logoLabel.setFont(new Font("Segoe UI", Font.BOLD, 36));
-        logoLabel.setForeground(new Color(106, 30, 85)); 
-        mainPanel.add(logoLabel, BorderLayout.NORTH);
+        JLabel eventEaseLogo = createEventEaseLogo();
+        eventEaseLogo.setBounds((850 - 200) / 2, 80, 220, 80); // Centered at the top
+        eventEaseLogo.setHorizontalAlignment(SwingConstants.CENTER);
+        mainPanel.add(eventEaseLogo, BorderLayout.NORTH);
 
         JLabel headerLabel = new JLabel("Register New User", JLabel.CENTER);
         headerLabel.setFont(new Font("Arial", Font.BOLD, 28));
         headerLabel.setForeground(new Color(122, 178, 211));
 
         JPanel topPanel = new JPanel(new GridLayout(2, 1, 0, 10));
-        topPanel.add(logoLabel);
+        topPanel.add(eventEaseLogo);
         topPanel.add(headerLabel);
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
@@ -74,12 +75,11 @@ public class RegistrationPage extends JFrame implements ActionListener {
         gbc.gridx = 1;
         inputPanel.add(passwordField, gbc);
 
-        
         addLabelAndField("Profile Image:", inputPanel, gbc, 6);
         uploadButton = new JButton("Upload Image");
         uploadButton.setFont(new Font("Arial", Font.BOLD, 18));
         uploadButton.setPreferredSize(new Dimension(300, 40));
-        uploadButton.setBackground(new Color(8, 131, 149));
+        uploadButton.setBackground(new Color(87, 197, 182));
         uploadButton.setForeground(Color.WHITE);
         uploadButton.addActionListener(this);
         gbc.gridx = 1;
@@ -95,31 +95,31 @@ public class RegistrationPage extends JFrame implements ActionListener {
 
         JPanel bottomPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbcBottom = new GridBagConstraints();
-        gbcBottom.insets = new Insets(10, 10, 10, 10);
+        gbcBottom.insets = new Insets(5, 10, 10, 10);
 
         registerButton = new JButton("Register");
         registerButton.setFont(new Font("Arial", Font.BOLD, 18));
         registerButton.setPreferredSize(new Dimension(300, 40));
-        registerButton.setBackground(new Color(87, 197, 182));
+        registerButton.setBackground(new Color(8, 131, 149));
         registerButton.setForeground(Color.WHITE);
         registerButton.addActionListener(this);
         gbcBottom.gridx = 0;
         gbcBottom.gridy = 0;
         bottomPanel.add(registerButton, gbcBottom);
 
-        loginLink = new JLabel("<HTML><U>If you are registered, Log In</U></HTML>");
-        loginLink.setFont(new Font("Arial", Font.PLAIN, 18));
-        loginLink.setForeground(new Color(0x0000FF));
-        loginLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        loginLink.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                JOptionPane.showMessageDialog(null, "Redirecting to Log In page...");
-            }
-        });
-        gbcBottom.gridx = 0;
-        gbcBottom.gridy = 1;
-        bottomPanel.add(loginLink, gbcBottom);
+        // loginLink = new JLabel("<HTML><U>If you are registered, Log In</U></HTML>");
+        // loginLink.setFont(new Font("Arial", Font.PLAIN, 18));
+        // loginLink.setForeground(new Color(0x0000FF));
+        // loginLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        // loginLink.addMouseListener(new java.awt.event.MouseAdapter() {
+        // @Override
+        // public void mouseClicked(java.awt.event.MouseEvent e) {
+        // JOptionPane.showMessageDialog(null, "Redirecting to Log In page...");
+        // }
+        // });
+        // gbcBottom.gridx = 0;
+        // gbcBottom.gridy = 1;
+        // bottomPanel.add(loginLink, gbcBottom);
 
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
         add(mainPanel);
@@ -246,8 +246,9 @@ public class RegistrationPage extends JFrame implements ActionListener {
             }
 
             // Database insertion
-            try (Connection connection = DatabaseConnect.getConnection(); PreparedStatement pstmt = connection.prepareStatement(
-                    "INSERT INTO users (firstname, lastname, email, mobileNumber, age, password, image) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+            try (Connection connection = DatabaseConnect.getConnection();
+                    PreparedStatement pstmt = connection.prepareStatement(
+                            "INSERT INTO users (firstname, lastname, email, mobileNumber, age, password, image) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
 
                 pstmt.setString(1, firstName);
                 pstmt.setString(2, lastName);
