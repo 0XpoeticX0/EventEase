@@ -33,7 +33,7 @@ public class RegistrationPage extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        JPanel mainPanel = new JPanel(new BorderLayout(20, 20)){
+        JPanel mainPanel = new JPanel(new BorderLayout(20, 20)) {
             private final Image backgroundImage = new ImageIcon("src/main/java/Resorces/Bg/bg-reg.jpg").getImage();
 
             @Override
@@ -124,38 +124,20 @@ public class RegistrationPage extends JFrame implements ActionListener {
         gbcBottom.gridy = 0;
         bottomPanel.add(registerButton, gbcBottom);
 
-        // loginLink = new JLabel("<HTML><U>If you are registered, Log In</U></HTML>");
-        // loginLink.setFont(new Font("Arial", Font.PLAIN, 18));
-        // loginLink.setForeground(new Color(0x0000FF));
-        // loginLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        // loginLink.addMouseListener(new java.awt.event.MouseAdapter() {
-        // @Override
-        // public void mouseClicked(java.awt.event.MouseEvent e) {
-        // JOptionPane.showMessageDialog(null, "Redirecting to Log In page...");
-        // }
-        // });
-        // gbcBottom.gridx = 0;
-        // gbcBottom.gridy = 1;
-        // bottomPanel.add(loginLink, gbcBottom);
-
-        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
-        add(mainPanel);
-
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 10));
         footerPanel.setBorder(BorderFactory.createEmptyBorder(-15, 10, 10, 10));
         footerPanel.setOpaque(false);
         footerPanel.setBackground(Color.red);
-        
 
         JLabel alreadyRegisteredLabel = new JLabel("Already registered?");
         alreadyRegisteredLabel.setOpaque(false);
         alreadyRegisteredLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        alreadyRegisteredLabel.setForeground(Color.BLACK);
+        alreadyRegisteredLabel.setForeground(Color.WHITE);
         footerPanel.add(alreadyRegisteredLabel);
 
         JButton loginButton = new JButton("Login");
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
-        loginButton.setForeground(Color.BLACK); // White text
+        loginButton.setForeground(Color.WHITE); // White text
         loginButton.setBackground(Color.decode("#343a40")); // Dark gray background
         loginButton.setBorderPainted(false);
         loginButton.setFocusPainted(false);
@@ -168,12 +150,17 @@ public class RegistrationPage extends JFrame implements ActionListener {
         footerPanel.add(Box.createHorizontalStrut(-20)); // Horizontal spacing
         footerPanel.add(loginButton);
 
-        add(footerPanel, BorderLayout.SOUTH);
+        gbcBottom.gridy = 1; // Place below the registerButton
+        bottomPanel.add(footerPanel, gbcBottom);
+
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+        add(mainPanel);
 
     }
 
     private void addLabelAndField(String text, JPanel panel, GridBagConstraints gbc, int row) {
         JLabel label = new JLabel(text, JLabel.RIGHT);
+        label.setForeground(Color.WHITE);
         label.setFont(new Font("Arial", Font.PLAIN, 18));
         gbc.gridx = 0;
         gbc.gridy = row;
