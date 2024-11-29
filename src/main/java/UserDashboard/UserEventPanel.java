@@ -3,18 +3,20 @@ package UserDashboard;
 import Events.Event;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class UserEventPanel {
 
     /**
      * Method to build the complete event panel as per your design.
      */
-    public static JPanel buildCompleteEventPanel(Event event) {
+    public static JPanel buildCompleteEventPanel(Event event, String u_id, String bookingDate) {
         // Main event panel using GridBagLayout for better control
         JPanel eventPanel = new JPanel(new GridBagLayout());
         eventPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         eventPanel.setBackground(Color.BLACK);
-        eventPanel.setPreferredSize(new Dimension(600, 100)); // Adjust size as necessary
+        eventPanel.setPreferredSize(new Dimension(600, 120)); // Adjust size as necessary
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -24,11 +26,10 @@ public class UserEventPanel {
         JPanel imagePanel = new JPanel();
         imagePanel.setPreferredSize(new Dimension(50, 50)); // Circle size
         imagePanel.setBackground(Color.GRAY); // Temporary background color for image
-
-        // Make the image circular by setting the border
-        imagePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+        imagePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2)); // Circular border
         imagePanel.setLayout(new BorderLayout());
 
+        // Image label
         JLabel imageLabel = new JLabel();
         ImageIcon imageIcon = new ImageIcon(new ImageIcon(event.imagePath).getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         imageLabel.setIcon(imageIcon);
@@ -41,17 +42,16 @@ public class UserEventPanel {
         gbc.gridy = 0;
         eventPanel.add(imagePanel, gbc);
 
-        // Middle part: Event Name, Price, and Status
+        // Middle part: Event Name, Price, Status, and Date
         JPanel textPanel = new JPanel();
         textPanel.setOpaque(false);
-        textPanel.setLayout(new GridBagLayout()); // Nested GridBagLayout for name, price, and status
+        textPanel.setLayout(new GridBagLayout()); // Nested GridBagLayout for name, price, status, and date
 
-        // GridBagConstraints for textPanel's child components
         GridBagConstraints textGBC = new GridBagConstraints();
         textGBC.fill = GridBagConstraints.HORIZONTAL;
         textGBC.insets = new Insets(5, 5, 5, 5);
 
-        // Event Name (Wrap text if too long)
+        // Event Name
         JLabel eventNameLabel = new JLabel("<html><div style='width: 250px;'>" + event.getName() + "</div></html>");  // HTML to wrap text
         eventNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
         eventNameLabel.setForeground(Color.WHITE);
@@ -60,7 +60,7 @@ public class UserEventPanel {
         textGBC.gridy = 0;
         textPanel.add(eventNameLabel, textGBC);
 
-        // Price (20px right from the event name)
+        // Price
         JLabel priceLabel = new JLabel("$" + event.getPrice()); // Assuming Event class has getPrice method
         priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         priceLabel.setForeground(Color.WHITE);
@@ -68,46 +68,80 @@ public class UserEventPanel {
         textGBC.gridy = 1;
         textPanel.add(priceLabel, textGBC);
 
-        // Status (20px right from the price)
-        JLabel statusLabel = new JLabel("Active"); // or dynamic status from Event class
+        // Status (Changed to Paid)
+        JLabel statusLabel = new JLabel("Paid"); // Replacing "Active" with "Paid"
         statusLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         statusLabel.setForeground(Color.GREEN);
         textGBC.gridx = 0;
         textGBC.gridy = 2;
         textPanel.add(statusLabel, textGBC);
 
+        // Booking Date
+        JLabel bookingDateLabel = new JLabel("Booking Date: " + bookingDate); // Show the booking date
+        bookingDateLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        bookingDateLabel.setForeground(Color.WHITE);
+        textGBC.gridx = 0;
+        textGBC.gridy = 3;
+        textPanel.add(bookingDateLabel, textGBC);
+
         // Add text panel to the event panel (column 1, row 0)
         gbc.gridx = 1;
         gbc.gridy = 0;
         eventPanel.add(textPanel, gbc);
 
-        // Right side: Buttons (Publish, Delete)
+        // Right side: Delete button (Removed Publish button)
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0)); // Use standard gap for buttons
         buttonPanel.setOpaque(false);
 
-        // "PUBLISH" Button
-        JButton publishButton = new JButton();
-        publishButton.setIcon(new ImageIcon(UserEventPanel.class.getResource("/Icons/shield-check.png"))); // Adjust the path to your image
-        publishButton.setPreferredSize(new Dimension(30, 30));
-        publishButton.setBorderPainted(false);
-        publishButton.setFocusPainted(false);
-        publishButton.setContentAreaFilled(false);
-        buttonPanel.add(publishButton);
-
         // "Delete" Icon Button
-        JButton deleteButton = new JButton();
-        deleteButton.setIcon(new ImageIcon(UserEventPanel.class.getResource("/Icons/trash-2.png"))); // Adjust the path to your image
-        deleteButton.setPreferredSize(new Dimension(30, 30));
-        deleteButton.setBorderPainted(false);
-        deleteButton.setFocusPainted(false);
-        deleteButton.setContentAreaFilled(false);
-        buttonPanel.add(deleteButton);
+        JButton cancleEvent = new JButton();
+        cancleEvent.setIcon(new ImageIcon(UserEventPanel.class.getResource("/Icons/x.png"))); // Adjust the path to your image
+        cancleEvent.setPreferredSize(new Dimension(30, 30));
+        cancleEvent.setBorderPainted(false);
+        cancleEvent.setFocusPainted(false);
+        cancleEvent.setContentAreaFilled(false);
+        buttonPanel.add(cancleEvent);
 
         // Add button panel to the event panel (column 2, row 0)
         gbc.gridx = 2;
         gbc.gridy = 0;
         eventPanel.add(Box.createHorizontalStrut(30)); // Adjust the space on the left (Move buttons to the left)
         eventPanel.add(buttonPanel, gbc);
+
+        // Add ActionListener to cancleEvent
+        cancleEvent.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Show a confirmation dialog to the user
+                int response = JOptionPane.showConfirmDialog(
+                        null,
+                        "Are you sure you want to delete this event?",
+                        "Confirm Deletion",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                // If the user selects "Yes", proceed with deletion
+                if (response == JOptionPane.YES_OPTION) {
+                    // Remove the event panel from the UI
+                    Container parent = eventPanel.getParent();
+                    if (parent != null) {
+                        parent.remove(eventPanel);
+                        parent.revalidate();  // Revalidate the container to update the layout
+                        parent.repaint();     // Repaint the container to reflect changes
+                    }
+
+                    // Call method to delete the event from the database
+                    EventBookingHelper.deleteBooking(event.e_id, u_id);
+
+                    // Optionally show a confirmation message
+                    JOptionPane.showMessageDialog(null, "Event deleted successfully.");
+                } else {
+                    // If the user selects "No", do nothing
+                    JOptionPane.showMessageDialog(null, "Event deletion canceled.");
+                }
+            }
+        });
 
         return eventPanel;
     }

@@ -104,19 +104,28 @@ public final class EventPage extends JFrame {
 
         // Add event cards to the panel
         int columns = 3;
-        for (int i = 0; i < events.size(); i++) {
-            Event event = events.get(i);
+        int addedEventCount = 0; // Counter for added events
+
+        for (Event event : events) {
+            // Check if the event's status is not "active", skip if it's not
+            if (event.getStatus() != null && !event.getStatus().equals("active")) {
+                continue; // Skip this event
+            }
+
+            // Create the event card
             JPanel eventCard = EventCardPanel.showevent(event);
 
-            gbc.gridx = i % columns;
-            gbc.gridy = i / columns;
+            // Add the event card to the panel in the proper grid position
+            gbc.gridx = addedEventCount % columns;
+            gbc.gridy = addedEventCount / columns;
             eventPanel.add(eventCard, gbc);
+
+            addedEventCount++; // Increment the counter
         }
 
-        // Optionally, you can add a transparent filler to keep the layout stable if
-        // there are fewer items than the grid can fit
+        // Optionally, you can add a transparent filler to keep the layout stable
         gbc.gridx = 0;
-        gbc.gridy = events.size() / columns + 1;
+        gbc.gridy = addedEventCount / columns + 1;
         gbc.weighty = 1.0;
         JPanel transparentPanel = new JPanel();
         transparentPanel.setBackground(new Color(0, 0, 0, 0)); // Fully transparent
@@ -126,4 +135,5 @@ public final class EventPage extends JFrame {
         eventPanel.revalidate();
         eventPanel.repaint();
     }
+
 }
