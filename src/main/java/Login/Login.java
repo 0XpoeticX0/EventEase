@@ -108,8 +108,8 @@ public class Login extends JFrame {
 
         loginButton = new JButton("Login");
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
-        loginButton.setBackground(Color.WHITE);
-        loginButton.setForeground(Color.BLACK);
+        loginButton.setBackground(Color.decode("#2196f3"));
+        loginButton.setForeground(Color.WHITE);
 
         newHereLabel = new JLabel("New here?");
         newHereLabel.setFont(new Font("Arial", Font.PLAIN, 14));

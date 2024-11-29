@@ -9,10 +9,11 @@ public class CurrentUser {
     private String image;
     private int age;
     private String role;
+    private String status;
 
     // Constructor
     public CurrentUser(String u_id, String firstName, String lastName, String email, String mobileNumber, String image,
-            int age,
+            int age, String status,
             String role) {
         this.u_id = u_id;
         this.firstName = firstName;
@@ -22,6 +23,7 @@ public class CurrentUser {
         this.image = image;
         this.age = age;
         this.role = role;
+        this.status = status;
     }
 
     // Getters
@@ -57,6 +59,10 @@ public class CurrentUser {
         return role;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
     // Setters (Optional, if needed)
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -84,6 +90,10 @@ public class CurrentUser {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }
