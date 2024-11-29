@@ -195,6 +195,7 @@ public class EventBooking extends javax.swing.JFrame {
                             "\nDate: " + formattedDate,
                             "Booking Details",
                             JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
 
                     // Optionally navigate to another screen, for example:
                     // EventDetails eventDetailsInterface = new EventDetails();

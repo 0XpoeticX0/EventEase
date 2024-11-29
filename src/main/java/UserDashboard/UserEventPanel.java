@@ -3,6 +3,8 @@ package UserDashboard;
 import Events.Event;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class UserEventPanel {
 
@@ -107,17 +109,38 @@ public class UserEventPanel {
         eventPanel.add(buttonPanel, gbc);
 
         // Add ActionListener to cancleEvent
-        cancleEvent.addActionListener(e -> {
-            // Remove the event panel from the UI
-            Container parent = eventPanel.getParent();
-            if (parent != null) {
-                parent.remove(eventPanel);
-                parent.revalidate();  // Revalidate the container to update the layout
-                parent.repaint();     // Repaint the container to reflect changes
-            }
+        cancleEvent.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Show a confirmation dialog to the user
+                int response = JOptionPane.showConfirmDialog(
+                        null,
+                        "Are you sure you want to delete this event?",
+                        "Confirm Deletion",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                );
 
-            // Call method to delete the booking from the database
-            EventBookingHelper.deleteBooking(u_id, event.getE_id()); // Assuming getE_id() gives the eventId as String
+                // If the user selects "Yes", proceed with deletion
+                if (response == JOptionPane.YES_OPTION) {
+                    // Remove the event panel from the UI
+                    Container parent = eventPanel.getParent();
+                    if (parent != null) {
+                        parent.remove(eventPanel);
+                        parent.revalidate();  // Revalidate the container to update the layout
+                        parent.repaint();     // Repaint the container to reflect changes
+                    }
+
+                    // Call method to delete the event from the database
+                    EventBookingHelper.deleteBooking(event.e_id, u_id);
+
+                    // Optionally show a confirmation message
+                    JOptionPane.showMessageDialog(null, "Event deleted successfully.");
+                } else {
+                    // If the user selects "No", do nothing
+                    JOptionPane.showMessageDialog(null, "Event deletion canceled.");
+                }
+            }
         });
 
         return eventPanel;

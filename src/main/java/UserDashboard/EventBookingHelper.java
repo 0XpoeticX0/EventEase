@@ -75,9 +75,7 @@ public class EventBookingHelper {
 
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(null, "Booking successfully deleted!");
-            } else {
-                JOptionPane.showMessageDialog(null, "No such booking found.");
+                JOptionPane.showMessageDialog(null, "Event successfully Canceled!");
             }
 
         } catch (SQLException e) {

@@ -118,15 +118,34 @@ public class EventPanelBuilder {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Remove the event panel from the UI
-                Container parent = eventPanel.getParent();
-                if (parent != null) {
-                    parent.remove(eventPanel);
-                    parent.revalidate();
-                    parent.repaint();
+                // Show a confirmation dialog to the user
+                int response = JOptionPane.showConfirmDialog(
+                        null,
+                        "Are you sure you want to delete this event?",
+                        "Confirm Deletion",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                // If the user selects "Yes", proceed with deletion
+                if (response == JOptionPane.YES_OPTION) {
+                    // Remove the event panel from the UI
+                    Container parent = eventPanel.getParent();
+                    if (parent != null) {
+                        parent.remove(eventPanel);
+                        parent.revalidate();  // Revalidate the container to update the layout
+                        parent.repaint();     // Repaint the container to reflect changes
+                    }
+
+                    // Call method to delete the event from the database
+                    DatabaseHelper.deleteEvent(event.e_id);
+
+                    // Optionally show a confirmation message
+                    JOptionPane.showMessageDialog(null, "Event deleted successfully.");
+                } else {
+                    // If the user selects "No", do nothing
+                    JOptionPane.showMessageDialog(null, "Event deletion canceled.");
                 }
-                // Delete the event from the database
-                DatabaseHelper.deleteEvent(event.e_id);
             }
         });
 
