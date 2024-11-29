@@ -40,9 +40,11 @@ public class DatabaseInitializer {
                         location VARCHAR(255) NOT NULL,
                         price DECIMAL(10, 2) NOT NULL,
                         image VARCHAR(255),
+                        status VARCHAR(50) NOT NULL DEFAULT 'active',  -- Added status column with default value 'active'
                         isDeleted BOOLEAN NOT NULL DEFAULT FALSE
                     );
                 """;
+
         String createBookingsTable = """
                     CREATE TABLE IF NOT EXISTS bookings (
                         bookingId INT AUTO_INCREMENT PRIMARY KEY,
@@ -55,28 +57,18 @@ public class DatabaseInitializer {
                     );
                 """;
 
-        String insertQuery = "INSERT INTO events (name, description, location, price, image) VALUES " +
-                "('Music Concert', 'A live music event with various artists performing.', 'New York', 50, 'src/main/java/Resorces/Images/1.jfif'),"
-                +
-                "('Art Exhibition', 'A showcase of contemporary art by local artists.', 'Los Angeles', 30, 'src/main/java/Resorces/Images/2.jfif'),"
-                +
-                "('Tech Conference', 'A gathering of tech enthusiasts and professionals.', 'San Francisco', 100, 'src/main/java/Resorces/Images/3.jfif'),"
-                +
-                "('Food Festival', 'A variety of local and international cuisines.', 'Chicago', 20, 'src/main/java/Resorces/Images/4.jfif'),"
-                +
-                "('Book Fair', 'A collection of books from different genres and authors.', 'Seattle', 10, 'src/main/java/Resorces/Images/5.jfif'),"
-                +
-                "('Theater Play', 'A dramatic performance showcasing talent on stage.', 'Boston', 25, 'src/main/java/Resorces/Images/6.jfif'),"
-                +
-                "('Film Screening', 'An evening of classic and contemporary films.', 'Austin', 15, 'src/main/java/Resorces/Images/7.jfif'),"
-                +
-                "('Charity Gala', 'A fundraising event for local charities.', 'Miami', 200, 'src/main/java/Resorces/Images/8.jfif'),"
-                +
-                "('Dance Workshop', 'Learn different dance styles from professional instructors.', 'Las Vegas', 40, 'src/main/java/Resorces/Images/9.jfif'),"
-                +
-                "('Sports Day', 'A fun-filled day of various sports and activities.', 'Denver', 5, 'src/main/java/Resorces/Images/10.jfif'),"
-                +
-                "('Fashion Show', 'An exhibition of the latest fashion trends.', 'New Orleans', 75, 'src/main/java/Resorces/Images/11.jfif');";
+        String insertQuery = "INSERT INTO events (name, description, location, price, image, status) VALUES "
+                + "('Music Concert', 'A live music event with various artists performing.', 'New York', 50, 'src/main/java/Resorces/Images/1.jfif', 'active'),"
+                + "('Art Exhibition', 'A showcase of contemporary art by local artists.', 'Los Angeles', 30, 'src/main/java/Resorces/Images/2.jfif', 'active'),"
+                + "('Tech Conference', 'A gathering of tech enthusiasts and professionals.', 'San Francisco', 100, 'src/main/java/Resorces/Images/3.jfif', 'active'),"
+                + "('Food Festival', 'A variety of local and international cuisines.', 'Chicago', 20, 'src/main/java/Resorces/Images/4.jfif', 'active'),"
+                + "('Book Fair', 'A collection of books from different genres and authors.', 'Seattle', 10, 'src/main/java/Resorces/Images/5.jfif', 'active'),"
+                + "('Theater Play', 'A dramatic performance showcasing talent on stage.', 'Boston', 25, 'src/main/java/Resorces/Images/6.jfif', 'active'),"
+                + "('Film Screening', 'An evening of classic and contemporary films.', 'Austin', 15, 'src/main/java/Resorces/Images/7.jfif', 'active'),"
+                + "('Charity Gala', 'A fundraising event for local charities.', 'Miami', 200, 'src/main/java/Resorces/Images/8.jfif', 'active'),"
+                + "('Dance Workshop', 'Learn different dance styles from professional instructors.', 'Las Vegas', 40, 'src/main/java/Resorces/Images/9.jfif', 'active'),"
+                + "('Sports Day', 'A fun-filled day of various sports and activities.', 'Denver', 5, 'src/main/java/Resorces/Images/10.jfif', 'active'),"
+                + "('Fashion Show', 'An exhibition of the latest fashion trends.', 'New Orleans', 75, 'src/main/java/Resorces/Images/11.jfif', 'active');";
 
         String insertAdminUser = """
                 INSERT INTO users (firstname, lastname, email, mobileNumber, password, age, role, status)
@@ -88,8 +80,7 @@ public class DatabaseInitializer {
 
         String hashedPassword = PasswordUtils.hashPassword(adminPassword);
 
-        try (Connection connection = DatabaseConnect.getConnection();
-                Statement statement = connection.createStatement()) {
+        try (Connection connection = DatabaseConnect.getConnection(); Statement statement = connection.createStatement()) {
 
             // Execute table creation queries
             statement.executeUpdate(createEventsTable);

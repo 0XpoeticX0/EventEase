@@ -8,12 +8,13 @@ import Events.Event;
 import Events.EventList;
 import Events.EventPage;
 import static LogOut.LogOut.logOut;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-
 
 /**
  *
@@ -471,14 +472,14 @@ public class AdminDash extends javax.swing.JFrame {
         // If the inner panel is not initialized (null), create it and set it to the JScrollPane
         if (panelInsideScroll == null) {
             panelInsideScroll = new JPanel();
-            panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS));  // Use a vertical BoxLayout
+            panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS)); // Use a vertical BoxLayout
             eventJPanel.setViewportView(panelInsideScroll);
         }
 
         // Clear any existing event cards
         panelInsideScroll.removeAll();
-        panelInsideScroll.revalidate();
-        panelInsideScroll.repaint();
+        panelInsideScroll.revalidate();  // Revalidate the layout to remove any lingering components
+        panelInsideScroll.repaint();    // Repaint to clear out anything left in the panel
         System.out.println("Cleared eventPanel");
 
         // Add event cards for each event
@@ -502,10 +503,19 @@ public class AdminDash extends javax.swing.JFrame {
             panelInsideScroll.add(eventCard);
         }
 
-        // Log how many cards were added
-        System.out.println("Total event cards added: " + panelInsideScroll.getComponentCount());
+        // Always add 8 empty rows (no matter the number of events)
+        for (int i = 0; i < 8; i++) {
+            JPanel emptyEventCard = new JPanel();
+            emptyEventCard.setPreferredSize(new Dimension(600, 100)); // Match the height of event cards
+            emptyEventCard.setBackground(Color.WHITE); // Set background to white for empty space
+            emptyEventCard.setAlignmentX(Component.LEFT_ALIGNMENT); // Ensure alignment
+            panelInsideScroll.add(emptyEventCard);
+        }
 
-        // Revalidate and repaint to reflect changes
+        // Log how many cards (and empty cards) were added
+        System.out.println("Total event cards (including 8 empty ones) added: " + panelInsideScroll.getComponentCount());
+
+        // After adding all event cards and empty cards, force layout recalculation and repaint
         panelInsideScroll.revalidate();
         panelInsideScroll.repaint();
         System.out.println("Repainted eventPanel");
