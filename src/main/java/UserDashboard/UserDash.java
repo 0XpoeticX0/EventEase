@@ -18,18 +18,21 @@ import DataBase.LoggedInUser;
 
 import java.awt.*;
 import java.io.File;
+import java.util.Set;
 
 /**
  *
  * @author utsho
  */
 public class UserDash extends javax.swing.JFrame {
+
     private final EventList eventList = new EventList();
 
     CurrentUser currentUser = LoggedInUser.getInstance().getCurrentUser();
 
     // String fullName = currentUser.getFirstName() + " " +
     // currentUser.getLastName();
+    String u_id = currentUser.getUserId();
     String firstName = currentUser.getFirstName() != null ? currentUser.getFirstName() : "";
     String lastName = currentUser.getLastName() != null ? currentUser.getLastName() : "";
     String fullName = firstName.trim() + " " + lastName.trim();
@@ -445,7 +448,7 @@ public class UserDash extends javax.swing.JFrame {
         eventJPanel.setViewportView(panelInsideScroll);
 
         // Now you can call loadEventCards() to load the event cards into the scroll pane
-        loadEventCards(eventList.getEvents());
+        loadEventCards(eventList.getEvents(), u_id);
 
         jPanel2.add(bookingJP);
 
@@ -547,12 +550,17 @@ public class UserDash extends javax.swing.JFrame {
         });
     }
 
-    public void loadEventCards(List<Event> events) {
+    public void loadEventCards(List<Event> events, String u_id) {
+        // Get the set of eventIds that the user has booked, using u_id as a string
+        Set<String> bookedEventIds = EventBookingHelper.getBookedEventIds(u_id); // Ensure this returns a Set<String>
+
+        // Debugging: Check booked events
+        System.out.println("Booked Event IDs for user (" + u_id + "): " + bookedEventIds);
+
         // Ensure the inner panel of the JScrollPane is initialized correctly
         JPanel panelInsideScroll = (JPanel) eventJPanel.getViewport().getView();
 
-        // If the inner panel is not initialized (null), create it and set it to the
-        // JScrollPane
+        // If the inner panel is not initialized (null), create it and set it to the JScrollPane
         if (panelInsideScroll == null) {
             panelInsideScroll = new JPanel();
             panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS)); // Use a vertical BoxLayout
@@ -565,35 +573,55 @@ public class UserDash extends javax.swing.JFrame {
         panelInsideScroll.repaint();
         System.out.println("Cleared eventPanel");
 
-        // Add event cards for each event
-        int x = 0;
+        // Add event cards for each event based on booked eventIds
+        int eventCardCount = 0; // To keep track of how many actual event cards are added
         for (Event event : events) {
-            System.out.println("Creating event card " + (++x) + " for event: " + event.getName());
+            // Check if the event ID is in the bookedEventIds set
+            String eventId = event.getE_id(); // Assuming event.getE_id() is a String
+            if (bookedEventIds.contains(eventId)) {
+                System.out.println("User has booked this event. Creating card for: " + event.getName());
 
-            // Create an event card for each event
-            JPanel eventCard = UserEventPanel.buildCompleteEventPanel(event);
+                // Fetch the booking date for this specific event for this user
+                String eventDate = EventBookingHelper.getBookingDate(u_id, eventId);  // Fetch specific user's booking date
 
-            // Check if the card was created successfully
-            if (eventCard == null) {
-                System.out.println("Failed to create event card for event: " + event.getName());
-                continue;
+                // Create an event card for each booked event
+                JPanel eventCard = UserEventPanel.buildCompleteEventPanel(event, u_id, eventDate);  // Pass eventDate to the method
+
+                // Check if the card was created successfully
+                if (eventCard == null) {
+                    System.out.println("Failed to create event card for event: " + event.getName());
+                    continue;
+                }
+
+                // Ensure the event card stretches across the panel width
+                eventCard.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+                // Add the event card to the panel inside the JScrollPane
+                panelInsideScroll.add(eventCard);
+                eventCardCount++; // Increment only when an actual event card is added
+            } else {
+                System.out.println("User has not booked this event. Skipping: " + event.getName());
             }
-
-            // Ensure the event card stretches across the panel width
-            eventCard.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-            // Add the event card to the panel inside the JScrollPane
-            panelInsideScroll.add(eventCard);
         }
 
         // Log how many cards were added
-        System.out.println("Total event cards added: " + panelInsideScroll.getComponentCount());
+        System.out.println("Total event cards added: " + eventCardCount);
+
+        // If no event cards were added, add empty cards
+        for (int i = 0; i < 8; i++) {
+            JPanel emptyEventCard = new JPanel();
+            emptyEventCard.setPreferredSize(new Dimension(600, 100)); // Match the height of event cards
+            emptyEventCard.setBackground(Color.WHITE); // Set background to white for empty space
+            emptyEventCard.setAlignmentX(Component.LEFT_ALIGNMENT); // Ensure alignment
+            panelInsideScroll.add(emptyEventCard);
+        }
 
         // Revalidate and repaint to reflect changes
         panelInsideScroll.revalidate();
         panelInsideScroll.repaint();
         System.out.println("Repainted eventPanel");
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bookingJP;
