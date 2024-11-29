@@ -8,6 +8,13 @@ import Events.Event;
 import Events.EventList;
 import Events.EventPage;
 import static LogOut.LogOut.logOut;
+import java.awt.Component;
+import java.awt.GridLayout;
+import java.util.List;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,6 +22,8 @@ import javax.swing.table.DefaultTableModel;
  * @author ACER
  */
 public class AdminDash extends javax.swing.JFrame {
+
+    private final EventList eventList = new EventList();
 
     /**
      * Creates new form AdminDash
@@ -49,6 +58,10 @@ public class AdminDash extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         ViewEventsJP = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        eventJPanel = new javax.swing.JScrollPane();
         AddNewEvent = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
 
@@ -243,12 +256,48 @@ public class AdminDash extends javax.swing.JFrame {
 
         jPanel2.add(ManageUserJP);
 
-        ViewEventsJP.setBackground(new java.awt.Color(153, 153, 255));
+        ViewEventsJP.setBackground(new java.awt.Color(255, 255, 255));
+        ViewEventsJP.setForeground(new java.awt.Color(0, 0, 0));
         ViewEventsJP.setPreferredSize(new java.awt.Dimension(580, 850));
 
         jLabel4.setFont(new java.awt.Font("Cambria", 1, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("View All Events");
+
+        jPanel4.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel4.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel6.setFont(new java.awt.Font("Cambria", 3, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Name");
+
+        jLabel9.setFont(new java.awt.Font("Cambria", 3, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Actions");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addGap(27, 27, 27))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel9))
+                .addGap(14, 14, 14))
+        );
+
+        eventJPanel.setAlignmentX(0.0F);
+        eventJPanel.setAlignmentY(0.0F);
 
         javax.swing.GroupLayout ViewEventsJPLayout = new javax.swing.GroupLayout(ViewEventsJP);
         ViewEventsJP.setLayout(ViewEventsJPLayout);
@@ -257,15 +306,34 @@ public class AdminDash extends javax.swing.JFrame {
             .addGroup(ViewEventsJPLayout.createSequentialGroup()
                 .addGap(203, 203, 203)
                 .addComponent(jLabel4)
-                .addContainerGap(207, Short.MAX_VALUE))
+                .addContainerGap(208, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(eventJPanel)
         );
         ViewEventsJPLayout.setVerticalGroup(
             ViewEventsJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ViewEventsJPLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addContainerGap(815, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(eventJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 761, Short.MAX_VALUE))
         );
+
+        JScrollBar verticalScrollBar = eventJPanel.getVerticalScrollBar();
+
+        // Increase the unit increment (scroll step with mouse wheel)
+        verticalScrollBar.setUnitIncrement(30);  // Default is usually around 16, increase for faster scrolling
+
+        // Increase the block increment (scroll step with page up/down or arrow keys)
+        verticalScrollBar.setBlockIncrement(60);
+        JPanel panelInsideScroll = new JPanel();
+        panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS));  // Vertical layout
+        eventJPanel.setViewportView(panelInsideScroll);
+
+        // Now you can call loadEventCards() to load the event cards into the scroll pane
+        loadEventCards(eventList.getEvents());
 
         jPanel2.add(ViewEventsJP);
 
@@ -398,10 +466,59 @@ public class AdminDash extends javax.swing.JFrame {
         });
     }
 
+    public void loadEventCards(List<Event> events) {
+        // Ensure the inner panel of the JScrollPane is initialized correctly
+        JPanel panelInsideScroll = (JPanel) eventJPanel.getViewport().getView();
+
+        // If the inner panel is not initialized (null), create it and set it to the JScrollPane
+        if (panelInsideScroll == null) {
+            panelInsideScroll = new JPanel();
+            panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS));  // Use a vertical BoxLayout
+            eventJPanel.setViewportView(panelInsideScroll);
+        }
+
+        // Clear any existing event cards
+        panelInsideScroll.removeAll();
+        panelInsideScroll.revalidate();
+        panelInsideScroll.repaint();
+        System.out.println("Cleared eventPanel");
+
+        // Add event cards for each event
+        int x = 0;
+        for (Event event : events) {
+            System.out.println("Creating event card " + (++x) + " for event: " + event.getName());
+
+            // Create an event card for each event
+            JPanel eventCard = EventPanelBuilder.buildCompleteEventPanel(event);
+
+            // Check if the card was created successfully
+            if (eventCard == null) {
+                System.out.println("Failed to create event card for event: " + event.getName());
+                continue;
+            }
+
+            // Ensure the event card stretches across the panel width
+            eventCard.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            // Add the event card to the panel inside the JScrollPane
+            panelInsideScroll.add(eventCard);
+        }
+
+        // Log how many cards were added
+        System.out.println("Total event cards added: " + panelInsideScroll.getComponentCount());
+
+        // Revalidate and repaint to reflect changes
+        panelInsideScroll.revalidate();
+        panelInsideScroll.repaint();
+        System.out.println("Repainted eventPanel");
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AddNewEvent;
     private javax.swing.JPanel ManageUserJP;
     private javax.swing.JPanel ViewEventsJP;
+    private javax.swing.JScrollPane eventJPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -412,9 +529,12 @@ public class AdminDash extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }
