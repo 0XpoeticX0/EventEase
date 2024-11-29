@@ -50,6 +50,17 @@ public class EventList {
     }
 
     public List<Event> getEvents(int count) {
-        return events.subList(0, count);
+    List<Event> activeEvents = new ArrayList<>();
+    for (Event event : events) {
+        if ("active".equalsIgnoreCase(event.getStatus())) {
+            activeEvents.add(event);
+        }
+        // Stop adding if we reach the requested count
+        if (activeEvents.size() >= count) {
+            break;
+        }
     }
+    return activeEvents; // If count exceeds the size, this will just return all active events
+}
+
 }

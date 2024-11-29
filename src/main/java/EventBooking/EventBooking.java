@@ -20,6 +20,7 @@ import DataBase.LoggedInUser;
  * @author MaHir0
  */
 public class EventBooking extends javax.swing.JFrame {
+
     private static JFrame currentlyBookingEvent = null;
     CurrentUser currentUser = LoggedInUser.getInstance().getCurrentUser();
     static String e_id;
@@ -162,6 +163,19 @@ public class EventBooking extends javax.swing.JFrame {
         java.util.Date selectedDate = jDateChooser1.getDate();
 
         if (selectedDate != null) {
+            // Get current date (without time component)
+            java.util.Date currentDate = new java.util.Date();
+            currentDate.setHours(0); // Set the time to midnight
+            currentDate.setMinutes(0);
+            currentDate.setSeconds(0);
+
+            // Check if the selected date is in the past or today
+            if (!selectedDate.after(currentDate)) {
+                JOptionPane.showMessageDialog(this, "Please select a future date for the event.",
+                        "Invalid Date", JOptionPane.WARNING_MESSAGE);
+                return; // Exit method if the date is invalid
+            }
+
             // Format the date for display
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
             String formattedDate = sdf.format(selectedDate);
@@ -174,14 +188,11 @@ public class EventBooking extends javax.swing.JFrame {
             // Prepare the SQL query to insert booking into the database
             String insertQuery = "INSERT INTO bookings (userId, eventId, eventDate, price) VALUES (?, ?, ?, ?)";
 
-            try (Connection connection = DatabaseConnect.getConnection(); // Replace DatabaseConnect with your DB
-                                                                          // connection class
-                    PreparedStatement pstmt = connection.prepareStatement(insertQuery)) {
+            try (Connection connection = DatabaseConnect.getConnection(); PreparedStatement pstmt = connection.prepareStatement(insertQuery)) {
 
                 // Set the parameters for the query
-                System.out.println("userId" + currentUser.getUserId());
-                pstmt.setInt(1, Integer.parseInt(currentUser.getUserId())); // Assuming currentUser has a method to get
-                                                                            // user ID
+                System.out.println("userId: " + currentUser.getUserId());
+                pstmt.setInt(1, Integer.parseInt(currentUser.getUserId())); // Assuming currentUser has a method to get user ID
                 pstmt.setInt(2, Integer.parseInt(e_id)); // Event ID
                 pstmt.setString(3, formattedDate); // Event Date
                 pstmt.setDouble(4, e_price); // Price
@@ -189,18 +200,14 @@ public class EventBooking extends javax.swing.JFrame {
                 // Execute the insert query
                 int rowsAffected = pstmt.executeUpdate();
                 if (rowsAffected > 0) {
-                    JOptionPane.showMessageDialog(this, "Booking Successful!\n" +
-                            "Event ID: " + e_id +
-                            "\nPrice: " + e_price +
-                            "\nDate: " + formattedDate,
+                    JOptionPane.showMessageDialog(this, "Booking Successful!\n"
+                            + "Event ID: " + e_id
+                            + "\nPrice: " + e_price
+                            + "\nDate: " + formattedDate,
                             "Booking Details",
                             JOptionPane.INFORMATION_MESSAGE);
-                    this.dispose();
+                    this.dispose(); // Close current frame or navigate
 
-                    // Optionally navigate to another screen, for example:
-                    // EventDetails eventDetailsInterface = new EventDetails();
-                    // eventDetailsInterface.setVisible(true);
-                    // this.dispose(); // Close the current frame
                 } else {
                     JOptionPane.showMessageDialog(this, "Failed to book the event. Please try again.");
                 }
@@ -212,7 +219,8 @@ public class EventBooking extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Please select a date before proceeding.");
         }
-    }// GEN-LAST:event_jButton1MouseClicked
+    }
+// GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments
