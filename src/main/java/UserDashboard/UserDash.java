@@ -551,11 +551,11 @@ public class UserDash extends javax.swing.JFrame {
     }
 
     public void loadEventCards(List<Event> events, String u_id) {
-        // Get the set of eventIds that the user has booked, using u_id as a string
-        Set<String> bookedEventIds = EventBookingHelper.getBookedEventIds(u_id); // Ensure this returns a Set<String>
+        // Get the set of bookingIds that the user has booked, using u_id as a string
+        Set<String> bookedBookingIds = EventBookingHelper.getBookedEventIds(u_id); // Ensure this returns a Set<String>
 
         // Debugging: Check booked events
-        System.out.println("Booked Event IDs for user (" + u_id + "): " + bookedEventIds);
+        System.out.println("Booked Booking IDs for user (" + u_id + "): " + bookedBookingIds);
 
         // Ensure the inner panel of the JScrollPane is initialized correctly
         JPanel panelInsideScroll = (JPanel) eventJPanel.getViewport().getView();
@@ -573,23 +573,37 @@ public class UserDash extends javax.swing.JFrame {
         panelInsideScroll.repaint();
         System.out.println("Cleared eventPanel");
 
-        // Add event cards for each event based on booked eventIds
+        // Add event cards for each booking based on bookedBookingIds
         int eventCardCount = 0; // To keep track of how many actual event cards are added
-        for (Event event : events) {
-            // Check if the event ID is in the bookedEventIds set
-            String eventId = event.getE_id(); // Assuming event.getE_id() is a String
-            if (bookedEventIds.contains(eventId)) {
-                System.out.println("User has booked this event. Creating card for: " + event.getName());
+        for (String bookingId : bookedBookingIds) {
+            // Fetch the eventId associated with this bookingId
+            String eventId = EventBookingHelper.getEventIdFromBooking(bookingId);  // Fetch eventId using the bookingId
 
-                // Fetch the booking date for this specific event for this user
-                String eventDate = EventBookingHelper.getBookingDate(u_id, eventId);  // Fetch specific user's booking date
+            // Fetch the eventDate using both bookingId and eventId
+            String eventDate = EventBookingHelper.getBookingDate(bookingId, eventId);  // Fetch eventDate using bookingId and eventId
 
-                // Create an event card for each booked event
-                JPanel eventCard = UserEventPanel.buildCompleteEventPanel(event, u_id, eventDate);  // Pass eventDate to the method
+            // Debugging: Print booking and event details
+            System.out.println("Booking ID: " + bookingId + ", Event ID: " + eventId + ", Event Date: " + eventDate);
+
+            // Now find the corresponding Event object based on eventId
+            Event bookedEvent = null;
+            for (Event event : events) {
+                if (event.getE_id().equals(eventId)) {
+                    bookedEvent = event;
+                    break;
+                }
+            }
+
+            // If we found the corresponding Event, create and display the event card
+            if (bookedEvent != null) {
+                System.out.println("User has booked this event. Creating card for: " + bookedEvent.getName());
+
+                // Create an event card for the booked event
+                JPanel eventCard = UserEventPanel.buildCompleteEventPanel(bookedEvent, u_id, eventDate);  // Pass eventDate to the method
 
                 // Check if the card was created successfully
                 if (eventCard == null) {
-                    System.out.println("Failed to create event card for event: " + event.getName());
+                    System.out.println("Failed to create event card for event: " + bookedEvent.getName());
                     continue;
                 }
 
@@ -600,7 +614,7 @@ public class UserDash extends javax.swing.JFrame {
                 panelInsideScroll.add(eventCard);
                 eventCardCount++; // Increment only when an actual event card is added
             } else {
-                System.out.println("User has not booked this event. Skipping: " + event.getName());
+                System.out.println("No event found for booking ID: " + bookingId);
             }
         }
 
