@@ -1,13 +1,21 @@
 package UserDashboard;
 
+import Events.Event;
+import Events.EventList;
 import Events.EventPage;
 import static LogOut.LogOut.logOut;
+import java.awt.Component;
+import java.util.List;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 
 /**
  *
  * @author utsho
  */
 public class UserDash extends javax.swing.JFrame {
+    private final EventList eventList = new EventList();
 
     /**
      * Creates new form UserDash
@@ -29,6 +37,8 @@ public class UserDash extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -42,6 +52,21 @@ public class UserDash extends javax.swing.JFrame {
         homeJP = new javax.swing.JPanel();
         profileJP = new javax.swing.JPanel();
         bookingJP = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        eventJPanel = new javax.swing.JScrollPane();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("User Dashboard");
@@ -216,19 +241,47 @@ public class UserDash extends javax.swing.JFrame {
 
         jPanel2.add(profileJP);
 
-        bookingJP.setBackground(new java.awt.Color(51, 255, 0));
+        bookingJP.setBackground(new java.awt.Color(255, 255, 255));
+        bookingJP.setForeground(new java.awt.Color(0, 0, 0));
         bookingJP.setPreferredSize(new java.awt.Dimension(580, 850));
+
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setFont(new java.awt.Font("Candara", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Booked Events");
 
         javax.swing.GroupLayout bookingJPLayout = new javax.swing.GroupLayout(bookingJP);
         bookingJP.setLayout(bookingJPLayout);
         bookingJPLayout.setHorizontalGroup(
             bookingJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 580, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bookingJPLayout.createSequentialGroup()
+                .addContainerGap(217, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(212, 212, 212))
+            .addComponent(eventJPanel)
         );
         bookingJPLayout.setVerticalGroup(
             bookingJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 850, Short.MAX_VALUE)
+            .addGroup(bookingJPLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(eventJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 802, Short.MAX_VALUE))
         );
+
+        JScrollBar verticalScrollBar = eventJPanel.getVerticalScrollBar();
+
+        // Increase the unit increment (scroll step with mouse wheel)
+        verticalScrollBar.setUnitIncrement(30);  // Default is usually around 16, increase for faster scrolling
+
+        // Increase the block increment (scroll step with page up/down or arrow keys)
+        verticalScrollBar.setBlockIncrement(60);
+        JPanel panelInsideScroll = new JPanel();
+        panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS));  // Vertical layout
+        eventJPanel.setViewportView(panelInsideScroll);
+
+        // Now you can call loadEventCards() to load the event cards into the scroll pane
+        loadEventCards(eventList.getEvents());
 
         jPanel2.add(bookingJP);
 
@@ -332,9 +385,57 @@ public class UserDash extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void loadEventCards(List<Event> events) {
+        // Ensure the inner panel of the JScrollPane is initialized correctly
+        JPanel panelInsideScroll = (JPanel) eventJPanel.getViewport().getView();
+
+        // If the inner panel is not initialized (null), create it and set it to the JScrollPane
+        if (panelInsideScroll == null) {
+            panelInsideScroll = new JPanel();
+            panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS));  // Use a vertical BoxLayout
+            eventJPanel.setViewportView(panelInsideScroll);
+        }
+
+        // Clear any existing event cards
+        panelInsideScroll.removeAll();
+        panelInsideScroll.revalidate();
+        panelInsideScroll.repaint();
+        System.out.println("Cleared eventPanel");
+
+        // Add event cards for each event
+        int x = 0;
+        for (Event event : events) {
+            System.out.println("Creating event card " + (++x) + " for event: " + event.getName());
+
+            // Create an event card for each event
+            JPanel eventCard = UserEventPanel.buildCompleteEventPanel(event);
+
+            // Check if the card was created successfully
+            if (eventCard == null) {
+                System.out.println("Failed to create event card for event: " + event.getName());
+                continue;
+            }
+
+            // Ensure the event card stretches across the panel width
+            eventCard.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            // Add the event card to the panel inside the JScrollPane
+            panelInsideScroll.add(eventCard);
+        }
+
+        // Log how many cards were added
+        System.out.println("Total event cards added: " + panelInsideScroll.getComponentCount());
+
+        // Revalidate and repaint to reflect changes
+        panelInsideScroll.revalidate();
+        panelInsideScroll.repaint();
+        System.out.println("Repainted eventPanel");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bookingJP;
+    private javax.swing.JScrollPane eventJPanel;
     private javax.swing.JPanel homeJP;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -343,9 +444,12 @@ public class UserDash extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JPanel profileJP;
     // End of variables declaration//GEN-END:variables
 }
