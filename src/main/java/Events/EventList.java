@@ -33,7 +33,10 @@ public class EventList {
                 String location = resultSet.getString("location");
                 int price = resultSet.getInt("price");
                 String imagePath = resultSet.getString("image");
-                events.add(new Event(e_id, name, imagePath, description, location, price));
+                String status = resultSet.getString("status"); // Fetch the status
+
+                // Create an Event object and add it to the list
+                events.add(new Event(e_id, name, imagePath, description, location, price, status));
             }
 
         } catch (SQLException e) {

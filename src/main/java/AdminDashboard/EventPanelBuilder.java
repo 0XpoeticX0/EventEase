@@ -3,12 +3,11 @@ package AdminDashboard;
 import Events.Event;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class EventPanelBuilder {
 
-    /**
-     * Method to build the complete event panel as per your design.
-     */
     public static JPanel buildCompleteEventPanel(Event event) {
         // Main event panel using GridBagLayout for better control
         JPanel eventPanel = new JPanel(new GridBagLayout());
@@ -24,8 +23,6 @@ public class EventPanelBuilder {
         JPanel imagePanel = new JPanel();
         imagePanel.setPreferredSize(new Dimension(50, 50)); // Circle size
         imagePanel.setBackground(Color.GRAY); // Temporary background color for image
-
-        // Make the image circular by setting the border
         imagePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
         imagePanel.setLayout(new BorderLayout());
 
@@ -36,7 +33,6 @@ public class EventPanelBuilder {
         imageLabel.setVerticalAlignment(SwingConstants.CENTER);
         imagePanel.add(imageLabel, BorderLayout.CENTER);
 
-        // Add image panel to the event panel (column 0, row 0)
         gbc.gridx = 0;
         gbc.gridy = 0;
         eventPanel.add(imagePanel, gbc);
@@ -44,14 +40,12 @@ public class EventPanelBuilder {
         // Middle part: Event Name, Price, and Status
         JPanel textPanel = new JPanel();
         textPanel.setOpaque(false);
-        textPanel.setLayout(new GridBagLayout()); // Nested GridBagLayout for name, price, and status
+        textPanel.setLayout(new GridBagLayout());
 
-        // GridBagConstraints for textPanel's child components
         GridBagConstraints textGBC = new GridBagConstraints();
         textGBC.fill = GridBagConstraints.HORIZONTAL;
         textGBC.insets = new Insets(5, 5, 5, 5);
 
-        // Event Name (Wrap text if too long)
         JLabel eventNameLabel = new JLabel("<html><div style='width: 250px;'>" + event.getName() + "</div></html>");  // HTML to wrap text
         eventNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
         eventNameLabel.setForeground(Color.WHITE);
@@ -60,53 +54,85 @@ public class EventPanelBuilder {
         textGBC.gridy = 0;
         textPanel.add(eventNameLabel, textGBC);
 
-        // Price (20px right from the event name)
-        JLabel priceLabel = new JLabel("$" + event.getPrice()); // Assuming Event class has getPrice method
+        JLabel priceLabel = new JLabel("$" + event.getPrice());
         priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         priceLabel.setForeground(Color.WHITE);
         textGBC.gridx = 0;
         textGBC.gridy = 1;
         textPanel.add(priceLabel, textGBC);
 
-        // Status (20px right from the price)
-        JLabel statusLabel = new JLabel("Active"); // or dynamic status from Event class
+        JLabel statusLabel = new JLabel(event.getStatus().equalsIgnoreCase("active") ? "Active" : "Inactive");
         statusLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        statusLabel.setForeground(Color.GREEN);
+        statusLabel.setForeground(event.getStatus().equalsIgnoreCase("active") ? Color.GREEN : Color.RED);
         textGBC.gridx = 0;
         textGBC.gridy = 2;
         textPanel.add(statusLabel, textGBC);
 
-        // Add text panel to the event panel (column 1, row 0)
         gbc.gridx = 1;
         gbc.gridy = 0;
         eventPanel.add(textPanel, gbc);
 
         // Right side: Buttons (Publish, Delete)
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0)); // Use standard gap for buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonPanel.setOpaque(false);
 
         // "PUBLISH" Button
         JButton publishButton = new JButton();
-        publishButton.setIcon(new ImageIcon(EventPanelBuilder.class.getResource("/Icons/shield-check.png"))); // Adjust the path to your image
+        boolean isActive = event.getStatus().equalsIgnoreCase("active");
+        publishButton.setIcon(new ImageIcon(EventPanelBuilder.class.getResource(isActive ? "/Icons/shield-check.png" : "/Icons/shield-minus.png")));
         publishButton.setPreferredSize(new Dimension(30, 30));
         publishButton.setBorderPainted(false);
         publishButton.setFocusPainted(false);
         publishButton.setContentAreaFilled(false);
         buttonPanel.add(publishButton);
 
-        // "Delete" Icon Button
+        publishButton.addActionListener(new ActionListener() {
+            private boolean isCurrentlyActive = isActive;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isCurrentlyActive) {
+                    statusLabel.setText("Inactive");
+                    statusLabel.setForeground(Color.RED);
+                    publishButton.setIcon(new ImageIcon(EventPanelBuilder.class.getResource("/Icons/shield-minus.png")));
+                    DatabaseHelper.updateEventStatus(event.e_id, "inactive");
+                } else {
+                    statusLabel.setText("Active");
+                    statusLabel.setForeground(Color.GREEN);
+                    publishButton.setIcon(new ImageIcon(EventPanelBuilder.class.getResource("/Icons/shield-check.png")));
+                    DatabaseHelper.updateEventStatus(event.e_id, "active");
+                }
+                isCurrentlyActive = !isCurrentlyActive;
+            }
+        });
+
+        // "Delete" Button
         JButton deleteButton = new JButton();
-        deleteButton.setIcon(new ImageIcon(EventPanelBuilder.class.getResource("/Icons/trash-2.png"))); // Adjust the path to your image
+        deleteButton.setIcon(new ImageIcon(EventPanelBuilder.class.getResource("/Icons/trash-2.png")));
         deleteButton.setPreferredSize(new Dimension(30, 30));
         deleteButton.setBorderPainted(false);
         deleteButton.setFocusPainted(false);
         deleteButton.setContentAreaFilled(false);
         buttonPanel.add(deleteButton);
 
-        // Add button panel to the event panel (column 2, row 0)
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Remove the event panel from the UI
+                Container parent = eventPanel.getParent();
+                if (parent != null) {
+                    parent.remove(eventPanel);
+                    parent.revalidate();
+                    parent.repaint();
+                }
+                // Delete the event from the database
+                DatabaseHelper.deleteEvent(event.e_id);
+            }
+        });
+
         gbc.gridx = 2;
         gbc.gridy = 0;
-        eventPanel.add(Box.createHorizontalStrut(30)); // Adjust the space on the left (Move buttons to the left)
+        eventPanel.add(Box.createHorizontalStrut(30));
         eventPanel.add(buttonPanel, gbc);
 
         return eventPanel;
