@@ -9,20 +9,10 @@ import Events.Event;
 import Events.EventList;
 import Events.EventPage;
 import static LogOut.LogOut.logOut;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
-import javax.swing.BoxLayout;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.*;
 
 /**
@@ -35,6 +25,7 @@ public class AdminDash extends javax.swing.JFrame {
     public Boolean uploaded = false;
 
     private final EventList eventList = new EventList();
+    private final UserList users = new UserList();
 
     /**
      * Creates new form AdminDash
@@ -70,6 +61,7 @@ public class AdminDash extends javax.swing.JFrame {
         ManageUserJP = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        userJPanel = new javax.swing.JScrollPane();
         ViewEventsJP = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -258,17 +250,30 @@ public class AdminDash extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(195, 195, 195)
+                .addGap(222, 222, 222)
                 .addComponent(jLabel2)
-                .addContainerGap(233, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(userJPanel)
+                .addGap(0, 0, 0))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(userJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 807, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
+
+        userJPanel.setAlignmentX(0.0F);
+        userJPanel.setAlignmentY(0.0F);
+
+        // Configure scroll bar increments for smoother scrolling
+        // Replace with actual user fetching logic
+        loadUserCards(users.getUsers());
 
         javax.swing.GroupLayout ManageUserJPLayout = new javax.swing.GroupLayout(ManageUserJP);
         ManageUserJP.setLayout(ManageUserJPLayout);
@@ -559,7 +564,7 @@ public class AdminDash extends javax.swing.JFrame {
         String description = eventDescription.getText();
 
         if (name.isEmpty() || description.isEmpty() || location.isEmpty() || eventPriceText.isEmpty() || !uploaded) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields.",
+            JOptionPane.showMessageDialog(this, "Please fill in all fields. And Upload a Event Image",
                     "Missing Information", JOptionPane.WARNING_MESSAGE);
             return; // Exit the method if validation fails
         }
@@ -796,6 +801,62 @@ public class AdminDash extends javax.swing.JFrame {
         System.out.println("Repainted eventPanel");
     }
 
+    public void loadUserCards(List<User> user) {
+        // Ensure the inner panel of the JScrollPane is initialized
+        JPanel panelInsideScroll = (JPanel) userJPanel.getViewport().getView();
+
+        if (panelInsideScroll == null) {
+            panelInsideScroll = new JPanel();
+            panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS)); // Use vertical BoxLayout
+            userJPanel.setViewportView(panelInsideScroll);
+        }
+
+        // Clear any existing user cards
+        panelInsideScroll.removeAll();
+        System.out.println("Cleared existing user cards from panel.");
+
+        // Add user cards dynamically
+        int userCount = 0; // Track the number of user cards added
+        for (User users : user) {
+            // Skip the user if their role is "admin"
+            if ("admin".equalsIgnoreCase(users.getRole())) {
+                System.out.println("Skipping admin user: " + users.getFullName());
+                continue;  // Skip to the next iteration if the user is an admin
+            }
+
+            System.out.println("Creating user card for: " + users.getFullName());
+            JPanel userCard = UserPanelBuilder.buildCompleteUserPanel(users);
+
+            if (userCard != null) {
+                userCard.setAlignmentX(Component.LEFT_ALIGNMENT);
+                panelInsideScroll.add(userCard);
+                userCount++;
+            } else {
+                System.err.println("Failed to create user card for: " + users.getFullName());
+            }
+        }
+
+        System.out.println("Total user cards added: " + userCount);
+
+        // Add spacing panels to fill empty space (8 by default)
+        int emptySpaceCount = 8;
+        for (int i = 0; i < emptySpaceCount; i++) {
+            JPanel emptyCard = new JPanel();
+            emptyCard.setPreferredSize(new Dimension(600, 100)); // Match height of user cards
+            emptyCard.setBackground(Color.WHITE);               // Ensure consistent background
+            emptyCard.setAlignmentX(Component.LEFT_ALIGNMENT);
+            panelInsideScroll.add(emptyCard);
+        }
+
+        System.out.println("Added " + emptySpaceCount + " empty space cards.");
+
+        // Refresh the panel
+        panelInsideScroll.revalidate();
+        panelInsideScroll.repaint();
+        System.out.println("User panel refreshed with updated cards.");
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AddNewEvent;
     private javax.swing.JPanel ManageUserJP;
@@ -831,5 +892,6 @@ public class AdminDash extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton uploadButton;
+    private javax.swing.JScrollPane userJPanel;
     // End of variables declaration//GEN-END:variables
 }
