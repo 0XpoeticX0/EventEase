@@ -141,7 +141,9 @@ public class Login extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        mainPanel.add(new JLabel("Email:"), gbc);
+        JLabel emailLabel = new JLabel("Email:");
+        emailLabel.setForeground(Color.WHITE); // Set text color to white
+        mainPanel.add(emailLabel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -149,7 +151,9 @@ public class Login extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        mainPanel.add(new JLabel("Password:"), gbc);
+        JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setForeground(Color.WHITE); // Set text color to white
+        mainPanel.add(passwordLabel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 2;
