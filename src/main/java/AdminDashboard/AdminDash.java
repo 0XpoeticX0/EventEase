@@ -4,17 +4,16 @@
  */
 package AdminDashboard;
 
+import DataBase.DatabaseConnect;
 import Events.Event;
 import Events.EventList;
 import Events.EventPage;
 import static LogOut.LogOut.logOut;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
+import java.awt.*;
+import java.io.File;
+import java.sql.*;
 import java.util.List;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
+import javax.swing.*;
 
 /**
  *
@@ -22,7 +21,11 @@ import javax.swing.JScrollBar;
  */
 public class AdminDash extends javax.swing.JFrame {
 
+    private File selectedImage;
+    public Boolean uploaded = false;
+
     private final EventList eventList = new EventList();
+    private final UserList users = new UserList();
 
     /**
      * Creates new form AdminDash
@@ -42,7 +45,7 @@ public class AdminDash extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -58,6 +61,7 @@ public class AdminDash extends javax.swing.JFrame {
         ManageUserJP = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        userJPanel = new javax.swing.JScrollPane();
         ViewEventsJP = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -66,6 +70,19 @@ public class AdminDash extends javax.swing.JFrame {
         eventJPanel = new javax.swing.JScrollPane();
         AddNewEvent = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        eventName = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        eventLocation = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        eventPriceField = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        eventDescription = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        uploadButton = new javax.swing.JButton();
+        imageLabel = new javax.swing.JLabel();
+        addEvent = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -169,55 +186,51 @@ public class AdminDash extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                                                jPanel1Layout.createSequentialGroup()
-                                                        .addContainerGap()
-                                                        .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                258, Short.MAX_VALUE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                                .addGap(27, 27, 27)
-                                                                .addGroup(jPanel1Layout.createParallelGroup(
-                                                                        javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jLabel3)
-                                                                        .addComponent(jLabel1)))
-                                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                                .addGap(63, 63, 63)
-                                                                .addGroup(jPanel1Layout.createParallelGroup(
-                                                                        javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jButton2)
-                                                                        .addComponent(jButton1)
-                                                                        .addComponent(jButton3)
-                                                                        .addComponent(jButton4)
-                                                                        .addComponent(jButton5))))
-                                                .addGap(0, 0, Short.MAX_VALUE)))
-                                .addContainerGap()));
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel1)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(63, 63, 63)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton2)
+                                    .addComponent(jButton1)
+                                    .addComponent(jButton3)
+                                    .addComponent(jButton4)
+                                    .addComponent(jButton5))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
         jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel3)
-                                .addGap(12, 12, 12)
-                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton4)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton5)
-                                .addContainerGap(534, Short.MAX_VALUE)));
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addGap(12, 12, 12)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addGap(18, 18, 18)
+                .addComponent(jButton4)
+                .addGap(18, 18, 18)
+                .addComponent(jButton5)
+                .addContainerGap(534, Short.MAX_VALUE))
+        );
 
         jPanel2.setPreferredSize(new java.awt.Dimension(580, 850));
         jPanel2.setLayout(new javax.swing.OverlayLayout(jPanel2));
@@ -235,28 +248,43 @@ public class AdminDash extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
-                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(195, 195, 195)
-                                .addComponent(jLabel2)
-                                .addContainerGap(233, Short.MAX_VALUE)));
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(222, 222, 222)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(userJPanel)
+                .addGap(0, 0, 0))
+        );
         jPanel3Layout.setVerticalGroup(
-                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE)));
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(userJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 807, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        userJPanel.setAlignmentX(0.0F);
+        userJPanel.setAlignmentY(0.0F);
+
+        // Configure scroll bar increments for smoother scrolling
+        // Replace with actual user fetching logic
+        loadUserCards(users.getUsers());
 
         javax.swing.GroupLayout ManageUserJPLayout = new javax.swing.GroupLayout(ManageUserJP);
         ManageUserJP.setLayout(ManageUserJPLayout);
         ManageUserJPLayout.setHorizontalGroup(
-                ManageUserJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+            ManageUserJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
         ManageUserJPLayout.setVerticalGroup(
-                ManageUserJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+            ManageUserJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         jPanel2.add(ManageUserJP);
 
@@ -282,22 +310,23 @@ public class AdminDash extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
-                jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(41, 41, 41)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel9)
-                                .addGap(27, 27, 27)));
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addGap(27, 27, 27))
+        );
         jPanel4Layout.setVerticalGroup(
-                jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addContainerGap(16, Short.MAX_VALUE)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel6)
-                                        .addComponent(jLabel9))
-                                .addGap(14, 14, 14)));
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel9))
+                .addGap(14, 14, 14))
+        );
 
         eventJPanel.setAlignmentX(0.0F);
         eventJPanel.setAlignmentY(0.0F);
@@ -305,39 +334,37 @@ public class AdminDash extends javax.swing.JFrame {
         javax.swing.GroupLayout ViewEventsJPLayout = new javax.swing.GroupLayout(ViewEventsJP);
         ViewEventsJP.setLayout(ViewEventsJPLayout);
         ViewEventsJPLayout.setHorizontalGroup(
-                ViewEventsJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(ViewEventsJPLayout.createSequentialGroup()
-                                .addGap(203, 203, 203)
-                                .addComponent(jLabel4)
-                                .addContainerGap(208, Short.MAX_VALUE))
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(eventJPanel));
+            ViewEventsJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ViewEventsJPLayout.createSequentialGroup()
+                .addGap(203, 203, 203)
+                .addComponent(jLabel4)
+                .addContainerGap(208, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(eventJPanel)
+        );
         ViewEventsJPLayout.setVerticalGroup(
-                ViewEventsJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(ViewEventsJPLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(eventJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 761,
-                                        Short.MAX_VALUE)));
+            ViewEventsJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ViewEventsJPLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(eventJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 761, Short.MAX_VALUE))
+        );
 
         JScrollBar verticalScrollBar = eventJPanel.getVerticalScrollBar();
 
         // Increase the unit increment (scroll step with mouse wheel)
-        verticalScrollBar.setUnitIncrement(30); // Default is usually around 16, increase for faster scrolling
+        verticalScrollBar.setUnitIncrement(30);  // Default is usually around 16, increase for faster scrolling
 
         // Increase the block increment (scroll step with page up/down or arrow keys)
         verticalScrollBar.setBlockIncrement(60);
         JPanel panelInsideScroll = new JPanel();
-        panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS)); // Vertical layout
+        panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS));  // Vertical layout
         eventJPanel.setViewportView(panelInsideScroll);
 
-        // Now you can call loadEventCards() to load the event cards into the scroll
-        // pane
+        // Now you can call loadEventCards() to load the event cards into the scroll pane
         loadEventCards(eventList.getEvents());
 
         jPanel2.add(ViewEventsJP);
@@ -349,47 +376,289 @@ public class AdminDash extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Add New Event");
 
+        jLabel7.setText("Event Name");
+
+        eventName.setBackground(new java.awt.Color(255, 255, 255));
+        eventName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eventNameActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Event Location");
+
+        eventLocation.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel10.setText("Price");
+
+        eventPriceField.setBackground(new java.awt.Color(255, 255, 255));
+        eventPriceField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eventPriceFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Description");
+
+        eventDescription.setBackground(new java.awt.Color(255, 255, 255));
+        eventDescription.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eventDescriptionActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setText("Event Image");
+
+        uploadButton.setText("Upload Image");
+        uploadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadButtonActionPerformed(evt);
+            }
+        });
+
+        imageLabel.setForeground(new java.awt.Color(204, 0, 0));
+        imageLabel.setText("No Image Added");
+
+        addEvent.setText("Add Event");
+        addEvent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addEventActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel12))
+                .addGap(38, 38, 38)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(imageLabel)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(eventName)
+                        .addComponent(eventLocation)
+                        .addComponent(eventPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(eventDescription, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))
+                    .addComponent(uploadButton, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(220, Short.MAX_VALUE)
+                .addComponent(addEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(186, 186, 186))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(eventName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(eventLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(eventPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(eventDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(uploadButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addComponent(imageLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addComponent(addEvent)
+                .addGap(40, 40, 40))
+        );
+
         javax.swing.GroupLayout AddNewEventLayout = new javax.swing.GroupLayout(AddNewEvent);
         AddNewEvent.setLayout(AddNewEventLayout);
         AddNewEventLayout.setHorizontalGroup(
-                AddNewEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddNewEventLayout.createSequentialGroup()
-                                .addContainerGap(208, Short.MAX_VALUE)
-                                .addComponent(jLabel5)
-                                .addGap(206, 206, 206)));
+            AddNewEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddNewEventLayout.createSequentialGroup()
+                .addContainerGap(29, Short.MAX_VALUE)
+                .addGroup(AddNewEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddNewEventLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(206, 206, 206))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddNewEventLayout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))))
+        );
         AddNewEventLayout.setVerticalGroup(
-                AddNewEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(AddNewEventLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel5)
-                                .addContainerGap(815, Short.MAX_VALUE)));
+            AddNewEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddNewEventLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addGap(79, 79, 79)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(103, Short.MAX_VALUE))
+        );
 
         jPanel2.add(AddNewEvent);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void eventPriceFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventPriceFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_eventPriceFieldActionPerformed
+
+    private void eventDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventDescriptionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_eventDescriptionActionPerformed
+
+    private void uploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadButtonActionPerformed
+        // TODO add your handling code here:
+        if (evt.getSource() == uploadButton) {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(this);
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                selectedImage = fileChooser.getSelectedFile();
+
+                imageLabel.setText("Selected: " + selectedImage.getName());
+                imageLabel.setForeground(new Color(0x3B5998)); // Color for the label text
+                uploaded = true; // Set uploaded to true to indicate the image is selected
+            }
+        }
+    }//GEN-LAST:event_uploadButtonActionPerformed
+
+    private void addEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEventActionPerformed
+        //Add button
+
+        // Get the text fields values
+        String name = eventName.getText();
+        String location = eventLocation.getText();
+        String eventPriceText = eventPriceField.getText();
+        String description = eventDescription.getText();
+
+        if (name.isEmpty() || description.isEmpty() || location.isEmpty() || eventPriceText.isEmpty() || !uploaded) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields. And Upload a Event Image",
+                    "Missing Information", JOptionPane.WARNING_MESSAGE);
+            return; // Exit the method if validation fails
+        }
+
+        double eventPrice;
+
+        // Validate that the price is a valid double
+        try {
+            eventPrice = Double.parseDouble(eventPriceText);
+            if (eventPrice <= 0) {
+                JOptionPane.showMessageDialog(this, "Event price must be a positive number.",
+                        "Invalid Price", JOptionPane.WARNING_MESSAGE);
+                return; // Exit if the price is invalid
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Event price must be a valid number.",
+                    "Invalid Input", JOptionPane.WARNING_MESSAGE);
+            return; // Exit if the input is not a valid number
+        }
+
+        // Check if an event with the same name already exists
+        String checkEventQuery = "SELECT COUNT(*) FROM events WHERE name = ?";
+        try (Connection connection = DatabaseConnect.getConnection(); PreparedStatement pstmtCheck = connection.prepareStatement(checkEventQuery)) {
+
+            pstmtCheck.setString(1, name);
+
+            ResultSet rs = pstmtCheck.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                // If the event already exists, show a message and return
+                JOptionPane.showMessageDialog(this, "An event with this name already exists.",
+                        "Duplicate Event", JOptionPane.WARNING_MESSAGE);
+                return; // Exit the method if event already exists
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "An error occurred while checking the event.\n" + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            return; // Exit if database error occurs
+        }
+
+        // Get the image file path (if selected)
+        String imagePath = null;
+        if (selectedImage != null) {
+            imagePath = selectedImage.getAbsolutePath(); // Get the full file path of the image
+        }
+
+        // Insert the event into the database
+        String insertEventQuery = "INSERT INTO events (name, description, location, price, status, isDeleted, image) VALUES (?, ?, ?, ?, 'active', FALSE, ?)";
+        try (Connection connection = DatabaseConnect.getConnection(); PreparedStatement pstmt = connection.prepareStatement(insertEventQuery)) {
+
+            // Set parameters for the prepared statement
+            pstmt.setString(1, name);
+            pstmt.setString(2, description);
+            pstmt.setString(3, location);
+            pstmt.setDouble(4, eventPrice);
+
+            // If an image was uploaded, add the image path to the query
+            if (imagePath != null) {
+                pstmt.setString(5, imagePath);
+            } else {
+                pstmt.setNull(5, java.sql.Types.VARCHAR); // Set null if no image is selected
+            }
+
+            // Execute the query
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(this, "Event added successfully!",
+                        "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                // Clear the input fields
+                eventName.setText("");
+                eventDescription.setText("");
+                eventLocation.setText("");
+                eventPriceField.setText("");
+                uploaded = false;
+                imageLabel.setText("No image selected.");
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to add event. Please try again.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "An error occurred while adding the event.\n" + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+
+    }//GEN-LAST:event_addEventActionPerformed
+
+    private void eventNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_eventNameActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
@@ -532,27 +801,97 @@ public class AdminDash extends javax.swing.JFrame {
         System.out.println("Repainted eventPanel");
     }
 
+    public void loadUserCards(List<User> user) {
+        // Ensure the inner panel of the JScrollPane is initialized
+        JPanel panelInsideScroll = (JPanel) userJPanel.getViewport().getView();
+
+        if (panelInsideScroll == null) {
+            panelInsideScroll = new JPanel();
+            panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS)); // Use vertical BoxLayout
+            userJPanel.setViewportView(panelInsideScroll);
+        }
+
+        // Clear any existing user cards
+        panelInsideScroll.removeAll();
+        System.out.println("Cleared existing user cards from panel.");
+
+        // Add user cards dynamically
+        int userCount = 0; // Track the number of user cards added
+        for (User users : user) {
+            // Skip the user if their role is "admin"
+            if ("admin".equalsIgnoreCase(users.getRole())) {
+                System.out.println("Skipping admin user: " + users.getFullName());
+                continue;  // Skip to the next iteration if the user is an admin
+            }
+
+            System.out.println("Creating user card for: " + users.getFullName());
+            JPanel userCard = UserPanelBuilder.buildCompleteUserPanel(users);
+
+            if (userCard != null) {
+                userCard.setAlignmentX(Component.LEFT_ALIGNMENT);
+                panelInsideScroll.add(userCard);
+                userCount++;
+            } else {
+                System.err.println("Failed to create user card for: " + users.getFullName());
+            }
+        }
+
+        System.out.println("Total user cards added: " + userCount);
+
+        // Add spacing panels to fill empty space (8 by default)
+        int emptySpaceCount = 8;
+        for (int i = 0; i < emptySpaceCount; i++) {
+            JPanel emptyCard = new JPanel();
+            emptyCard.setPreferredSize(new Dimension(600, 100)); // Match height of user cards
+            emptyCard.setBackground(Color.WHITE);               // Ensure consistent background
+            emptyCard.setAlignmentX(Component.LEFT_ALIGNMENT);
+            panelInsideScroll.add(emptyCard);
+        }
+
+        System.out.println("Added " + emptySpaceCount + " empty space cards.");
+
+        // Refresh the panel
+        panelInsideScroll.revalidate();
+        panelInsideScroll.repaint();
+        System.out.println("User panel refreshed with updated cards.");
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AddNewEvent;
     private javax.swing.JPanel ManageUserJP;
     private javax.swing.JPanel ViewEventsJP;
+    private javax.swing.JButton addEvent;
+    private javax.swing.JTextField eventDescription;
     private javax.swing.JScrollPane eventJPanel;
+    private javax.swing.JTextField eventLocation;
+    private javax.swing.JTextField eventName;
+    private javax.swing.JTextField eventPriceField;
+    private javax.swing.JLabel imageLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton uploadButton;
+    private javax.swing.JScrollPane userJPanel;
     // End of variables declaration//GEN-END:variables
 }
