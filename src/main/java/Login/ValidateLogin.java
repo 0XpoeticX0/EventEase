@@ -14,7 +14,7 @@ import utils.PasswordUtils;
 
 public class ValidateLogin {
     // SQL query to select password for an active user
-    String query = "SELECT u_id,password, firstname, lastname, email, mobileNumber, image, age, role FROM users WHERE email = ? AND status = 'active'";
+    String query = "SELECT u_id,password, firstname, lastname, email, mobileNumber, image, age,status, role FROM users WHERE email = ? AND status = 'active'";
 
     // Static variable to store the logged-in user's email
     public static String loggedInUserEmail = null;
@@ -51,6 +51,7 @@ public class ValidateLogin {
                                 rs.getString("mobileNumber"),
                                 rs.getString("image"),
                                 rs.getInt("age"),
+                                rs.getString("status"),
                                 rs.getString("role"));
 
                         // Set the current user in the LoggedInUser singleton

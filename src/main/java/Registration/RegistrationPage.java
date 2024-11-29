@@ -263,7 +263,8 @@ public class RegistrationPage extends JFrame implements ActionListener {
                 pstmt.setString(4, mobile);
                 pstmt.setInt(5, age);
                 pstmt.setString(6, password);
-                pstmt.setString(7, selectedImage != null ? selectedImage.getAbsolutePath() : null);
+                pstmt.setString(7, selectedImage != null ? selectedImage.getAbsolutePath()
+                        : "src/main/java/Resorces/Images/demoUser.png");
                 pstmt.executeUpdate();
 
                 JOptionPane.showMessageDialog(this, "Registration Successful!\n"

@@ -40,7 +40,7 @@ public class DatabaseInitializer {
                         location VARCHAR(255) NOT NULL,
                         price DECIMAL(10, 2) NOT NULL,
                         image VARCHAR(255),
-                        status VARCHAR(50) NOT NULL DEFAULT 'active',  -- Added status column with default value 'active'
+                        status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
                         isDeleted BOOLEAN NOT NULL DEFAULT FALSE
                     );
                 """;
@@ -53,7 +53,8 @@ public class DatabaseInitializer {
                         eventDate DATE NOT NULL,
                         price DECIMAL(10, 2) NOT NULL,
                         FOREIGN KEY (userId) REFERENCES users(u_id) ON DELETE CASCADE,
-                        FOREIGN KEY (eventId) REFERENCES events(e_id) ON DELETE CASCADE
+                        FOREIGN KEY (eventId) REFERENCES events(e_id) ON DELETE CASCADE,
+                        CONSTRAINT unique_booking UNIQUE (eventId, eventDate)
                     );
                 """;
 
@@ -80,7 +81,8 @@ public class DatabaseInitializer {
 
         String hashedPassword = PasswordUtils.hashPassword(adminPassword);
 
-        try (Connection connection = DatabaseConnect.getConnection(); Statement statement = connection.createStatement()) {
+        try (Connection connection = DatabaseConnect.getConnection();
+                Statement statement = connection.createStatement()) {
 
             // Execute table creation queries
             statement.executeUpdate(createEventsTable);
@@ -127,6 +129,7 @@ public class DatabaseInitializer {
                             loggedInUsersResultSet.getString("mobileNumber"),
                             loggedInUsersResultSet.getString("image"),
                             loggedInUsersResultSet.getInt("age"),
+                            loggedInUsersResultSet.getString("status"),
                             loggedInUsersResultSet.getString("role"));
 
                     // Set the current user in the LoggedInUser singleton
