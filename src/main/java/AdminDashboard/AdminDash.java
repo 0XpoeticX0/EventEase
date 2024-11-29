@@ -9,13 +9,11 @@ import Events.EventList;
 import Events.EventPage;
 import static LogOut.LogOut.logOut;
 import java.awt.Component;
-import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -269,7 +267,7 @@ public class AdminDash extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Cambria", 3, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Name");
+        jLabel6.setText("Events");
 
         jLabel9.setFont(new java.awt.Font("Cambria", 3, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
