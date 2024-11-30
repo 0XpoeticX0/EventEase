@@ -11,7 +11,7 @@ public class UserEventPanel {
     /**
      * Method to build the complete event panel as per your design.
      */
-    public static JPanel buildCompleteEventPanel(Event event, String u_id, String bookingDate) {
+    public static JPanel buildCompleteEventPanel(BookedEvent event, String u_id) {
         // Main event panel using GridBagLayout for better control
         JPanel eventPanel = new JPanel(new GridBagLayout());
         eventPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
@@ -31,7 +31,8 @@ public class UserEventPanel {
 
         // Image label
         JLabel imageLabel = new JLabel();
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon(event.imagePath).getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        ImageIcon imageIcon = new ImageIcon(
+                new ImageIcon(event.getEventImage()).getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         imageLabel.setIcon(imageIcon);
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imageLabel.setVerticalAlignment(SwingConstants.CENTER);
@@ -52,16 +53,20 @@ public class UserEventPanel {
         textGBC.insets = new Insets(5, 5, 5, 5);
 
         // Event Name
-        JLabel eventNameLabel = new JLabel("<html><div style='width: 250px;'>" + event.getName() + "</div></html>");  // HTML to wrap text
+        JLabel eventNameLabel = new JLabel(
+                "<html><div style='width: 250px;'>" + event.getEventName() + "</div></html>"); // HTML
+        // to
+        // wrap
+        // text
         eventNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
         eventNameLabel.setForeground(Color.WHITE);
-        eventNameLabel.setPreferredSize(new Dimension(250, 50));  // Ensure space for text wrap
+        eventNameLabel.setPreferredSize(new Dimension(250, 50)); // Ensure space for text wrap
         textGBC.gridx = 0;
         textGBC.gridy = 0;
         textPanel.add(eventNameLabel, textGBC);
 
         // Price
-        JLabel priceLabel = new JLabel("$" + event.getPrice()); // Assuming Event class has getPrice method
+        JLabel priceLabel = new JLabel("$" + event.getEventPrice()); // Assuming Event class has getPrice method
         priceLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         priceLabel.setForeground(Color.WHITE);
         textGBC.gridx = 0;
@@ -77,7 +82,7 @@ public class UserEventPanel {
         textPanel.add(statusLabel, textGBC);
 
         // Booking Date
-        JLabel bookingDateLabel = new JLabel("Booking Date: " + bookingDate); // Show the booking date
+        JLabel bookingDateLabel = new JLabel("Booking Date: " + event.getBookingDate()); // Show the booking date
         bookingDateLabel.setFont(new Font("Arial", Font.PLAIN, 12));
         bookingDateLabel.setForeground(Color.WHITE);
         textGBC.gridx = 0;
@@ -95,7 +100,8 @@ public class UserEventPanel {
 
         // "Delete" Icon Button
         JButton cancleEvent = new JButton();
-        cancleEvent.setIcon(new ImageIcon(UserEventPanel.class.getResource("/Icons/x.png"))); // Adjust the path to your image
+        cancleEvent.setIcon(new ImageIcon(UserEventPanel.class.getResource("/Icons/x.png"))); // Adjust the path to your
+                                                                                              // image
         cancleEvent.setPreferredSize(new Dimension(30, 30));
         cancleEvent.setBorderPainted(false);
         cancleEvent.setFocusPainted(false);
@@ -118,8 +124,7 @@ public class UserEventPanel {
                         "Are you sure you want to delete this event?",
                         "Confirm Deletion",
                         JOptionPane.YES_NO_OPTION,
-                        JOptionPane.WARNING_MESSAGE
-                );
+                        JOptionPane.WARNING_MESSAGE);
 
                 // If the user selects "Yes", proceed with deletion
                 if (response == JOptionPane.YES_OPTION) {
@@ -127,18 +132,13 @@ public class UserEventPanel {
                     Container parent = eventPanel.getParent();
                     if (parent != null) {
                         parent.remove(eventPanel);
-                        parent.revalidate();  // Revalidate the container to update the layout
-                        parent.repaint();     // Repaint the container to reflect changes
+                        parent.revalidate(); // Revalidate the container to update the layout
+                        parent.repaint(); // Repaint the container to reflect changes
                     }
 
                     // Call method to delete the event from the database
-                    EventBookingHelper.deleteBooking(event.e_id, u_id);
+                    EventBookingHelper.deleteBooking(event.getBookingId(), u_id);
 
-                    // Optionally show a confirmation message
-                    JOptionPane.showMessageDialog(null, "Event deleted successfully.");
-                } else {
-                    // If the user selects "No", do nothing
-                    JOptionPane.showMessageDialog(null, "Event deletion canceled.");
                 }
             }
         });
