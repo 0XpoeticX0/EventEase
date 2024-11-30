@@ -79,7 +79,7 @@ public class EventPanelBuilder {
         // "PUBLISH" Button
         JButton publishButton = new JButton();
         boolean isActive = event.getStatus().equalsIgnoreCase("active");
-        publishButton.setIcon(new ImageIcon(EventPanelBuilder.class.getResource(isActive ? "/Icons/shield-check.png" : "/Icons/shield-minus.png")));
+        publishButton.setIcon(new ImageIcon(EventPanelBuilder.class.getResource(isActive ? "/Icons/shield-minus.png" : "/Icons/shield-check.png")));
         publishButton.setPreferredSize(new Dimension(30, 30));
         publishButton.setBorderPainted(false);
         publishButton.setFocusPainted(false);
@@ -92,16 +92,35 @@ public class EventPanelBuilder {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (isCurrentlyActive) {
+                    // Deactivate the event
                     statusLabel.setText("Inactive");
                     statusLabel.setForeground(Color.RED);
-                    publishButton.setIcon(new ImageIcon(EventPanelBuilder.class.getResource("/Icons/shield-minus.png")));
+                    publishButton.setIcon(new ImageIcon(EventPanelBuilder.class.getResource("/Icons/shield-check.png")));
                     DatabaseHelper.updateEventStatus(event.e_id, "inactive");
+
+                    // Show confirmation dialog
+                    JOptionPane.showMessageDialog(
+                            null,
+                            event.getName() + " deactivated successfully!",
+                            "Status Update",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
                 } else {
+                    // Activate the event
                     statusLabel.setText("Active");
                     statusLabel.setForeground(Color.GREEN);
-                    publishButton.setIcon(new ImageIcon(EventPanelBuilder.class.getResource("/Icons/shield-check.png")));
+                    publishButton.setIcon(new ImageIcon(EventPanelBuilder.class.getResource("/Icons/shield-minus.png")));
                     DatabaseHelper.updateEventStatus(event.e_id, "active");
+
+                    // Show confirmation dialog
+                    JOptionPane.showMessageDialog(
+                            null,
+                            event.getName() + " activated successfully!",
+                            "Status Update",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
                 }
+                // Toggle the active state
                 isCurrentlyActive = !isCurrentlyActive;
             }
         });
@@ -118,6 +137,21 @@ public class EventPanelBuilder {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Check if the event is booked
+                String latestBookingDate = DatabaseHelper.getLatestBookingDate(event.getE_id());
+
+                if (latestBookingDate != null) {
+                    // If the event is booked, show a message and prevent deletion
+                    JOptionPane.showMessageDialog(
+                            null,
+                            event.getName() + " event cannot be deleted because it is booked until " + latestBookingDate
+                            + ".\n Please deactivate the event to prevent further bookings.",
+                            "Event Deletion Not Allowed",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                    return; // Exit the action listener to prevent further execution
+                }
+
                 // Show a confirmation dialog to the user
                 int response = JOptionPane.showConfirmDialog(
                         null,
@@ -138,9 +172,9 @@ public class EventPanelBuilder {
                     }
 
                     // Call method to delete the event from the database
-                    DatabaseHelper.deleteEvent(event.e_id);
+                    DatabaseHelper.deleteEvent(event.getE_id());
 
-                    // Optionally show a confirmation message
+                    // Show a confirmation message
                     JOptionPane.showMessageDialog(null, "Event deleted successfully.");
                 } else {
                     // If the user selects "No", do nothing

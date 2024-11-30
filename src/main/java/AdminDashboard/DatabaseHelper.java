@@ -5,8 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseHelper {
 
@@ -56,5 +54,25 @@ public class DatabaseHelper {
             e.printStackTrace();
         }
     }
+    
+    // Check if an event is booked and get the latest booking date
+public static String getLatestBookingDate(String eventId) {
+    String query = "SELECT MAX(eventDate) AS latest_date FROM bookings WHERE eventId = ?";
+    try (Connection connection = DatabaseConnect.getConnection();
+         PreparedStatement stmt = connection.prepareStatement(query)) {
+
+        stmt.setString(1, eventId); // Set eventId
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next() && rs.getString("latest_date") != null) {
+                return rs.getString("latest_date"); // Return the latest booking date if exists
+            }
+        }
+    } catch (SQLException e) {
+        System.err.println("Error checking event bookings: " + e.getMessage());
+        e.printStackTrace();
+    }
+    return null; // Return null if no bookings are found
+}
+
 
 }
