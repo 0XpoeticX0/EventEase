@@ -9,15 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserList {
-    private final List<User> users;
 
-    public UserList() {
-        users = new ArrayList<>();
-        initializeUsersFromDatabase(); // Fetch user data from the database
-    }
-
-    // Method to initialize user data from the database
-    private void initializeUsersFromDatabase() {
+    // Method to retrieve all users from the database
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
         try (Connection connection = DatabaseConnect.getConnection();
              Statement statement = connection.createStatement()) {
 
@@ -29,6 +24,7 @@ public class UserList {
             """;
             ResultSet resultSet = statement.executeQuery(query);
 
+            // Populate the user list
             while (resultSet.next()) {
                 int u_id = resultSet.getInt("u_id");
                 String firstName = resultSet.getString("firstname");
@@ -38,17 +34,13 @@ public class UserList {
                 String status = resultSet.getString("status");
                 String image = resultSet.getString("image");
 
-                // Create a User object and add it to the list
+                // Add a new User object to the list
                 users.add(new User(u_id, firstName, lastName, email, role, status, image));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    // Method to retrieve all users
-    public List<User> getUsers() {
         return users;
     }
 }
