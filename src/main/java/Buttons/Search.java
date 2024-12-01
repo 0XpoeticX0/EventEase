@@ -1,10 +1,12 @@
 package Buttons;
 
+import AdminDashboard.User;
 import Events.Event;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Search {
+
     private List<Event> events; // List of events for searching
 
     public Search(List<Event> events) {

@@ -313,6 +313,12 @@
                           <EmptySpace min="217" max="32767" attributes="0"/>
                       </Group>
                       <Component id="userJPanel" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="searchUser" min="-2" pref="505" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                          <Component id="searchUserButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
@@ -320,8 +326,13 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="userJPanel" min="-2" pref="807" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="searchUser" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="searchUserButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                          <Component id="userJPanel" min="-2" pref="772" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -341,11 +352,24 @@
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="userJPanel">
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="userJPanel.setAlignmentX(0.0F);&#xa;userJPanel.setAlignmentY(0.0F);&#xa;&#xa;// Configure scroll bar increments for smoother scrolling&#xa;// Replace with actual user fetching logic"/>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="userJPanel.setAlignmentX(0.0F);&#xa;userJPanel.setAlignmentY(0.0F);&#xa;&#xa;// Configure scroll bar increments for smoother scrolling&#xa;// Replace with actual user fetching logic&#xa;loadUserCards(users.getUsers());"/>
                   </AuxValues>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                 </Container>
+                <Component class="javax.swing.JTextField" name="searchUser">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchUserActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="searchUserButton">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="jButton6"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchUserButtonActionPerformed"/>
+                  </Events>
+                </Component>
               </SubComponents>
             </Container>
           </SubComponents>
@@ -369,10 +393,16 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="203" max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="208" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Component id="jPanel4" alignment="0" max="32767" attributes="0"/>
                   <Component id="eventJPanel" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="searchEvent" min="-2" pref="497" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                      <Component id="searchEventButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -380,10 +410,15 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="searchEvent" alignment="3" pref="33" max="32767" attributes="0"/>
+                          <Component id="searchEventButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                       <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Component id="eventJPanel" pref="761" max="32767" attributes="0"/>
+                      <Component id="eventJPanel" min="-2" pref="721" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -425,7 +460,7 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace pref="16" max="32767" attributes="0"/>
+                          <EmptySpace pref="10" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -472,6 +507,16 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
             </Container>
+            <Component class="javax.swing.JTextField" name="searchEvent">
+            </Component>
+            <Component class="javax.swing.JButton" name="searchEventButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Search"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchEventButtonActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="AddNewEvent">
