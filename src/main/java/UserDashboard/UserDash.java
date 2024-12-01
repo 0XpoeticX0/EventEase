@@ -48,6 +48,7 @@ public class UserDash extends javax.swing.JFrame {
      * Creates new form UserDash
      */
     public UserDash() {
+        setTitle("User");
         initComponents();
         bookingJP.setVisible(false);
         setLocationRelativeTo(null);

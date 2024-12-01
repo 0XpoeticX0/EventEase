@@ -121,8 +121,8 @@ public class UserEventPanel {
                 // Show a confirmation dialog to the user
                 int response = JOptionPane.showConfirmDialog(
                         null,
-                        "Are you sure you want to delete this event?",
-                        "Confirm Deletion",
+                        "Are you sure you want to Cancle this event?",
+                        "Confirm Cancelation",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.WARNING_MESSAGE);
 

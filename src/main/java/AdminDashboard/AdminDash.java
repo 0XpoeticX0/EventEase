@@ -5,6 +5,7 @@
 package AdminDashboard;
 
 import DataBase.DatabaseConnect;
+import Buttons.Search;
 import Events.Event;
 import Events.EventList;
 import Events.EventPage;
@@ -20,6 +21,7 @@ import javax.swing.*;
  * @author ACER
  */
 public class AdminDash extends javax.swing.JFrame {
+    
 
     private File selectedImage;
     public Boolean uploaded = false;
@@ -31,6 +33,7 @@ public class AdminDash extends javax.swing.JFrame {
      * Creates new form AdminDash
      */
     public AdminDash() {
+        setTitle("Admin");
         initComponents();
         setLocationRelativeTo(null);
         ViewEventsJP.setVisible(false);
@@ -62,12 +65,16 @@ public class AdminDash extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         userJPanel = new javax.swing.JScrollPane();
+        searchUser = new javax.swing.JTextField();
+        searchUserButton = new javax.swing.JButton();
         ViewEventsJP = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         eventJPanel = new javax.swing.JScrollPane();
+        searchEvent = new javax.swing.JTextField();
+        searchEventButton = new javax.swing.JButton();
         AddNewEvent = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -245,6 +252,19 @@ public class AdminDash extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Manage Users");
 
+        searchUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchUserActionPerformed(evt);
+            }
+        });
+
+        searchUserButton.setText("Search");
+        searchUserButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchUserButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -254,14 +274,23 @@ public class AdminDash extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(userJPanel)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(searchUser, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(searchUserButton)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(userJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 807, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchUser, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchUserButton))
+                .addGap(0, 0, 0)
+                .addComponent(userJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 772, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -270,6 +299,7 @@ public class AdminDash extends javax.swing.JFrame {
 
         // Configure scroll bar increments for smoother scrolling
         // Replace with actual user fetching logic
+        loadUserCards(users.getUsers());
 
         javax.swing.GroupLayout ManageUserJPLayout = new javax.swing.GroupLayout(ManageUserJP);
         ManageUserJP.setLayout(ManageUserJPLayout);
@@ -317,7 +347,7 @@ public class AdminDash extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
+                .addContainerGap(10, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jLabel9))
@@ -327,6 +357,13 @@ public class AdminDash extends javax.swing.JFrame {
         eventJPanel.setAlignmentX(0.0F);
         eventJPanel.setAlignmentY(0.0F);
 
+        searchEventButton.setText("Search");
+        searchEventButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchEventButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout ViewEventsJPLayout = new javax.swing.GroupLayout(ViewEventsJP);
         ViewEventsJP.setLayout(ViewEventsJPLayout);
         ViewEventsJPLayout.setHorizontalGroup(
@@ -334,19 +371,28 @@ public class AdminDash extends javax.swing.JFrame {
             .addGroup(ViewEventsJPLayout.createSequentialGroup()
                 .addGap(203, 203, 203)
                 .addComponent(jLabel4)
-                .addContainerGap(208, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(eventJPanel)
+            .addGroup(ViewEventsJPLayout.createSequentialGroup()
+                .addComponent(searchEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(searchEventButton)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         ViewEventsJPLayout.setVerticalGroup(
             ViewEventsJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ViewEventsJPLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
+                .addGroup(ViewEventsJPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchEvent, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                    .addComponent(searchEventButton))
+                .addGap(1, 1, 1)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(eventJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 761, Short.MAX_VALUE))
+                .addComponent(eventJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 721, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         JScrollBar verticalScrollBar = eventJPanel.getVerticalScrollBar();
@@ -655,6 +701,51 @@ public class AdminDash extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_eventNameActionPerformed
 
+    private void searchUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchUserActionPerformed
+
+    private void searchUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUserButtonActionPerformed
+        // Search User Button:
+        UserSearch searchUsers = new UserSearch(users.getUsers());
+        String searchUserName = searchUser.getText();
+
+        if (!searchUserName.isEmpty()) {
+            // Perform the search and retrieve matched events
+            List<User> matchedUser = searchUsers.searchResult(searchUserName);
+            if (matchedUser.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No events found for your search.");
+            } else {
+                // Pass the matched events to loadEventCards
+                loadUserCards(matchedUser);
+            }
+        } else {
+            // Load a default set of events (first 6)
+            loadUserCards(users.getUsers().stream().limit(6).toList());
+        }
+    }//GEN-LAST:event_searchUserButtonActionPerformed
+
+    private void searchEventButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchEventButtonActionPerformed
+        // Search Event Button:
+        Search search = new Search(eventList.getEvents());
+        String searchEventName = searchEvent.getText();
+
+        if (!searchEventName.isEmpty()) {
+            // Perform the search and retrieve matched events
+            List<Event> matchedEvents = search.searchEvents(searchEventName);
+            if (matchedEvents.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No events found for your search.");
+            } else {
+                // Pass the matched events to loadEventCards
+                loadEventCards(matchedEvents);
+            }
+        } else {
+            // Load a default set of events (first 6)
+            loadEventCards(eventList.getEvents().stream().limit(6).toList());
+        }
+
+    }//GEN-LAST:event_searchEventButtonActionPerformed
+
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }// GEN-LAST:event_jButton3ActionPerformed
@@ -888,6 +979,10 @@ public class AdminDash extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField searchEvent;
+    private javax.swing.JButton searchEventButton;
+    private javax.swing.JTextField searchUser;
+    private javax.swing.JButton searchUserButton;
     private javax.swing.JButton uploadButton;
     private javax.swing.JScrollPane userJPanel;
     // End of variables declaration//GEN-END:variables
