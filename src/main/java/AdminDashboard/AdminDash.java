@@ -253,10 +253,7 @@ public class AdminDash extends javax.swing.JFrame {
                 .addGap(222, 222, 222)
                 .addComponent(jLabel2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(userJPanel)
-                .addGap(0, 0, 0))
+            .addComponent(userJPanel)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,7 +270,6 @@ public class AdminDash extends javax.swing.JFrame {
 
         // Configure scroll bar increments for smoother scrolling
         // Replace with actual user fetching logic
-        loadUserCards(users.getUsers());
 
         javax.swing.GroupLayout ManageUserJPLayout = new javax.swing.GroupLayout(ManageUserJP);
         ManageUserJP.setLayout(ManageUserJPLayout);
@@ -365,7 +361,6 @@ public class AdminDash extends javax.swing.JFrame {
         eventJPanel.setViewportView(panelInsideScroll);
 
         // Now you can call loadEventCards() to load the event cards into the scroll pane
-        loadEventCards(eventList.getEvents());
 
         jPanel2.add(ViewEventsJP);
 
@@ -674,6 +669,7 @@ public class AdminDash extends javax.swing.JFrame {
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButton2MouseClicked
         ManageUserJP.setVisible(true);
+        loadUserCards(users.getUsers());
         ViewEventsJP.setVisible(false);
         AddNewEvent.setVisible(false);
     }// GEN-LAST:event_jButton2MouseClicked
@@ -681,6 +677,7 @@ public class AdminDash extends javax.swing.JFrame {
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jButton3MouseClicked
         ManageUserJP.setVisible(false);
         ViewEventsJP.setVisible(true);
+        loadEventCards(eventList.getEvents());
         AddNewEvent.setVisible(false);
     }// GEN-LAST:event_jButton3MouseClicked
 

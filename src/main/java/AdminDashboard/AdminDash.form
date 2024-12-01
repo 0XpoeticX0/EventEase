@@ -312,11 +312,7 @@
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="217" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                          <Component id="userJPanel" max="32767" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="userJPanel" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
@@ -345,7 +341,7 @@
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="userJPanel">
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="userJPanel.setAlignmentX(0.0F);&#xa;userJPanel.setAlignmentY(0.0F);&#xa;&#xa;// Configure scroll bar increments for smoother scrolling&#xa;// Replace with actual user fetching logic&#xa;loadUserCards(users.getUsers());"/>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="userJPanel.setAlignmentX(0.0F);&#xa;userJPanel.setAlignmentY(0.0F);&#xa;&#xa;// Configure scroll bar increments for smoother scrolling&#xa;// Replace with actual user fetching logic"/>
                   </AuxValues>
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
@@ -470,7 +466,7 @@
                 <Property name="alignmentY" type="float" value="0.0"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="JScrollBar verticalScrollBar = eventJPanel.getVerticalScrollBar();&#xa;&#xa;// Increase the unit increment (scroll step with mouse wheel)&#xa;verticalScrollBar.setUnitIncrement(30);  // Default is usually around 16, increase for faster scrolling&#xa;&#xa;// Increase the block increment (scroll step with page up/down or arrow keys)&#xa;verticalScrollBar.setBlockIncrement(60);&#xa;JPanel panelInsideScroll = new JPanel();&#xa;panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS));  // Vertical layout&#xa;eventJPanel.setViewportView(panelInsideScroll);&#xa;&#xa;// Now you can call loadEventCards() to load the event cards into the scroll pane&#xa;loadEventCards(eventList.getEvents());"/>
+                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="JScrollBar verticalScrollBar = eventJPanel.getVerticalScrollBar();&#xa;&#xa;// Increase the unit increment (scroll step with mouse wheel)&#xa;verticalScrollBar.setUnitIncrement(30);  // Default is usually around 16, increase for faster scrolling&#xa;&#xa;// Increase the block increment (scroll step with page up/down or arrow keys)&#xa;verticalScrollBar.setBlockIncrement(60);&#xa;JPanel panelInsideScroll = new JPanel();&#xa;panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS));  // Vertical layout&#xa;eventJPanel.setViewportView(panelInsideScroll);&#xa;&#xa;// Now you can call loadEventCards() to load the event cards into the scroll pane"/>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JScrollPane()"/>
               </AuxValues>
 
