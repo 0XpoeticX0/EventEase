@@ -18,23 +18,47 @@ public class UserPanelBuilder {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5); // Add some padding
 
-        // Left: Profile picture (Circular)
-        JPanel imagePanel = new JPanel();
-        imagePanel.setPreferredSize(new Dimension(50, 50)); // Circle size
-        imagePanel.setBackground(Color.GRAY); // Temporary background color for image
-        imagePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
-        imagePanel.setLayout(new BorderLayout());
+        // Left: Profile picture as a button
+        JButton imageButton = new JButton();
+        imageButton.setPreferredSize(new Dimension(50, 50)); // Circle size
+        imageButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2)); // Border around the image
+        imageButton.setFocusPainted(false); // Remove focus border
+        imageButton.setContentAreaFilled(false); // Transparent button background
 
-        JLabel imageLabel = new JLabel();
-        ImageIcon imageIcon = new ImageIcon(new ImageIcon(user.getImage()).getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
-        imageLabel.setIcon(imageIcon);
-        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        imageLabel.setVerticalAlignment(SwingConstants.CENTER);
-        imagePanel.add(imageLabel, BorderLayout.CENTER);
+        // Set the user's image as the button icon
+        ImageIcon imageIcon = new ImageIcon(new ImageIcon(user.getImage())
+                .getImage()
+                .getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+        imageButton.setIcon(imageIcon);
+
+        // Add an action listener to handle button clicks
+        imageButton.addActionListener(e -> {
+            // Fetch user details
+            String userInfo = "User Details:\n"
+                    + "Name: " + user.getFullName() + "\n"
+                    + "Email: " + user.getEmail() + "\n"
+                    + "Status: " + user.getStatus();
+
+            // Show user details in a dialog
+            int response = JOptionPane.showConfirmDialog(
+                    userPanel,
+                    userInfo + "\nDo you want to view this user's booked events?",
+                    "User Info",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            // If user selects "YES", load booked events
+            if (response == JOptionPane.YES_OPTION) {
+                String u_id = String.valueOf(user.getU_id()); // Assuming user has a method getU_id()
+                EventBookedByUser load = new EventBookedByUser(user);
+                load.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                load.setVisible(true);
+            }
+        });
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        userPanel.add(imagePanel, gbc);
+        userPanel.add(imageButton, gbc);
 
         // Space between the image and the text
         gbc.gridx = 1;
@@ -52,10 +76,10 @@ public class UserPanelBuilder {
         textGBC.insets = new Insets(5, 5, 5, 5);
 
         // User Name Label
-        JLabel userNameLabel = new JLabel("<html><div style='width: 250px;'>" + user.getFullName() + "</div></html>");  // HTML to wrap text
+        JLabel userNameLabel = new JLabel("<html><div style='width: 250px;'>" + user.getFullName() + "</div></html>"); // HTML to wrap text
         userNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
         userNameLabel.setForeground(Color.WHITE);
-        userNameLabel.setPreferredSize(new Dimension(250, 50));  // Ensure space for text wrap
+        userNameLabel.setPreferredSize(new Dimension(250, 50)); // Ensure space for text wrap
         textGBC.gridx = 0;
         textGBC.gridy = 0;
         textPanel.add(userNameLabel, textGBC);
@@ -81,23 +105,22 @@ public class UserPanelBuilder {
         userPanel.add(textPanel, gbc);
 
         // Right: Block/Unblock Button
-        // Right: Block/Unblock Button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonPanel.setOpaque(false);
 
-// Block/Unblock button with dynamic icon based on status
+        // Block/Unblock button with dynamic icon based on status
         JButton blockButton = new JButton();
         blockButton.setPreferredSize(new Dimension(30, 30));
 
-// Set the background to transparent
+        // Set the background to transparent
         blockButton.setContentAreaFilled(false);
-        blockButton.setBorderPainted(false);  // Remove border
-        blockButton.setFocusPainted(false);  // Remove focus border if clicked
+        blockButton.setBorderPainted(false); // Remove border
+        blockButton.setFocusPainted(false); // Remove focus border if clicked
 
-// Dynamically set the block/unblock icon based on user status
+        // Dynamically set the block/unblock icon based on user status
         blockButton.setIcon(new ImageIcon(UserPanelBuilder.class.getResource(user.getStatus().equalsIgnoreCase("active")
                 ? "/Icons/lock-keyhole.png" // Block icon when Active
-                : "/Icons/lock-keyhole-open.png")));  // Unblock icon when Blocked
+                : "/Icons/lock-keyhole-open.png"))); // Unblock icon when Blocked
 
         blockButton.addActionListener(new ActionListener() {
             private boolean isCurrentlyBlocked = user.getStatus().equalsIgnoreCase("inactive");
@@ -107,13 +130,13 @@ public class UserPanelBuilder {
                 if (isCurrentlyBlocked) {
                     statusLabel.setText("Active");
                     statusLabel.setForeground(Color.GREEN);
-                    blockButton.setIcon(new ImageIcon(UserPanelBuilder.class.getResource("/Icons/lock-keyhole.png")));  // Show block icon
+                    blockButton.setIcon(new ImageIcon(UserPanelBuilder.class.getResource("/Icons/lock-keyhole.png"))); // Show block icon
                     DatabaseHelper.updateUserStatus(user.getU_id(), "active");
                     JOptionPane.showMessageDialog(userPanel, "User has been unblocked.");
                 } else {
                     statusLabel.setText("Blocked");
                     statusLabel.setForeground(Color.RED);
-                    blockButton.setIcon(new ImageIcon(UserPanelBuilder.class.getResource("/Icons/lock-keyhole-open.png")));  // Show unblock icon
+                    blockButton.setIcon(new ImageIcon(UserPanelBuilder.class.getResource("/Icons/lock-keyhole-open.png"))); // Show unblock icon
                     DatabaseHelper.updateUserStatus(user.getU_id(), "inactive");
                     JOptionPane.showMessageDialog(userPanel, "User has been blocked.");
                 }
@@ -123,12 +146,10 @@ public class UserPanelBuilder {
 
         buttonPanel.add(blockButton);
 
-// Adjusting button's position 5px up by modifying the vertical insets
-        gbc.gridx = 3;  // Right-most position
+        // Adjusting button's position
+        gbc.gridx = 3; // Right-most position
         gbc.gridy = 0;
-
-// Add vertical insets to shift the button 5px up
-        gbc.insets = new Insets(0, 0, 5, 0); // 5px margin from the bottom, 0 for top and sides
+        gbc.insets = new Insets(0, 0, 5, 0); // Adjust as necessary
         userPanel.add(buttonPanel, gbc);
 
         return userPanel;

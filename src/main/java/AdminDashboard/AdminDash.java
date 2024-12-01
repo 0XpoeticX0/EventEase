@@ -21,6 +21,7 @@ import javax.swing.*;
  * @author ACER
  */
 public class AdminDash extends javax.swing.JFrame {
+    
 
     private File selectedImage;
     public Boolean uploaded = false;
@@ -32,6 +33,7 @@ public class AdminDash extends javax.swing.JFrame {
      * Creates new form AdminDash
      */
     public AdminDash() {
+        setTitle("Admin");
         initComponents();
         setLocationRelativeTo(null);
         ViewEventsJP.setVisible(false);
@@ -256,7 +258,7 @@ public class AdminDash extends javax.swing.JFrame {
             }
         });
 
-        searchUserButton.setText("jButton6");
+        searchUserButton.setText("Search");
         searchUserButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchUserButtonActionPerformed(evt);
