@@ -867,10 +867,11 @@ public class AdminDash extends javax.swing.JFrame {
 
             // Add the event card to the panel inside the JScrollPane
             panelInsideScroll.add(eventCard);
+            x++;
         }
 
         // Always add 8 empty rows (no matter the number of events)
-        for (int i = 0; i < 8; i++) {
+        for (int i = x; i < 8; i++) {
             JPanel emptyEventCard = new JPanel();
             emptyEventCard.setPreferredSize(new Dimension(600, 100)); // Match the height of event cards
             emptyEventCard.setBackground(Color.WHITE); // Set background to white for empty space
@@ -927,16 +928,13 @@ public class AdminDash extends javax.swing.JFrame {
         System.out.println("Total user cards added: " + userCount);
 
         // Add spacing panels to fill empty space (8 by default)
-        int emptySpaceCount = 8;
-        for (int i = 0; i < emptySpaceCount; i++) {
+        for (int i = userCount; i < 8; i++) {
             JPanel emptyCard = new JPanel();
             emptyCard.setPreferredSize(new Dimension(600, 100)); // Match height of user cards
             emptyCard.setBackground(Color.WHITE);               // Ensure consistent background
             emptyCard.setAlignmentX(Component.LEFT_ALIGNMENT);
             panelInsideScroll.add(emptyCard);
         }
-
-        System.out.println("Added " + emptySpaceCount + " empty space cards.");
 
         // Refresh the panel
         panelInsideScroll.revalidate();
