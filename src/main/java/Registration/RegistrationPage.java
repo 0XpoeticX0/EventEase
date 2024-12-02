@@ -94,7 +94,7 @@ public class RegistrationPage extends JFrame implements ActionListener {
         addLabelAndField("Profile Image:", inputPanel, gbc, 6);
         uploadButton = new JButton("Upload Image");
         uploadButton.setFont(new Font("Arial", Font.BOLD, 14));
-        uploadButton.setPreferredSize(new Dimension(250, 30));
+        uploadButton.setPreferredSize(new Dimension(225, 30));
         uploadButton.setBackground(new Color(87, 197, 182));
         uploadButton.setForeground(Color.WHITE);
         uploadButton.addActionListener(this);
@@ -116,7 +116,7 @@ public class RegistrationPage extends JFrame implements ActionListener {
 
         registerButton = new JButton("Register");
         registerButton.setFont(new Font("Arial", Font.BOLD, 18));
-        registerButton.setPreferredSize(new Dimension(300, 40));
+        registerButton.setPreferredSize(new Dimension(200, 40));
         registerButton.setBackground(new Color(8, 131, 149));
         registerButton.setForeground(Color.WHITE);
         registerButton.addActionListener(this);
