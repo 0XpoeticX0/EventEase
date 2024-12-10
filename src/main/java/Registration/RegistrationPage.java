@@ -85,16 +85,16 @@ public class RegistrationPage extends JFrame implements ActionListener {
         ageField = createTextField(inputPanel, gbc, 4);
 
         addLabelAndField("Password:", inputPanel, gbc, 5);
-        passwordField = new JPasswordField(25);
-        passwordField.setFont(new Font("Arial", Font.PLAIN, 18));
-        passwordField.setPreferredSize(new Dimension(300, 40));
+        passwordField = new JPasswordField(20);
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
+        passwordField.setPreferredSize(new Dimension(250, 30));
         gbc.gridx = 1;
         inputPanel.add(passwordField, gbc);
 
         addLabelAndField("Profile Image:", inputPanel, gbc, 6);
         uploadButton = new JButton("Upload Image");
-        uploadButton.setFont(new Font("Arial", Font.BOLD, 18));
-        uploadButton.setPreferredSize(new Dimension(300, 40));
+        uploadButton.setFont(new Font("Arial", Font.BOLD, 14));
+        uploadButton.setPreferredSize(new Dimension(225, 30));
         uploadButton.setBackground(new Color(87, 197, 182));
         uploadButton.setForeground(Color.WHITE);
         uploadButton.addActionListener(this);
@@ -116,7 +116,7 @@ public class RegistrationPage extends JFrame implements ActionListener {
 
         registerButton = new JButton("Register");
         registerButton.setFont(new Font("Arial", Font.BOLD, 18));
-        registerButton.setPreferredSize(new Dimension(300, 40));
+        registerButton.setPreferredSize(new Dimension(200, 40));
         registerButton.setBackground(new Color(8, 131, 149));
         registerButton.setForeground(Color.WHITE);
         registerButton.addActionListener(this);
@@ -168,9 +168,9 @@ public class RegistrationPage extends JFrame implements ActionListener {
     }
 
     private JTextField createTextField(JPanel panel, GridBagConstraints gbc, int row) {
-        JTextField textField = new JTextField(25);
-        textField.setFont(new Font("Arial", Font.PLAIN, 18));
-        textField.setPreferredSize(new Dimension(300, 40));
+        JTextField textField = new JTextField(20);
+        textField.setFont(new Font("Arial", Font.PLAIN, 14));
+        textField.setPreferredSize(new Dimension(250, 30));
         gbc.gridx = 1;
         gbc.gridy = row;
         panel.add(textField, gbc);
