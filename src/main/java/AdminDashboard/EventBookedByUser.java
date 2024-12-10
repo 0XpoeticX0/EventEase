@@ -99,6 +99,9 @@ public class EventBookedByUser extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        eventJPanel.setMaximumSize(new java.awt.Dimension(505, 396));
+        eventJPanel.setMinimumSize(new java.awt.Dimension(505, 396));
+
         jLabel5.setFont(new java.awt.Font("Cambria", 1, 24)); // NOI18N
         jLabel5.setText("Event Booked");
 
@@ -120,10 +123,9 @@ public class EventBookedByUser extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel7))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel8))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8)))))
                     .addComponent(eventJPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -216,10 +218,10 @@ public class EventBookedByUser extends javax.swing.JFrame {
         System.out.println("Total event cards added: " + eventCardCount);
 
         // Add empty placeholders if no event cards were added
-        if (eventCardCount < 3) {
-            for (int i = eventCardCount; i < 3; i++) {
+        if (eventCardCount < 4) {
+            for (int i = eventCardCount; i < 4; i++) {
                 JPanel emptyEventCard = new JPanel();
-                emptyEventCard.setPreferredSize(new Dimension(600, 100));
+                emptyEventCard.setPreferredSize(new Dimension(480, 110));
                 emptyEventCard.setBackground(Color.WHITE);
                 emptyEventCard.setAlignmentX(Component.LEFT_ALIGNMENT);
                 panelInsideScroll.add(emptyEventCard);

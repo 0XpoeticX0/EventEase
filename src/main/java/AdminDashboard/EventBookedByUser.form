@@ -52,13 +52,12 @@
                       <Component id="jLabel4" min="-2" pref="175" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                   </Group>
@@ -90,6 +89,14 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JScrollPane" name="eventJPanel">
+      <Properties>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[505, 396]"/>
+        </Property>
+        <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[505, 396]"/>
+        </Property>
+      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="// Now you can call loadEventCards() to load the event cards into the scroll pane&#xa;JScrollBar verticalScrollBar = eventJPanel.getVerticalScrollBar();&#xa;&#xa;// Increase the unit increment (scroll step with mouse wheel)&#xa;verticalScrollBar.setUnitIncrement(30);  // Default is usually around 16, increase for faster scrolling&#xa;&#xa;// Increase the block increment (scroll step with page up/down or arrow keys)&#xa;verticalScrollBar.setBlockIncrement(60);&#xa;JPanel panelInsideScroll = new JPanel();&#xa;panelInsideScroll.setLayout(new BoxLayout(panelInsideScroll, BoxLayout.Y_AXIS));  // Vertical layout&#xa;eventJPanel.setViewportView(panelInsideScroll);&#xa;&#xa;// Now you can call loadEventCards() to load the event cards into the scroll pane&#xa;loadEventCards(eventList.getEvents(), u_id);"/>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JScrollPane()"/>

@@ -13,7 +13,7 @@ public class EventBookingCheckByAdmin {
         JPanel eventPanel = new JPanel(new BorderLayout(10, 0)); // Reduced gap between sections to 10px
         eventPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         eventPanel.setBackground(Color.BLACK);
-        eventPanel.setPreferredSize(new Dimension(505, 120));
+        eventPanel.setPreferredSize(new Dimension(480, 110));
 
         // ===== LEFT: Image Panel =====
         JPanel imagePanel = new JPanel();
